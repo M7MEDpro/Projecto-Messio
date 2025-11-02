@@ -11,6 +11,6 @@ class LDRSensors {
 
 };
 
-} // LDRSensors
+}
 
 #endif //LDRSENSORS_H

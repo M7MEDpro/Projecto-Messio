@@ -2,10 +2,10 @@
 #include <Arduino.h>
 
 
-// Namespace for managing LDR (Light Dependent Resistor) sensors
+// Namespace for managing FlameSensors
 namespace FlameSensors {
 
-    // Pin variables for the LDR sensors
+    // Pin variables for the Flame sensors
     int sensorRoom1;
     int sensorRoom2;
     int sensorGarage;
@@ -13,7 +13,7 @@ namespace FlameSensors {
     int sensorRec2;
 
 
-    // Initializes the LDR sensors by setting their pin modes
+    // Initializes the Flame sensors by setting their pin modes
     void initialize() {
         pinMode(sensorRoom1 , INPUT);
         pinMode(sensorRoom2 , INPUT);

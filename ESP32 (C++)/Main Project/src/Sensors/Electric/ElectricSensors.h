@@ -1,16 +1,12 @@
-//
-// Created by sch on 11/2/2025.
-//
-
 #ifndef ELECTRICSENSORS_H
 #define ELECTRICSENSORS_H
 
 namespace ElectricSensors {
 
-class ElectricSensors {
+    double readCurrent();
+    double readVoltage();
+    void initialize();
 
-};
+}
 
-} // ElectricSensors
-
-#endif //ELECTRICSENSORS_H
+#endif

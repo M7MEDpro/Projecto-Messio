@@ -1,6 +1,3 @@
-// Created by sch on 11/2/2025.
-// Implementation file for IR (Infrared) sensors
-
 #include "IRSensors.h"
 #include <Arduino.h>
 

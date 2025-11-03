@@ -46,4 +46,10 @@ namespace ElectricSensors {
         // Scale up to actual voltage using voltage divider ratio
         return adcVoltage * 7.576;
     }
+
+     void reading() {
+        current = ElectricSensors::readCurrent();
+        volatge = ElectricSensors::readVoltage();
+     }
+
 }

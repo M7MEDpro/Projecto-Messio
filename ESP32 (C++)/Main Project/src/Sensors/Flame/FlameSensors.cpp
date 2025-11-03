@@ -12,6 +12,11 @@ namespace FlameSensors {
     int sensorRec1;
     int sensorRec2;
 
+    bool FlameStatusRoom1 = false;
+    bool FlameStatusRoom2 = false;
+    bool FlameStatusGarage = false;
+    bool FlameStatusRec1 = false;
+    bool FlameStatusRec2 = false;
 
     // Initializes the Flame sensors by setting their pin modes
     void initialize() {

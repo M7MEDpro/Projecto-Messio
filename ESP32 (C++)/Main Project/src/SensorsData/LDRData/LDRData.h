@@ -7,9 +7,7 @@
 
 namespace LDRData {
 
-class LDRData {
 
-};
 
 } // LDRData
 

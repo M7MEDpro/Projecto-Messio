@@ -7,9 +7,12 @@
 
 namespace FlameSensors {
 
-class FlameSensors {
-
-};
+    bool readSensorRoom1();
+    bool readSensorRoom2();
+    bool readSensorGarage();
+    bool readSensorRec1();
+    bool readSensorRec2();
+    void initialize();
 
 } // FlameSensors
 

@@ -6,10 +6,12 @@
 #define IRSENSORS_H
 
 namespace IRSensors {
-
-class IRSensors {
-
-};
+    bool readSensorRoom1();
+    bool readSensorRoom2();
+    bool readSensorGarage();
+    bool readSensorReception1();
+    bool readSensorReception2();
+    void initialize();
 
 } // IRSensors
 

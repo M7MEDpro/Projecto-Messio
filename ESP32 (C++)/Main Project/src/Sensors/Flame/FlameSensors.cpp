@@ -42,4 +42,15 @@ namespace FlameSensors {
     bool readSensorRec2(){
         return digitalRead(sensorRec2);
     }
+
+
+    void reading () {
+        FlameStatusRoom1 = FlameSensors::readSensorRoom1();
+        FlameStatusRoom2 = FlameSensors::readSensorRoom2();
+        FlameStatusGarage = FlameSensors::readSensorGarage();
+        FlameStatusRec1 = FlameSensors::readSensorRec1();
+        FlameStatusRec2 = FlameSensors::readSensorRec2();
+
+
+    }
 }

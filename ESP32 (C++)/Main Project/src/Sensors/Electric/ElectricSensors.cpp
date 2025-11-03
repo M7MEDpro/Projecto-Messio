@@ -5,6 +5,9 @@ namespace ElectricSensors {
     int currentSensor;
     int voltageSensor;
 
+    double current = 0;
+    double volatge = 0;
+
     // Set up the sensor pins
     void initialize() {
         pinMode(currentSensor, INPUT);

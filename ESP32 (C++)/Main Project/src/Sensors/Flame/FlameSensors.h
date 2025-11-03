@@ -14,6 +14,6 @@ namespace FlameSensors {
     bool readSensorRec2();
     void initialize();
 
-} // FlameSensors
+}
 
-#endif //FLAMESENSORS_H
+#endif

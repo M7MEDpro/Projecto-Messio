@@ -2,10 +2,11 @@
 #define OUTTER_LED_MANAGER_H
 
 namespace OL {
-
     void OL_initial();
+
     void OL_write(bool state);
 
-} 
+    void OL_write();
+}
 
-#endif 
+#endif

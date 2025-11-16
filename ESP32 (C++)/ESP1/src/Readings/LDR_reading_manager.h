@@ -12,8 +12,8 @@ namespace LDR {
 
 
     void LDR_init();
-    bool L0_read();
-    bool L1_read();
+    void LDR0_read();
+    void LDR1_read();
 
 } // LDR
 

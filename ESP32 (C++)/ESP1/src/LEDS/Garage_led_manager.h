@@ -9,6 +9,7 @@ namespace gled {
 
     void init();
     void g1_write(bool s);
+    void g1_write();
 } // gled
 
 #endif //GARAGE_LED_MANAGER_H

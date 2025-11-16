@@ -11,11 +11,11 @@ namespace IR {
     extern bool M4Value;
 
     void IR_init();
-    bool M0_read();
-    bool M1_read();
-    bool M2_read();
-    bool M3_read();
-    bool M4_read();
-} // IR
+    void M0_read();
+    void M1_read();
+    void M2_read();
+    void M3_read();
+    void M4_read();
+}
 
-#endif //IR_READING_MANAGER_H
+#endif

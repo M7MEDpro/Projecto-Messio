@@ -1,16 +1,15 @@
 #include "Flame_reading_manager.h"
 #include <Arduino.h>
+
+#include "Connections/HTTP_manager.h"
+
 namespace flame {
     int F1 =36;
     int F2 =39;
     int F3 =34;
     int F4 =35;
     int F5 =32;
-    bool F1Value=F1_read();
-    bool F2Value=F2_read();
-    bool F3Value=F3_read();
-    bool F4Value=F4_read();
-    bool F5Value=F5_read();
+    
 
     void flame_init(){
         pinMode(F1,INPUT);
@@ -20,19 +19,10 @@ namespace flame {
         pinMode(F5,INPUT);
 
     }
-    bool F1_read() {
-        return    digitalRead(F1);
-    }
-    bool F2_read() {
-        return   digitalRead(F2);
-    }
-    bool F3_read() {
-        return  digitalRead(F3);
-    }
-    bool F4_read() {
-        return   digitalRead(F4);
-    }
-    bool F5_read() {
-        return  digitalRead(F5);
-    }
+
+    void F1_read() { http::send_data("F1", String(digitalRead(F1))); }
+    void F2_read() { http::send_data("F2", String(digitalRead(F2))); }
+    void F3_read() { http::send_data("F3", String(digitalRead(F3))); }
+    void F4_read() { http::send_data("F4", String(digitalRead(F4))); }
+    void F5_read() { http::send_data("F5", String(digitalRead(F5))); }
 }

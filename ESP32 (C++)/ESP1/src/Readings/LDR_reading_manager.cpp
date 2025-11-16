@@ -1,24 +1,19 @@
-//
-// Created by sch on 11/15/2025.
-//
-
 #include "LDR_reading_manager.h"
 #include <Arduino.h>
+
+#include "Connection/HTTP_manager.h"
+
+
 namespace LDR {
-    int L0 = 33;
-    int L1 = 25;
-
-
-    int L0Value = L0_read();
-    int L1Value = L1_read();
+    int LDR0 = 33;
+    int LDR1 = 25;
 
     void LDR_init() {
-        pinMode(L0, INPUT);
-        pinMode(L1, INPUT);
-
+        pinMode(LDR0, INPUT);
+        pinMode(LDR1, INPUT);
     }
 
-    bool L0_read() { return digitalRead(L0); }
-    bool L1_read() { return digitalRead(L1); }
+    void LDR0_read() { http::send_data("LDR0", String(digitalRead(LDR0))); }
+    void LDR1_read() { http::send_data("LDR1", String(digitalRead(LDR1))); }
 
-} // LDR
+}

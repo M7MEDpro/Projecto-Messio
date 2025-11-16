@@ -9,11 +9,11 @@ namespace flame {
     extern bool F5Value;
 
     void flame_init();
-    bool F1_read();
-    bool F2_read();
-    bool F3_read();
-    bool F4_read();
-    bool F5_read();
+    void F1_read();
+    void F2_read();
+    void F3_read();
+    void F4_read();
+    void F5_read();
 
 }
 

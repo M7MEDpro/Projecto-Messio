@@ -1,36 +1,27 @@
 #include <Arduino.h>
 
 #include "Connection/wifi_Connection.h"
-#include "LEDS/Garage_led_manager.h"
-#include "LEDS/Reception_led_manager.h"
-#include "Others/Buzzer_manager.h"
-#include "Others/Servo_manager.h"
-#include "Readings/IR_reading_manager.h"
-#include "Readings/LDR_reading_manager.h"
+#include "Connection/HTTP_manager.h"
+#include "Sensor_manager.h"
+#include "Actuator_manager.h"
 
 void setup() {
-
     Serial.begin(115200);
-    wifi :: connectWiFi();
-    buzzer :: Buzzer_init();
-    servo :: init();
-    LDR :: LDR_init();
-    IR ::IR_init();
-    gled :: init();
-    rled :: init();
+    wifi::connectWiFi();
+
+    sensors::init();
+    actuators::init();
 }
 
 void loop() {
-    LDR :: LDR0_read();
-    LDR :: LDR1_read();
-    IR :: M0_read();
-    IR :: M1_read();
-    IR :: M2_read();
-    IR :: M3_read();
-    IR :: M4_read();
-    gled :: g1_write();
-    rled :: r1_write();
-    buzzer::BuzzUpdate();
-    servo::Update();
-    delay(100);
+    auto sensorData = sensors::readAllSensors();
+
+    http::send_batch(sensorData);
+
+    std::vector<String> keys = {"g1", "r1", "r2", "r3", "r4", "buzz", "servo"};
+    auto actuatorData = http::read_batch(keys);
+
+    actuators::updateAll(actuatorData);
+
+    delay(300);
 }

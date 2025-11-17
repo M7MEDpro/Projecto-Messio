@@ -3,13 +3,8 @@
 
 namespace room1 {
     void room1_init();
-
-
-    void l1_write(bool state);
-    void l2_write(bool state);
-
-    void l1_write();
-    void l2_write();
+    void l1_write(int percent);
+    void l2_write(int percent);
 }
 
 #endif

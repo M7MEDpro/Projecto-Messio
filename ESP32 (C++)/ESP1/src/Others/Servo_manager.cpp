@@ -11,12 +11,20 @@ namespace servo {
         myServo.attach(servoPin);
     }
 
-    void open() { myServo.write(180); }
-    void close() { myServo.write(0); }
+    void open() {
+        myServo.write(180);
+    }
+
+    void close() {
+        myServo.write(0);
+    }
 
     void Update() {
         String val = http::read_data("servo");
-        if (val == "1") open();
-        else close();
+        if (val == "open") {
+            open();
+        } else if (val == "close") {
+            close();
+        }
     }
 }

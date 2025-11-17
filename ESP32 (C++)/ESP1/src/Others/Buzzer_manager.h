@@ -3,14 +3,8 @@
 
 namespace buzzer {
     void Buzzer_init();
-
-    // Manual control
-    void BuzzMode(int b);
-
-    // Automatic update from server
+    void BuzzMode(bool b);
     void BuzzUpdate();
-
-    extern bool buzz;
 }
 
-#endif // BUZZER_MANAGER_H
+#endif

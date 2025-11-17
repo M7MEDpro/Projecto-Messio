@@ -3,14 +3,14 @@
 
 namespace rled {
     void init();
-    void r1_write(bool s);
-    void r1_write(); // automatic read from server
-    void r2_write(bool s);
-    void r2_write(); // automatic read from server
-    void r3_write(bool s);
-    void r3_write(); // automatic read from server
-    void r4_write(bool s);
-    void r4_write(); // automatic read from server
-} // namespace rled
+    void r1_write(int percent);
+    void r2_write(int percent);
+    void r3_write(int percent);
+    void r4_write(int percent);
+    void r1_write();
+    void r2_write();
+    void r3_write();
+    void r4_write();
+}
 
-#endif // RECEPTION_LED_MANAGER_H
+#endif

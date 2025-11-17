@@ -11,14 +11,17 @@ namespace buzzer {
         digitalWrite(buzzerPin, LOW);
     }
 
-    void BuzzMode(int b) {
+    void BuzzMode(bool b) {
         buzz = b;
+        digitalWrite(buzzerPin, buzz ? HIGH : LOW);
     }
 
     void BuzzUpdate() {
-        if (http::read_data("buzz") == "1") buzz = true;
-        else buzz = false;
-
-        digitalWrite(buzzerPin, buzz ? HIGH : LOW);
+        String val = http::read_data("buzz");
+        if (val == "on") {
+            BuzzMode(true);
+        } else if (val == "off") {
+            BuzzMode(false);
+        }
     }
 }

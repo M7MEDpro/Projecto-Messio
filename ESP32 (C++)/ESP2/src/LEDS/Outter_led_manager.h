@@ -3,10 +3,7 @@
 
 namespace OL {
     void OL_initial();
-
-    void OL_write(bool state);
-
-    void OL_write();
+    void OL_write(int percent);
 }
 
 #endif

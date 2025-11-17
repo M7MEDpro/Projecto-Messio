@@ -1,27 +1,23 @@
 #include "Garage_led_manager.h"
 #include "Arduino.h"
 #include "Connection/HTTP_manager.h"
+
 namespace gled {
     int gpin = 18;
+
     void init() {
-        pinMode(gpin,OUTPUT);
-        digitalWrite(gpin,LOW);
+        pinMode(gpin, OUTPUT);
+        analogWrite(gpin, 0);
     }
 
-    void g1_write(bool s) {
-        digitalWrite(gpin,s);
+    void g1_write(int percent) {
+        int pwm = map(percent, 0, 100, 0, 255);
+        analogWrite(gpin, pwm);
     }
 
     void g1_write() {
-        if (http ::read_data("g1") == "1") {
-            g1_write(HIGH);
-        }
-        else {
-            g1_write(LOW);
-        }
-
+        String val = http::read_data("g1");
+        int percent = val.toInt();
+        g1_write(percent);
     }
-
-
-
 }

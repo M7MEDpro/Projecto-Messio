@@ -2,8 +2,8 @@
 
 #include "Connections/wifi_Connection.h"
 #include "Connections/HTTP_manager.h"
-#include "Sensor_manager.h"
-#include "Actuator_manager.h"
+#include "Connections/Sensor_manager.h"
+#include "Connections/Actuator_manager.h"
 #include "Others/Display_manager.h"
 
 void setup() {

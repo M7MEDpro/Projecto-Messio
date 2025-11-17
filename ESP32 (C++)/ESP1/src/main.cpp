@@ -2,8 +2,8 @@
 
 #include "Connection/wifi_Connection.h"
 #include "Connection/HTTP_manager.h"
-#include "Sensor_manager.h"
-#include "Actuator_manager.h"
+#include "Connection/Sensor_manager.h"
+#include "Connection/Actuator_manager.h"
 
 void setup() {
     Serial.begin(115200);

@@ -6,13 +6,17 @@ namespace http {
 
     static HTTPClient httpClient;
     static bool clientInitialized = false;
-    static unsigned long lastConnectionTime = 0;
-    static const unsigned long CONNECTION_TIMEOUT = 30000;
+
 
     struct CacheEntry {
         String value;
-        unsigned long timestamp;
-        bool valid;
+        unsigned long timestamp{};
+        bool valid{};
+
+        // Add constructors to fix compilation errors
+        CacheEntry() = default;
+        CacheEntry(String v, unsigned long t, bool val)
+            : value(std::move(v)), timestamp(t), valid(val) {}
     };
 
     static std::map<String, CacheEntry> cache;
@@ -99,7 +103,7 @@ namespace http {
                     if (doc.containsKey(key)) {
                         results[key] = doc[key].as<String>();
 
-                        cache[key] = {doc[key].as<String>(), millis(), true};
+                        cache[key] = CacheEntry{doc[key].as<String>(), millis(), true};
                     }
                 }
             }
@@ -132,7 +136,7 @@ namespace http {
 
             if (!err && doc.containsKey(key)) {
                 value = doc[key].as<String>();
-                cache[key] = {value, millis(), true};
+                cache[key] = CacheEntry{value, millis(), true};
             }
         } else {
             Serial.println("HTTP GET failed, code: " + String(code));

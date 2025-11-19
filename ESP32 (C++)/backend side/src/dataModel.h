@@ -1,6 +1,6 @@
 #ifndef DATAMODEL_H
 #define DATAMODEL_H
-#include <string>
+
 
 namespace esp1 {
     extern int LDR0;
@@ -33,4 +33,62 @@ namespace esp2 {
     extern int l4;
 
 }
+namespace mobile_app {
+
+    // Home modes
+    extern bool homeAway;
+    extern bool bedTimeMode;
+    extern bool powerSavingMode;
+    extern bool EmergencyMode;
+
+    // Room1
+    namespace room1 {
+        extern int brightness;
+        extern int mode; // 0 is off 1 is on 2 is auto
+        extern bool ldr;
+        extern bool ir;
+        extern bool alarmMode;
+
+    }
+
+    // Room2
+    namespace room2 {
+        extern int brightness;
+        extern int mode; // 0 is off 1 is on 2 is auto
+        extern bool ldr;
+        extern bool ir;
+        extern bool alarmMode;
+
+    }
+
+    // Reception
+    namespace reception {
+        extern int brightness;
+        extern int mode;
+        extern bool ldr;
+        extern bool ir;
+        extern bool alarmMode;
+
+    }
+
+    // Garage
+    namespace garage {
+        extern int brightness;
+        extern int mode;
+        extern bool ldr;
+        extern bool alarmMode;
+        extern bool ir;
+
+    }
+
+    // Outer LED
+    namespace outerLed {
+        extern int brightness;
+        extern int mode;
+        extern bool ldr;
+        extern bool ir;
+    }
+
+}
+
 #endif

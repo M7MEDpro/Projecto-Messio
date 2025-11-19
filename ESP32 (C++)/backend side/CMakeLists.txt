@@ -24,6 +24,24 @@ add_executable(backend
         src/main.cpp
         src/server.cpp
         src/server.h
+        src/Rooms/room1.cpp
+        src/Rooms/room1.h
+        src/Rooms/room2.cpp
+        src/Rooms/room2.h
+        src/Rooms/garage.cpp
+        src/Rooms/garage.h
+        src/Rooms/reception.cpp
+        src/Rooms/reception.h
+        src/Rooms/outerLed.cpp
+        src/Rooms/outerLed.h
+        src/Modes/homeAway.cpp
+        src/Modes/homeAway.h
+        src/Modes/bedTimeMode.cpp
+        src/Modes/bedTimeMode.h
+        src/Modes/powerSavingMode.cpp
+        src/Modes/powerSavingMode.h
+        src/Modes/EmergencyMode.cpp
+        src/Modes/EmergencyMode.h
 )
 
 target_link_libraries(backend

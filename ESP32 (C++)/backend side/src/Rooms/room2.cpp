@@ -1,6 +1,7 @@
 #include "room2.h"
 
 #include "../dataModel.h"
+#include "../utilities.h"
 
 namespace room2 {
     void updateLed() {
@@ -34,8 +35,11 @@ namespace room2 {
 
             }
             if (esp1 :: M4 == 0) {
-                esp2 :: l3 =0;
-                esp2 :: l4 =0;
+                utilities:: runLater([]() {
+                    esp2 :: l3 =0;
+                    esp2 :: l4 =0;
+                },5000);
+
                 return;
             }
         } if (mobile_app::room2:: mode ==2 && mobile_app::room2::ldr == 1 && mobile_app::room2::ir == 1) {
@@ -46,8 +50,10 @@ namespace room2 {
             }
 
         }else {
-            esp2:: l3 =0;
-            esp2:: l4 =0;
+            utilities:: runLater([]() {
+                esp2 :: l3 =0;
+                esp2 :: l4 =0;
+            },5000);
             return;
         }
     }

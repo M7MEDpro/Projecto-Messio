@@ -31,7 +31,7 @@ namespace esp2 {
     extern int l2;
     extern int l3;
     extern int l4;
-
+    extern int mg;
 }
 namespace mobile_app {
 
@@ -78,6 +78,7 @@ namespace mobile_app {
         extern bool ldr;
         extern bool alarmMode;
         extern bool ir;
+
 
     }
 

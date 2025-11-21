@@ -1,8 +1,13 @@
-//
-// Created by sch on 11/20/2025.
-//
-
 #include "EmergencyMode.h"
 
+#include "../dataModel.h"
+
 namespace EmergencyMode {
-} // EmergencyMode
+    void update () {
+        if (mobile_app::EmergencyMode == 1 ) {
+            esp1::buzz = 1;
+        }else {
+            esp1::buzz = 0;
+        }
+    }
+}

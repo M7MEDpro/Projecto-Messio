@@ -69,7 +69,7 @@ namespace server {
                         j["l2"] = esp2::l2;
                         j["l3"] = esp2::l3;
                         j["l4"] = esp2::l4;
-
+                        j["mg"] = esp2::mg;
 
                         res.set_content(j.dump(), "application/json");
         });
@@ -109,10 +109,15 @@ namespace server {
                     else if (key == "modeGarage") mobile_app::garage::mode = val.get<int>();
                     else if (key == "ldrGarage") mobile_app::garage::ldr = val.get<bool>();
                     else if (key == "irGarage") mobile_app::garage::ir = val.get<bool>();
+                    else if (key == "alarmModeGarage") mobile_app::garage::alarmMode = val.get<bool>();
                     //outerLed
                     else if (key == "brightnessOuterLed") mobile_app::outerLed::brightness = val.get<int>();
                     else if (key == "modeOuterLed") mobile_app::outerLed::mode = val.get<int>();
                     else if (key == "ldrOuterLed") mobile_app::outerLed::ldr = val.get<bool>();
+                    //doors
+                    else if (key == "mainDoor") esp1 ::servo= val.get<bool>();
+                    else if (key == "garageDoor") esp2 ::mg = val.get<bool>();
+
                     else std::cout << "Unknown key: " << key << std::endl;
                 }
             }catch (const std::exception& e) {

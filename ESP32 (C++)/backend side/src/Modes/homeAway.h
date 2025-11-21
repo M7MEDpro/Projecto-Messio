@@ -1,16 +1,18 @@
-//
-// Created by sch on 11/20/2025.
-//
-
 #ifndef HOMEAWAY_H
 #define HOMEAWAY_H
 
 namespace homeAway {
 
-class homeAway {
+    void update();
+    void turnOffLEDS();
+    void room1Alarm();
+    void room2Alarm();
+    void garageAlarm();
+    void receptionAlarm();
+    void alarmUpdate () ;
 
-};
 
-} // homeAway
 
-#endif //HOMEAWAY_H
+}
+
+#endif

@@ -1,6 +1,7 @@
 #include "reception.h"
 
 #include "../dataModel.h"
+#include "../utilities.h"
 
 namespace reception {
     void updateLed() {
@@ -42,10 +43,12 @@ namespace reception {
            return;
          }
       if (esp1 :: M2 == 0 && esp1 :: M1 == 0) {
-           esp1 :: r1 =0;
-           esp1 :: r2 =0;
-           esp1 :: r3 =0;
-           esp1 :: r4 =0;
+           utilities::runLater([]() {
+             esp1::r1 =0;
+             esp1::r2 =0;
+             esp1::r3 =0;
+             esp1::r4 =0;
+           },5000);
            return;
          }
       if (mobile_app::reception:: mode ==2 && mobile_app::reception::ldr == 1 && mobile_app::reception::ir == 1) {
@@ -56,10 +59,12 @@ namespace reception {
           esp1::r4 =mobile_app::reception::brightness;;
           return;
         }else {
-          esp1::r1 =0;
-          esp1::r2 =0;
-          esp1::r3 =0;
-          esp1::r4 =0;
+          utilities::runLater([]() {
+            esp1::r1 =0;
+            esp1::r2 =0;
+            esp1::r3 =0;
+            esp1::r4 =0;
+          }, 5000);
           return;
         }
       }

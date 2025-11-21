@@ -1,6 +1,7 @@
 #include "garage.h"
 
 #include "../dataModel.h"
+#include "../utilities.h"
 
 namespace garage {
 
@@ -35,7 +36,9 @@ namespace garage {
 
             }
             if (esp1 :: M0 == 0) {
-                  esp1 :: g1 =0;
+                utilities::runLater([]() {
+                    esp1 :: g1 =0;
+                },5000);
                 return;
             }
         } if (mobile_app::garage:: mode ==2 && mobile_app::garage::ldr == 1 && mobile_app::garage::ir == 1) {
@@ -45,7 +48,9 @@ namespace garage {
             }
 
         }else {
-            esp1 :: g1 =0;
+            utilities::runLater([]() {
+                    esp1 :: g1 =0;
+                },10000);
             return;
         }
     }

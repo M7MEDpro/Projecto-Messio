@@ -38,10 +38,18 @@ add_executable(backend
         src/Modes/homeAway.h
         src/Modes/bedTimeMode.cpp
         src/Modes/bedTimeMode.h
-        src/Modes/powerSavingMode.cpp
-        src/Modes/powerSavingMode.h
         src/Modes/EmergencyMode.cpp
         src/Modes/EmergencyMode.h
+        src/dataModel.cpp
+        src/utilities.cpp
+        src/utilities.h
+        src/flameAlarm.cpp
+        src/flameAlarm.h
+        src/Doors/mainDoor.cpp
+        src/Doors/mainDoor.h
+        src/Doors/garageDoor.cpp
+        src/Doors/garageDoor.h
+
 )
 
 target_link_libraries(backend

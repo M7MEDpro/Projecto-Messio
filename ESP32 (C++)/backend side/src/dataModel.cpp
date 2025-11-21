@@ -43,6 +43,8 @@ namespace esp2 {
     int l2 = 0;
     int l3 = 0;
     int l4 = 0;
+    //motors
+    int mg = 0;
 
 }
 namespace mobile_app {
@@ -83,6 +85,7 @@ namespace mobile_app {
         int mode = 0; // 0 is off 1 is on 2 is auto //post
         bool ldr = false; //post
         bool ir  = false; //post
+        bool alarmMode = false; //post
     }
     namespace outerLed {
         int brightness = 0; //post

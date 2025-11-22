@@ -12,7 +12,6 @@
 
 void mainLoop() {
     while (true) {
-    // LEDS
         room1::updateLed();
         room2::updateLed();
         reception::updateLed();
@@ -22,9 +21,6 @@ void mainLoop() {
         flameAlarm::update();
         EmergencyMode :: update();
         bedTimeMode::update();
-
-
-
 
 
         std::this_thread::sleep_for(std::chrono::milliseconds(200));

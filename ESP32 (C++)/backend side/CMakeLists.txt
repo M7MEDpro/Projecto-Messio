@@ -49,6 +49,8 @@ add_executable(backend
         src/Doors/mainDoor.h
         src/Doors/garageDoor.cpp
         src/Doors/garageDoor.h
+        src/Modes/managerMode.cpp
+        src/Modes/managerMode.h
 
 )
 

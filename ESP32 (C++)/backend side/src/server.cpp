@@ -82,41 +82,41 @@ namespace server {
                 for (auto& [key, val] : receivedJson["mobile"].items()) {
                     if (key == "LDR0") esp1::LDR0 = val.get<int>();
                     //home modes
-                    else if (key == "homeAway") mobile_app::homeAway = val.get<bool>();
-                    else if (key == "bedTimeMode") mobile_app::bedTimeMode = val.get<bool>();
-                    else if (key == "powerSavingMode") mobile_app::powerSavingMode = val.get<bool>();
-                    else if (key == "EmergencyMode") mobile_app::EmergencyMode = val.get<bool>();
+                    else if (key == "homeAway") mobile_app::homeAway = val.get<int>();
+                    else if (key == "bedTimeMode") mobile_app::bedTimeMode = val.get<int>();
+                    else if (key == "powerSavingMode") mobile_app::powerSavingMode = val.get<int>();
+                    else if (key == "EmergencyMode") mobile_app::EmergencyMode = val.get<int>();
                     //room1
                     else if (key == "brightnessRoom1")mobile_app::room1::brightness= val.get<int>();
                     else if (key == "modeRoom1") mobile_app::room1::mode = val.get<int>();
-                    else if (key == "ldrRoom1") mobile_app::room1::ldr = val.get<bool>();
-                    else if (key == "irRoom1") mobile_app::room1::ir = val.get<bool>();
-                    else if (key == "alarmModeRoom1") mobile_app::room1::alarmMode = val.get<bool>();
+                    else if (key == "ldrRoom1") mobile_app::room1::ldr = val.get<int>();
+                    else if (key == "irRoom1") mobile_app::room1::ir = val.get<int>();
+                    else if (key == "alarmModeRoom1") mobile_app::room1::alarmMode = val.get<int>();
                     //room2
                     else if (key == "brightnessRoom2") mobile_app::room2::brightness = val.get<int>();
                     else if (key == "modeRoom2") mobile_app::room2::mode = val.get<int>();
-                    else if (key == "ldrRoom2") mobile_app::room2::ldr = val.get<bool>();
-                    else if (key == "irRoom2") mobile_app::room2::ir = val.get<bool>();
-                    else if (key == "alarmModeRoom2") mobile_app::room2::alarmMode = val.get<bool>();
+                    else if (key == "ldrRoom2") mobile_app::room2::ldr = val.get<int>();
+                    else if (key == "irRoom2") mobile_app::room2::ir = val.get<int>();
+                    else if (key == "alarmModeRoom2") mobile_app::room2::alarmMode = val.get<int>();
                     //reception
                     else if (key == "brightnessReception") mobile_app::reception::brightness = val.get<int>();
                     else if (key == "modeReception") mobile_app::reception::mode = val.get<int>();
-                    else if (key == "ldrReception") mobile_app::reception::ldr = val.get<bool>();
-                    else if (key == "irReception") mobile_app::reception::ir = val.get<bool>();
-                    else if (key == "alarmModeReception") mobile_app::reception::alarmMode = val.get<bool>();
+                    else if (key == "ldrReception") mobile_app::reception::ldr = val.get<int>();
+                    else if (key == "irReception") mobile_app::reception::ir = val.get<int>();
+                    else if (key == "alarmModeReception") mobile_app::reception::alarmMode = val.get<int>();
                     //garage
                     else if (key == "brightnessGarage") mobile_app::garage::brightness = val.get<int>();
                     else if (key == "modeGarage") mobile_app::garage::mode = val.get<int>();
-                    else if (key == "ldrGarage") mobile_app::garage::ldr = val.get<bool>();
-                    else if (key == "irGarage") mobile_app::garage::ir = val.get<bool>();
-                    else if (key == "alarmModeGarage") mobile_app::garage::alarmMode = val.get<bool>();
+                    else if (key == "ldrGarage") mobile_app::garage::ldr = val.get<int>();
+                    else if (key == "irGarage") mobile_app::garage::ir = val.get<int>();
+                    else if (key == "alarmModeGarage") mobile_app::garage::alarmMode = val.get<int>();
                     //outerLed
                     else if (key == "brightnessOuterLed") mobile_app::outerLed::brightness = val.get<int>();
                     else if (key == "modeOuterLed") mobile_app::outerLed::mode = val.get<int>();
-                    else if (key == "ldrOuterLed") mobile_app::outerLed::ldr = val.get<bool>();
+                    else if (key == "ldrOuterLed") mobile_app::outerLed::ldr = val.get<int>();
                     //doors
-                    else if (key == "mainDoor") esp1 ::servo= val.get<bool>();
-                    else if (key == "garageDoor") esp2 ::mg = val.get<bool>();
+                    else if (key == "mainDoor") esp1 ::servo= val.get<int>();
+                    else if (key == "garageDoor") esp2 ::mg = val.get<int>();
 
                     else std::cout << "Unknown key: " << key << std::endl;
                 }

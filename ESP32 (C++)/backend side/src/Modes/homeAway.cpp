@@ -1,6 +1,6 @@
 #include "homeAway.h"
 
-#include "managerMode.h"
+#include "../alarmManager.h"
 #include "../dataModel.h"
 
 namespace homeAway {
@@ -11,7 +11,7 @@ namespace homeAway {
             turnOffLEDS();
             alarmUpdate();
         } else {
-            if (alarmStats == 1 ) managerMode::homeAway = 0;
+            if (alarmStats == 1 ) alarmmanager::homeAway = 0;
         }
     }
 
@@ -33,7 +33,7 @@ namespace homeAway {
         room2Alarm();
         garageAlarm();
         receptionAlarm();
-        if (alarmStats == 1) managerMode::homeAway = 1; else  managerMode::homeAway = 0;
+        if (alarmStats == 1) alarmmanager::homeAway = 1; else  alarmmanager::homeAway = 0;
 
     }
     void room1Alarm() {

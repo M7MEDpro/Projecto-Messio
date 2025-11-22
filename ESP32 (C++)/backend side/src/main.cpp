@@ -1,6 +1,7 @@
 #include "flameAlarm.h"
 #include "httplib.h"
 #include "server.h"
+#include "alarmManager.h"
 #include "Modes/bedTimeMode.h"
 #include "Modes/EmergencyMode.h"
 #include "Modes/homeAway.h"
@@ -21,7 +22,7 @@ void mainLoop() {
         flameAlarm::update();
         EmergencyMode :: update();
         bedTimeMode::update();
-
+        alarmmanager :: update();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }

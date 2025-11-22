@@ -45,12 +45,8 @@ add_executable(backend
         src/utilities.h
         src/flameAlarm.cpp
         src/flameAlarm.h
-        src/Doors/mainDoor.cpp
-        src/Doors/mainDoor.h
-        src/Doors/garageDoor.cpp
-        src/Doors/garageDoor.h
-        src/Modes/managerMode.cpp
-        src/Modes/managerMode.h
+        src/alarmManager.cpp
+        src/alarmManager.h
 
 )
 

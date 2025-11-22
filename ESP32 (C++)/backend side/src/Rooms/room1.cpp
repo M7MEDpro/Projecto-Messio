@@ -11,7 +11,7 @@ namespace room1 {
             return;
         }
         if (mobile_app::room1::mode == 1) {
-            esp2 :: l1 =mobile_app::room1::brightness;;
+            esp2 :: l1 =mobile_app::room1::brightness;
             esp2 :: l2 =mobile_app::room1::brightness;
             return;
         } if ( mobile_app::room1::mode == 2 && mobile_app::room1::ldr == 1 && mobile_app::room1::ir == 0) {

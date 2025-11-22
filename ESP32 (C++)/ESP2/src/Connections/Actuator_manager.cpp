@@ -46,5 +46,12 @@ namespace actuators {
             int pwm = map(percent, 0, 100, 0, 255);
             analogWrite(17, pwm);
         }
+
+        it = data.find("mg");
+        if (it != data.end()) {
+            String val = it->second;
+            val.toLowerCase();
+
+        }
     }
 }

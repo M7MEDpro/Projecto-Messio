@@ -7,13 +7,11 @@ namespace http {
     static HTTPClient httpClient;
     static bool clientInitialized = false;
 
-
     struct CacheEntry {
         String value;
         unsigned long timestamp{};
         bool valid{};
 
-        // Add constructors to fix compilation errors
         CacheEntry() = default;
         CacheEntry(String v, unsigned long t, bool val)
             : value(std::move(v)), timestamp(t), valid(val) {}
@@ -34,16 +32,14 @@ namespace http {
         if (data.empty()) return false;
 
         initClient();
-        httpClient.begin("http://192.168.1.200:5000/data?batch=true");
+        httpClient.begin("http://192.168.1.200:5000/esp2");
         httpClient.addHeader("Content-Type", "application/json");
 
         DynamicJsonDocument doc(2048);
-        JsonArray arr = doc.createNestedArray("data");
+        JsonObject esp2Obj = doc.createNestedObject("esp2");
 
         for (const auto& pair : data) {
-            JsonObject obj = arr.createNestedObject();
-            obj["key"] = pair.first;
-            obj["value"] = pair.second;
+            esp2Obj[pair.first] = pair.second.toInt();
         }
 
         String payload;
@@ -60,22 +56,9 @@ namespace http {
     }
 
     void send_data(const String& key, const String& value) {
-        initClient();
-        httpClient.begin("http://192.168.1.200:5000/data");
-        httpClient.addHeader("Content-Type", "application/json");
-
-        StaticJsonDocument<256> doc;
-        doc["key"] = key;
-        doc["value"] = value;
-
-        String payload;
-        serializeJson(doc, payload);
-
-        int code = httpClient.POST(payload);
-
-        if (code != 200) {
-            Serial.println("HTTP POST failed, code: " + String(code));
-        }
+        std::vector<std::pair<String, String>> data;
+        data.push_back({key, value});
+        send_batch(data);
     }
 
     std::map<String, String> read_batch(const std::vector<String>& keys) {
@@ -83,14 +66,8 @@ namespace http {
         if (keys.empty()) return results;
 
         initClient();
+        httpClient.begin("http://192.168.1.200:5000/esp2");
 
-        String url = "http://192.168.1.200:5000/data?batch=true&keys=";
-        for (size_t i = 0; i < keys.size(); i++) {
-            if (i > 0) url += ",";
-            url += keys[i];
-        }
-
-        httpClient.begin(url);
         int code = httpClient.GET();
 
         if (code == 200) {
@@ -102,7 +79,6 @@ namespace http {
                 for (const String& key : keys) {
                     if (doc.containsKey(key)) {
                         results[key] = doc[key].as<String>();
-
                         cache[key] = CacheEntry{doc[key].as<String>(), millis(), true};
                     }
                 }
@@ -122,27 +98,14 @@ namespace http {
             }
         }
 
-        initClient();
-        String url = "http://192.168.1.200:5000/data?key=" + key;
-        httpClient.begin(url);
+        std::vector<String> keys = {key};
+        auto results = read_batch(keys);
 
-        int code = httpClient.GET();
-        String value = "";
-
-        if (code == 200) {
-            String payload = httpClient.getString();
-            StaticJsonDocument<256> doc;
-            DeserializationError err = deserializeJson(doc, payload);
-
-            if (!err && doc.containsKey(key)) {
-                value = doc[key].as<String>();
-                cache[key] = CacheEntry{value, millis(), true};
-            }
-        } else {
-            Serial.println("HTTP GET failed, code: " + String(code));
+        if (results.find(key) != results.end()) {
+            return results[key];
         }
 
-        return value;
+        return "";
     }
 
     void clearCache() {

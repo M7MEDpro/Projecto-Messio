@@ -2,7 +2,9 @@
 #define FLAME_READING_MANAGER_H
 
 namespace flame {
-    void flame_init();
-}
+    extern int F1, F2, F3, F4, F5;
 
+    void flame_init();
+    void flame_read();
+}
 #endif

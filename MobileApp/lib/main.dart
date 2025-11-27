@@ -11,12 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        hoverColor: Colors.green.withOpacity(0.1),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-
-      ),
+      debugShowCheckedModeBanner: false,
       home: AppNavigationBar(),
     );
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'CustomAppBar.dart';
+import 'NavigationBar.dart';
 
 class SecurityPage extends StatefulWidget {
   const SecurityPage({super.key});
@@ -17,20 +16,18 @@ class _SecurityPageState extends State<SecurityPage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: "WELCOME HOME",
         subtitle: "ABDO",
+        height: screenHeight * 0.20,
       ),
-      body: Center(
-        child: Container(
-          height: screenHeight * 0.765,
-          width: screenWidth,
-          decoration: const BoxDecoration(
-            color: Color(0xFFDBE2EF),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40.5),
-              bottomRight: Radius.circular(40.5),
-            ),
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: const Color(0xFFDBE2EF),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(screenWidth * 0.10),
+            bottomRight: Radius.circular(screenWidth * 0.10),
           ),
         ),
       ),

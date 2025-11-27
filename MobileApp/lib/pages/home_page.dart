@@ -51,6 +51,7 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         child: Container(
                           height: screenHeight * 0.153,
+                          width: screenWidth * 0.40201005,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(22.5),

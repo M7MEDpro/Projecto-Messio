@@ -1,0 +1,95 @@
+import 'package:flutter/material.dart';
+
+class CustomSwitch extends StatelessWidget {
+  final bool value;
+  final Function(bool) onChanged;
+  final double top;
+  final double left;
+  final double screenHeight;
+  final double screenWidth;
+  final double width;
+  final double height;
+  final Color activeColor;
+  final Color inactiveColor;
+  final Color thumbColor;
+  final Color textColor;
+  final String onText;
+  final String offText;
+  final double fontSize;
+
+  const CustomSwitch({
+    Key? key,
+    required this.value,
+    required this.onChanged,
+    required this.top,
+    required this.left,
+    required this.screenHeight,
+    required this.screenWidth,
+    this.width = 80,
+    this.height = 40,
+    this.activeColor = const Color(0xFF5DAFB8),
+    this.inactiveColor = Colors.black,
+    this.thumbColor = Colors.white,
+    this.textColor = Colors.white,
+    this.onText = 'ON',
+    this.offText = 'OFF',
+    this.fontSize = 14,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double thumbSize = height - 8;
+
+    return Positioned(
+      top: screenHeight * top / 866,
+      left: screenWidth * left / 398,
+      child: GestureDetector(
+        onTap: () {
+          onChanged(!value);
+        },
+        child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            color: value ? activeColor : inactiveColor,
+            borderRadius: BorderRadius.circular(height / 2),
+          ),
+          child: Stack(
+            children: [
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                left: value ? width - thumbSize - 4 : 4,
+                top: 4,
+                child: Container(
+                  width: thumbSize,
+                  height: thumbSize,
+                  decoration: BoxDecoration(
+                    color: thumbColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: value ? 0 : thumbSize + 4 + (width * -0.03),
+                    right: value ? thumbSize + 4 : 0,
+                  ),
+                  child: Text(
+                    value ? onText : offText,
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

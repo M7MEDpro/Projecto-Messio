@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../Widgets/CustomSwitch.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -8,6 +10,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool homeAway = false;
+  bool bedTime = false;
+  bool powerSaving = false;
+  bool emergency = false;
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -19,11 +26,8 @@ class _HomePageState extends State<HomePage> {
         children: [
           Container(
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: const Color(0xFFDBE2EF),
-              borderRadius: BorderRadius.only(
-
-              ),
+            decoration: const BoxDecoration(
+              color: Color(0xFFDBE2EF),
             ),
             child: SafeArea(
               child: Padding(
@@ -35,8 +39,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
                       width: screenWidth * 0.13,
@@ -52,7 +54,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.01),
-                    // TITLE
                     Text(
                       'WELCOME HOME',
                       style: TextStyle(
@@ -61,11 +62,8 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.black87,
                         letterSpacing: 0.5,
                       ),
-                      overflow: TextOverflow.visible,
-                      maxLines: 2,
                     ),
                     SizedBox(height: screenHeight * 0.003),
-                    // SUBTITLE
                     Text(
                       'ABDO',
                       style: TextStyle(
@@ -74,7 +72,6 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.black,
                         letterSpacing: 0.3,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
@@ -82,6 +79,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
+          // Content Section
           Expanded(
             child: Container(
               width: double.infinity,
@@ -96,6 +94,7 @@ class _HomePageState extends State<HomePage> {
                 clipBehavior: Clip.none,
                 children: [
                   SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.only(
                       top: screenHeight * 0.02,
                       bottom: screenHeight * 0.02,
@@ -103,7 +102,8 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         SizedBox(height: screenHeight * 0.07),
-                        // Big container
+
+                        // Weather and Energy Container
                         Container(
                           height: screenHeight * 149 / 866,
                           width: screenWidth * 339 / 398,
@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                                   'WEATHER',
                                   style: TextStyle(
                                     fontSize: screenWidth * 15 / 398,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w900,
                                     color: Colors.black87,
                                   ),
                                 ),
@@ -147,20 +147,66 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Positioned(
-                                top: screenHeight * 95 / 866,
-                                left: screenWidth * 105 / 398,
+                                top: screenHeight * 40 / 866,
+                                left: screenWidth * 170 / 398,
                                 child: Container(
                                   width: screenWidth * 3 / 398,
-                                  height: screenHeight * 70/866,
-                                  color: Color(0xFF858585),
-                               ),
-
+                                  height: screenHeight * 70 / 866,
+                                  color: const Color(0xFF858585),
+                                ),
+                              ),
+                              Positioned(
+                                top: screenHeight * 15 / 866,
+                                left: screenWidth * 190 / 398,
+                                child: Text(
+                                  'ENERGY',
+                                  style: TextStyle(
+                                    fontSize: screenWidth * 15 / 398,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: screenHeight * 30 / 866,
+                                left: screenWidth * 190 / 398,
+                                child: Text(
+                                  'CONSUMPTION',
+                                  style: TextStyle(
+                                    fontSize: screenWidth * 15 / 398,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: screenHeight * 50 / 866,
+                                left: screenWidth * 225 / 398,
+                                child: Text(
+                                  '33',
+                                  style: TextStyle(
+                                    fontSize: screenWidth * 38 / 398,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: screenHeight * 95 / 866,
+                                left: screenWidth * 283 / 398,
+                                child: Icon(
+                                  Icons.bolt_sharp,
+                                  size: screenWidth * 35 / 398,
+                                  color: Colors.black87,
+                                ),
                               ),
                             ],
                           ),
                         ),
+
                         SizedBox(height: screenHeight * 0.025),
-                        // First row of two small containers
+
+                        // First Row of Switches
                         Row(
                           children: [
                             SizedBox(width: screenWidth * 28 / 398),
@@ -171,21 +217,88 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(screenWidth * 0.057),
                               ),
+                              child: Stack(
+                                children: [
+                                  CustomSwitch(
+                                    value: homeAway,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        homeAway = newValue;
+                                      });
+                                    },
+                                    top: screenHeight * 18 / 866,
+                                    left: screenWidth * 80 / 398,
+                                    screenHeight: screenHeight,
+                                    screenWidth: screenWidth,
+                                    width: screenWidth * 60/398,
+                                    height: screenHeight * 30/866,
+                                    fontSize: screenWidth * 12 / 398,
+                                  ),
+                                  Positioned(
+                                    bottom: screenHeight * 20 / 866,
+                                    left: screenWidth * 15 / 398,
+                                    child: Text(
+                                      'HOME\nAWAY MODE',
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 15 / 398,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.black87,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(width: screenWidth * 20 / 398),
-                            Container(
-                              width: (screenWidth - 2 * screenWidth * 28 / 398 - screenWidth * 20 / 398) / 2,
-                              height: screenHeight * 148 / 866,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(screenWidth * 0.057),
+                            Expanded(
+                              child: Container(
+                                height: screenHeight * 148 / 866,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(screenWidth * 0.057),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    CustomSwitch(
+                                      value: bedTime,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          bedTime = newValue;
+                                        });
+                                      },
+                                      top: screenHeight * 18 / 866,
+                                      left: screenWidth * 80 / 398,
+                                      screenHeight: screenHeight,
+                                      screenWidth: screenWidth,
+                                      width: screenWidth * 60/398,
+                                      height: screenHeight * 30/866,
+                                      fontSize: screenWidth * 12 / 398,
+                                    ),
+                                    Positioned(
+                                      bottom: screenHeight * 20 / 866,
+                                      left: screenWidth * 15 / 398,
+                                      child: Text(
+                                        'BED\nTIME MODE',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 15 / 398,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.black87,
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(width: screenWidth * 28 / 398),
                           ],
                         ),
+
                         SizedBox(height: screenHeight * 0.025),
-                        // Second row of two small containers
+
+                        // Second Row of Switches
                         Row(
                           children: [
                             SizedBox(width: screenWidth * 28 / 398),
@@ -196,23 +309,91 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(screenWidth * 0.057),
                               ),
+                              child: Stack(
+                                children: [
+                                  CustomSwitch(
+                                    value: powerSaving,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        powerSaving = newValue;
+                                      });
+                                    },
+                                    top: screenHeight * 18 / 866,
+                                    left: screenWidth * 80 / 398,
+                                    screenHeight: screenHeight,
+                                    screenWidth: screenWidth,
+                                    width: screenWidth * 60/398,
+                                    height: screenHeight * 30/866,
+                                    fontSize: screenWidth * 12 / 398,
+                                  ),
+                                  Positioned(
+                                    bottom: screenHeight * 20 / 866,
+                                    left: screenWidth * 15 / 398,
+                                    child: Text(
+                                      'POWER\nSAVING MODE',
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 15 / 398,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.black87,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(width: screenWidth * 20 / 398),
-                            Container(
-                              width: (screenWidth - 2 * screenWidth * 28 / 398 - screenWidth * 20 / 398) / 2,
-                              height: screenHeight * 148 / 866,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(screenWidth * 0.057),
+                            Expanded(
+                              child: Container(
+                                height: screenHeight * 148 / 866,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(screenWidth * 0.057),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    CustomSwitch(
+                                      value: emergency,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          emergency = newValue;
+                                        });
+                                      },
+                                      top: screenHeight * 18 / 866,
+                                      left: screenWidth * 80 / 398,
+                                      screenHeight: screenHeight,
+                                      screenWidth: screenWidth,
+                                      width: screenWidth * 60/398,
+                                      height: screenHeight * 30/866,
+                                      fontSize: screenWidth * 12 / 398,
+                                    ),
+                                    Positioned(
+                                      bottom: screenHeight * 20 / 866,
+                                      left: screenWidth * 15 / 398,
+                                      child: Text(
+                                        'EMERGENCY\nMODE',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 15 / 398,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.black87,
+                                          height: 1.2,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(width: screenWidth * 28 / 398),
                           ],
                         ),
+
                         SizedBox(height: screenHeight * 0.05),
                       ],
                     ),
                   ),
+
+                  // Floating Home Image
                   Positioned(
                     left: screenWidth * 0.275,
                     top: screenHeight * -0.0575,

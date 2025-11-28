@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_homr/pages/CustomAppBar.dart';
+import 'package:smart_homr/pages/NavigationBar.dart';
 
 void main() {
   runApp(const MyApp());

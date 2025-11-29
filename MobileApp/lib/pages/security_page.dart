@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'CustomAppBar.dart';
-import 'NavigationBar.dart';
 
 class SecurityPage extends StatefulWidget {
   const SecurityPage({super.key});
@@ -31,6 +30,26 @@ class _SecurityPageState extends State<SecurityPage> {
             bottomRight: Radius.circular(screenWidth * 0.10),
           ),
         ),
+        child : ListView(
+          children: [
+            Padding(
+              padding:  EdgeInsets.all(screenHeight),
+              child: Container(
+                width: screenWidth*341/398,
+                height: screenHeight*69/866,
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(screenWidth*24/398),
+
+
+                )
+
+              ),
+            )
+          ],
+
+        ),
+
       ),
     );
   }

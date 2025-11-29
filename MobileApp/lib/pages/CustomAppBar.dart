@@ -20,6 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: const Color(0xFFDBE2EF),
       elevation: 0,
+      scrolledUnderElevation: 0,
       toolbarHeight: height,
       automaticallyImplyLeading: false,
       flexibleSpace: SafeArea(

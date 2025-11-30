@@ -16,12 +16,5 @@ namespace buzzer {
         digitalWrite(buzzerPin, buzz ? HIGH : LOW);
     }
 
-    void BuzzUpdate() {
-        String val = http::read_data("buzz");
-        if (val == "on") {
-            BuzzMode(true);
-        } else if (val == "off") {
-            BuzzMode(false);
-        }
-    }
+
 }

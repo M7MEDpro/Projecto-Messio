@@ -19,12 +19,5 @@ namespace servo {
         myServo.write(0);
     }
 
-    void Update() {
-        String val = http::read_data("servo");
-        if (val == "open") {
-            open();
-        } else if (val == "close") {
-            close();
-        }
-    }
+
 }

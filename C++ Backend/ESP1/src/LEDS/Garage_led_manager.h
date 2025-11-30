@@ -4,7 +4,6 @@
 namespace gled {
     void init();
     void g1_write(int percent);
-    void g1_write();
 }
 
 #endif

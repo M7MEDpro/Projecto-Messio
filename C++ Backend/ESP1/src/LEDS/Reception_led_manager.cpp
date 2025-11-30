@@ -39,28 +39,4 @@ namespace rled {
         int pwm = map(percent, 0, 100, 0, 255);
         analogWrite(r4, pwm);
     }
-
-    void r1_write() {
-        String val = http::read_data("r1");
-        int percent = val.toInt();
-        r1_write(percent);
-    }
-
-    void r2_write() {
-        String val = http::read_data("r2");
-        int percent = val.toInt();
-        r2_write(percent);
-    }
-
-    void r3_write() {
-        String val = http::read_data("r3");
-        int percent = val.toInt();
-        r3_write(percent);
-    }
-
-    void r4_write() {
-        String val = http::read_data("r4");
-        int percent = val.toInt();
-        r4_write(percent);
-    }
 }

@@ -15,9 +15,5 @@ namespace gled {
         analogWrite(gpin, pwm);
     }
 
-    void g1_write() {
-        String val = http::read_data("g1");
-        int percent = val.toInt();
-        g1_write(percent);
-    }
+
 }

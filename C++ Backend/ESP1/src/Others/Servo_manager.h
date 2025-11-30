@@ -5,7 +5,6 @@ namespace servo {
     void init();
     void open();
     void close();
-    void Update();
 }
 
 #endif

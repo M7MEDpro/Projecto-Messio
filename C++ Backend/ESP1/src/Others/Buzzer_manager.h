@@ -4,7 +4,6 @@
 namespace buzzer {
     void Buzzer_init();
     void BuzzMode(bool b);
-    void BuzzUpdate();
 }
 
 #endif

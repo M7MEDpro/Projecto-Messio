@@ -6,19 +6,9 @@ namespace http {
 
     static HTTPClient httpClient;
     static bool clientInitialized = false;
-
-    struct CacheEntry {
-        String value;
-        unsigned long timestamp{};
-        bool valid{};
-
-        CacheEntry() = default;
-        CacheEntry(String v, unsigned long t, bool val)
-            : value(std::move(v)), timestamp(t), valid(val) {}
-    };
-
-    static std::map<String, CacheEntry> cache;
+    static std::map<String, String> cache;
     static const unsigned long CACHE_DURATION = 500;
+    static std::map<String, unsigned long> cacheTime;
 
     void initClient() {
         if (!clientInitialized) {
@@ -32,23 +22,22 @@ namespace http {
         if (data.empty()) return false;
 
         initClient();
-        httpClient.begin("http://192.168.1.200:5000/esp2");
+        httpClient.begin("http://192.168.1.200:5000/esp1");
         httpClient.addHeader("Content-Type", "application/json");
 
         DynamicJsonDocument doc(2048);
-        JsonObject esp2Obj = doc.createNestedObject("esp2");
 
         for (const auto& pair : data) {
-            esp2Obj[pair.first] = pair.second.toInt();
+            doc[pair.first] = pair.second.toInt();
         }
 
         String payload;
         serializeJson(doc, payload);
 
-        int code = httpClient.POST(payload);
+        int code = httpClient.PUT(payload);
 
         if (code != 200) {
-            Serial.println("HTTP Batch POST failed, code: " + String(code));
+            Serial.println("HTTP PUT failed: " + String(code));
             return false;
         }
 
@@ -66,7 +55,7 @@ namespace http {
         if (keys.empty()) return results;
 
         initClient();
-        httpClient.begin("http://192.168.1.200:5000/esp2");
+        httpClient.begin("http://192.168.1.200:5000/esp1");
 
         int code = httpClient.GET();
 
@@ -78,23 +67,23 @@ namespace http {
             if (!err) {
                 for (const String& key : keys) {
                     if (doc.containsKey(key)) {
-                        results[key] = doc[key].as<String>();
-                        cache[key] = CacheEntry{doc[key].as<String>(), millis(), true};
+                        results[key] = String(doc[key].as<int>());
+                        cache[key] = results[key];
+                        cacheTime[key] = millis();
                     }
                 }
             }
         } else {
-            Serial.println("HTTP Batch GET failed, code: " + String(code));
+            Serial.println("HTTP GET failed: " + String(code));
         }
 
         return results;
     }
 
     String read_data(const String& key) {
-        auto it = cache.find(key);
-        if (it != cache.end() && it->second.valid) {
-            if (millis() - it->second.timestamp < CACHE_DURATION) {
-                return it->second.value;
+        if (cache.find(key) != cache.end()) {
+            if (millis() - cacheTime[key] < CACHE_DURATION) {
+                return cache[key];
             }
         }
 
@@ -110,5 +99,6 @@ namespace http {
 
     void clearCache() {
         cache.clear();
+        cacheTime.clear();
     }
 }

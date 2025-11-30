@@ -7,10 +7,6 @@ namespace rled {
     void r2_write(int percent);
     void r3_write(int percent);
     void r4_write(int percent);
-    void r1_write();
-    void r2_write();
-    void r3_write();
-    void r4_write();
 }
 
 #endif

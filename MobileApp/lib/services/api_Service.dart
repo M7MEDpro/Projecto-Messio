@@ -1,0 +1,32 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
+import '../config/api_config..dart';
+class ApiService{
+  ApiService._privateConstructor();
+  static final ApiService instance = ApiService._privateConstructor();
+
+
+
+  void put(String key, dynamic value) async {
+    try {
+      final jsonBody = json.encode({key: value});
+
+      print("PUT request JSON: $jsonBody");
+
+      await http.put(
+        Uri.http(ApiBase.local.url, ApiEndpoint.mobile.path),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonBody,
+      );
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+
+}
+
+
+

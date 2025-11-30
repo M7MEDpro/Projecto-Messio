@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:smart_homr/managers/home_Manager.dart';
 
 import '../Widgets/CustomSwitch.dart';
+import '../data/home_Modes_Data.dart';
+
+HomeManager homeManager = HomeManager();
+HomeModesData homeModes = homeManager.getHomeModes();
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,11 +14,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+
 class _HomePageState extends State<HomePage> {
-  bool homeAway = false;
-  bool bedTime = false;
-  bool powerSaving = false;
-  bool emergency = false;
 
   @override
   Widget build(BuildContext context) {
@@ -221,10 +223,11 @@ class _HomePageState extends State<HomePage> {
                               child: Stack(
                                 children: [
                                   CustomSwitch(
-                                    value: homeAway,
+                                    value: homeModes.homeAway,
                                     onChanged: (newValue) {
+                                      homeManager.setHomeAway(newValue);
                                       setState(() {
-                                        homeAway = newValue;
+                                        homeModes. homeAway = newValue;
                                       });
                                     },
                                     top: screenHeight * 18 / 866,
@@ -262,10 +265,11 @@ class _HomePageState extends State<HomePage> {
                                 child: Stack(
                                   children: [
                                     CustomSwitch(
-                                      value: bedTime,
+                                      value: homeModes.bedTime,
                                       onChanged: (newValue) {
+                                        homeManager.setBedTime(newValue);
                                         setState(() {
-                                          bedTime = newValue;
+                                          homeModes.bedTime = newValue;
                                         });
                                       },
                                       top: screenHeight * 18 / 866,
@@ -313,10 +317,11 @@ class _HomePageState extends State<HomePage> {
                               child: Stack(
                                 children: [
                                   CustomSwitch(
-                                    value: powerSaving,
+                                    value: homeModes.powerSaving,
                                     onChanged: (newValue) {
+                                      homeManager.setPowerSaving(newValue);
                                       setState(() {
-                                        powerSaving = newValue;
+                                        homeModes. powerSaving = newValue;
                                       });
                                     },
                                     top: screenHeight * 18 / 866,
@@ -354,10 +359,11 @@ class _HomePageState extends State<HomePage> {
                                 child: Stack(
                                   children: [
                                     CustomSwitch(
-                                      value: emergency,
+                                      value: homeModes.emergency,
                                       onChanged: (newValue) {
+                                        homeManager.setEmergency(newValue);
                                         setState(() {
-                                          emergency = newValue;
+                                          homeModes.emergency = newValue;
                                         });
                                       },
                                       top: screenHeight * 18 / 866,

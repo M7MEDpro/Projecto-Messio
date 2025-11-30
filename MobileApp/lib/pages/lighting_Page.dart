@@ -1,7 +1,34 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:smart_homr/Widgets/CustomSwitch.dart';
+
+import '../data/rooms/office_room.dart';
+import '../data/rooms/bedroom_room.dart';
+import '../data/rooms/living_room.dart';
+import '../data/rooms/garage_room.dart';
+import '../data/rooms/yard_room.dart';
+
+import '../managers/rooms/office_room.dart';
+import '../managers/rooms/bedroom_room_manager.dart';
+import '../managers/rooms/living_room_manager.dart';
+import '../managers/rooms/garage_room_manager.dart';
+import '../managers/rooms/yard_room_manager.dart';
+
 import 'CustomAppBar.dart';
-import 'NavigationBar.dart';
+
+// Initialize all room data
+OfficeRoomData officeData = OfficeRoomData();
+BedroomRoomData bedroomData = BedroomRoomData();
+LivingRoomData livingData = LivingRoomData();
+GarageRoomData garageData = GarageRoomData();
+YardRoomData yardData = YardRoomData();
+
+// Initialize all room managers
+OfficeRoomManager officeManager = OfficeRoomManager(officeData);
+BedroomRoomManager bedroomManager = BedroomRoomManager(bedroomData);
+LivingRoomManager livingManager = LivingRoomManager(livingData);
+GarageRoomManager garageManager = GarageRoomManager(garageData);
+YardRoomManager yardManager = YardRoomManager(yardData);
 
 class LightingPage extends StatefulWidget {
   const LightingPage({super.key});
@@ -10,41 +37,43 @@ class LightingPage extends StatefulWidget {
   State<LightingPage> createState() => _LightingPageState();
 }
 
-bool OfficeLighting = false;
-bool OfficeDaylight = false;
-bool OfficeMotion = false;
-bool bedRoom1Lighting = false;
-bool bedRoom1Daylight = false;
-bool bedRoom1Motion = false;
-bool LivingLighting = false;
-bool LivingDaylight = false;
-bool LivingMotion = false;
-bool garageLighting = false;
-bool garageDaylight = false;
-bool garageMotion = false;
-bool yardLighting = false;
-bool yardDaylight = false;
-int OfficeBrightness = 0;
-int LivingBrightness = 0;
-int BedRoom1Brightness = 0;
-int GarageBrightness = 0;
-int YardBrightness = 0;
-
 class _LightingPageState extends State<LightingPage> {
+  Timer? _officeTimer;
+  Timer? _bedroomTimer;
+  Timer? _livingTimer;
+  Timer? _garageTimer;
+  Timer? _yardTimer;
+
+  @override
+  void dispose() {
+    _officeTimer?.cancel();
+    _bedroomTimer?.cancel();
+    _livingTimer?.cancel();
+    _garageTimer?.cancel();
+    _yardTimer?.cancel();
+    super.dispose();
+  }
+
+  void _debounceBrightness(Timer? timer, Function(int) setBrightness, int value) {
+    timer?.cancel();
+    timer = Timer(const Duration(milliseconds: 300), () {
+      setBrightness(value);
+    });
+  }
+
   Widget buildRoomContainer({
     required String roomName,
     required String imagePath,
-    required bool lightingValue,
-    required bool daylightValue,
-    required bool motionValue,
-    required int brightnessValue,
-    required Function(bool) onLightingChanged,
-    required Function(bool) onDaylightChanged,
-    required Function(bool) onMotionChanged,
-    required Function(double) onBrightnessChanged,
+    required dynamic roomData,
+    required dynamic roomManager,
     required double screenHeight,
     required double screenWidth,
+    required Timer? brightnessTimer,
+    required Function(Timer?) onTimerUpdate,
+    bool hasMotion = true,
   }) {
+    bool isAutoMode = roomData.mode == 2;
+
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: screenHeight * 18 / 866,
@@ -80,7 +109,7 @@ class _LightingPageState extends State<LightingPage> {
                 style: TextStyle(
                   fontSize: screenWidth * 13 / 398,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+                  color: isAutoMode ? Colors.black38 : Colors.black87,
                 ),
               ),
             ),
@@ -96,21 +125,27 @@ class _LightingPageState extends State<LightingPage> {
                 ),
               ),
             ),
-            Positioned(
-              top: screenHeight * 140 / 866,
-              left: screenWidth * 148 / 398 * 1.1,
-              child: Text(
-                "Motion",
-                style: TextStyle(
-                  fontSize: screenWidth * 13 / 398,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+            if (hasMotion)
+              Positioned(
+                top: screenHeight * 140 / 866,
+                left: screenWidth * 148 / 398 * 1.1,
+                child: Text(
+                  "Motion",
+                  style: TextStyle(
+                    fontSize: screenWidth * 13 / 398,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
                 ),
               ),
-            ),
             CustomSwitch(
-              value: lightingValue,
-              onChanged: onLightingChanged,
+              value: roomData.mode == 1,
+              onChanged: isAutoMode
+                  ? (_) {}
+                  : (value) {
+                roomManager.setMode(value ? 1 : 0);
+                setState(() {});
+              },
               top: screenHeight * 50 / 866,
               left: screenWidth * 231 / 398,
               screenHeight: screenHeight,
@@ -119,9 +154,25 @@ class _LightingPageState extends State<LightingPage> {
               height: screenHeight * 25 / 866,
               fontSize: screenWidth * 9 / 398,
             ),
+            if (isAutoMode)
+              Positioned(
+                top: screenHeight * 50 / 866,
+                left: screenWidth * 237 / 398,
+                child: Container(
+                  width: screenWidth * 50 / 398,
+                  height: screenHeight * 30 / 866,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(screenWidth * 20 / 398),
+                  ),
+                ),
+              ),
             CustomSwitch(
-              value: daylightValue,
-              onChanged: onDaylightChanged,
+              value: roomData.daylight,
+              onChanged: (value) {
+                roomManager.setDaylight(value);
+                setState(() {});
+              },
               top: screenHeight * 88 / 866,
               left: screenWidth * 231 / 398,
               screenHeight: screenHeight,
@@ -130,17 +181,21 @@ class _LightingPageState extends State<LightingPage> {
               height: screenHeight * 25 / 866,
               fontSize: screenWidth * 9 / 398,
             ),
-            CustomSwitch(
-              value: motionValue,
-              onChanged: onMotionChanged,
-              top: screenHeight * 130 / 866,
-              left: screenWidth * 231 / 398,
-              screenHeight: screenHeight,
-              screenWidth: screenWidth,
-              width: screenWidth * 46 / 398,
-              height: screenHeight * 25 / 866,
-              fontSize: screenWidth * 9 / 398,
-            ),
+            if (hasMotion)
+              CustomSwitch(
+                value: roomData.motion,
+                onChanged: (value) {
+                  roomManager.setMotion(value);
+                  setState(() {});
+                },
+                top: screenHeight * 130 / 866,
+                left: screenWidth * 231 / 398,
+                screenHeight: screenHeight,
+                screenWidth: screenWidth,
+                width: screenWidth * 46 / 398,
+                height: screenHeight * 25 / 866,
+                fontSize: screenWidth * 9 / 398,
+              ),
             Positioned(
               top: screenHeight * 38 / 866,
               left: screenWidth * 15 / 398,
@@ -172,8 +227,17 @@ class _LightingPageState extends State<LightingPage> {
                         overlayRadius: screenHeight * 8 / 866),
                   ),
                   child: Slider(
-                    value: brightnessValue.toDouble(),
-                    onChanged: onBrightnessChanged,
+                    value: roomData.brightness.toDouble(),
+                    onChanged: (value) {
+                      setState(() {
+                        roomData.brightness = value.toInt();
+                      });
+
+                      brightnessTimer?.cancel();
+                      onTimerUpdate(Timer(const Duration(milliseconds: 300), () {
+                        roomManager.setBrightness(value.toInt());
+                      }));
+                    },
                     min: 0.0,
                     max: 100.0,
                   ),
@@ -213,154 +277,57 @@ class _LightingPageState extends State<LightingPage> {
             buildRoomContainer(
               roomName: "OFFICE",
               imagePath: "assets/images/office.png",
-              lightingValue: OfficeLighting,
-              daylightValue: OfficeDaylight,
-              motionValue: OfficeMotion,
-              brightnessValue: OfficeBrightness,
-              onLightingChanged: (value) {
-                setState(() {
-                  OfficeLighting = value;
-                });
-              },
-              onDaylightChanged: (value) {
-                setState(() {
-                  OfficeDaylight = value;
-                });
-              },
-              onMotionChanged: (value) {
-                setState(() {
-                  OfficeMotion = value;
-                });
-              },
-              onBrightnessChanged: (value) {
-                setState(() {
-                  OfficeBrightness = value.toInt();
-                });
-              },
+              roomData: officeData,
+              roomManager: officeManager,
               screenHeight: screenHeight,
               screenWidth: screenWidth,
+              brightnessTimer: _officeTimer,
+              onTimerUpdate: (timer) => _officeTimer = timer,
             ),
             // Bed Room
             buildRoomContainer(
               roomName: "BED ROOM",
               imagePath: "assets/images/bedroom1.png",
-              lightingValue: bedRoom1Lighting,
-              daylightValue: bedRoom1Daylight,
-              motionValue: bedRoom1Motion,
-              brightnessValue: BedRoom1Brightness,
-              onLightingChanged: (value) {
-                setState(() {
-                  bedRoom1Lighting = value;
-                });
-              },
-              onDaylightChanged: (value) {
-                setState(() {
-                  bedRoom1Daylight = value;
-                });
-              },
-              onMotionChanged: (value) {
-                setState(() {
-                  bedRoom1Motion = value;
-                });
-              },
-              onBrightnessChanged: (value) {
-                setState(() {
-                  BedRoom1Brightness = value.toInt();
-                });
-              },
+              roomData: bedroomData,
+              roomManager: bedroomManager,
               screenHeight: screenHeight,
               screenWidth: screenWidth,
+              brightnessTimer: _bedroomTimer,
+              onTimerUpdate: (timer) => _bedroomTimer = timer,
             ),
             // Living Room
             buildRoomContainer(
               roomName: "LIVING ROOM",
               imagePath: "assets/images/living.png",
-              lightingValue: LivingLighting,
-              daylightValue: LivingDaylight,
-              motionValue: LivingMotion,
-              brightnessValue: LivingBrightness,
-              onLightingChanged: (value) {
-                setState(() {
-                  LivingLighting = value;
-                });
-              },
-              onDaylightChanged: (value) {
-                setState(() {
-                  LivingDaylight = value;
-                });
-              },
-              onMotionChanged: (value) {
-                setState(() {
-                  LivingMotion = value;
-                });
-              },
-              onBrightnessChanged: (value) {
-                setState(() {
-                  LivingBrightness = value.toInt();
-                });
-              },
+              roomData: livingData,
+              roomManager: livingManager,
               screenHeight: screenHeight,
               screenWidth: screenWidth,
+              brightnessTimer: _livingTimer,
+              onTimerUpdate: (timer) => _livingTimer = timer,
             ),
             // Garage
             buildRoomContainer(
               roomName: "GARAGE",
               imagePath: "assets/images/garage.png",
-              lightingValue: garageLighting,
-              daylightValue: garageDaylight,
-              motionValue: garageMotion,
-              brightnessValue: GarageBrightness,
-              onLightingChanged: (value) {
-                setState(() {
-                  garageLighting = value;
-                });
-              },
-              onDaylightChanged: (value) {
-                setState(() {
-                  garageDaylight = value;
-                });
-              },
-              onMotionChanged: (value) {
-                setState(() {
-                  garageMotion = value;
-                });
-              },
-              onBrightnessChanged: (value) {
-                setState(() {
-                  GarageBrightness = value.toInt();
-                });
-              },
+              roomData: garageData,
+              roomManager: garageManager,
               screenHeight: screenHeight,
               screenWidth: screenWidth,
+              brightnessTimer: _garageTimer,
+              onTimerUpdate: (timer) => _garageTimer = timer,
             ),
-            // Yard
+            // Yard (no motion sensor)
             buildRoomContainer(
               roomName: "YARD",
               imagePath: "assets/images/yard.png",
-              lightingValue: yardLighting,
-              daylightValue: yardDaylight,
-              motionValue: false, // Yard doesn't have motion sensor in your design
-              brightnessValue: YardBrightness,
-              onLightingChanged: (value) {
-                setState(() {
-                  yardLighting = value;
-                });
-              },
-              onDaylightChanged: (value) {
-                setState(() {
-                  yardDaylight = value;
-                });
-              },
-              onMotionChanged: (value) {
-                // Yard doesn't have motion sensor
-              },
-              onBrightnessChanged: (value) {
-                setState(() {
-                  YardBrightness = value.toInt();
-                });
-              },
+              roomData: yardData,
+              roomManager: yardManager,
               screenHeight: screenHeight,
               screenWidth: screenWidth,
+              hasMotion: false,
+              brightnessTimer: _yardTimer,
+              onTimerUpdate: (timer) => _yardTimer = timer,
             ),
           ],
         ),

@@ -1,10 +1,12 @@
-#ifndef SERVO_MANAGER_H
-#define SERVO_MANAGER_H
+#ifndef SENSOR_MANAGER_H
+#define SENSOR_MANAGER_H
 
-namespace servo {
+#include <vector>
+#include <Arduino.h>
+
+namespace sensors {
+    void readAllSensors();
     void init();
-    void open();
-    void close();
 }
 
 #endif

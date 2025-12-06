@@ -5,8 +5,14 @@
 #include "Connection/Sensor_manager.h"
 #include "Connection/Actuator_manager.h"
 
+#define LED_PIN 2
+
+bool ledState = false;
+
 void setup() {
     Serial.begin(115200);
+    pinMode(LED_PIN, OUTPUT);
+
     wifi::connectWiFi();
 
     sensors::init();
@@ -14,14 +20,20 @@ void setup() {
 }
 
 void loop() {
+    Serial.println("Ready");
+
+    // Toggle EVERY LOOP
+    ledState = !ledState;
+    digitalWrite(LED_PIN, ledState);
+
+    // ---- Sensors ----
     auto sensorData = sensors::readAllSensors();
-
     http::send_batch(sensorData);
+    delay(100);
 
+    // ---- Actuators ----
     std::vector<String> keys = {"g1", "r1", "r2", "r3", "r4", "buzz", "servo"};
     auto actuatorData = http::read_batch(keys);
 
-    actuators::updateAll(actuatorData);
-
-    delay(300);
+    delay(200);
 }

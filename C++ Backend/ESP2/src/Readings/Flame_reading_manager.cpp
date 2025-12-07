@@ -1,4 +1,4 @@
-#include "Flame_reading_manager.h"
+a#include "Flame_reading_manager.h"
 #include <Arduino.h>
 #include "Connections/HTTP_manager.h"
 

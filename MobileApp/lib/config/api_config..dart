@@ -1,5 +1,5 @@
 enum ApiBase {
-  local('192.168.1.200:5000');
+  local('10.205.248.200:5000');
 
   final String url;
   const ApiBase(this.url);

@@ -1,7 +1,8 @@
-
-
 #ifndef IR_READING_MANAGER_H
 #define IR_READING_MANAGER_H
+
+#include <vector>
+#include <Arduino.h>
 
 namespace IR {
     extern bool M0Value;
@@ -11,11 +12,7 @@ namespace IR {
     extern bool M4Value;
 
     void IR_init();
-    void M0_read();
-    void M1_read();
-    void M2_read();
-    void M3_read();
-    void M4_read();
+    std::vector<std::pair<String, String>> checkAllSensors();
 }
 
 #endif

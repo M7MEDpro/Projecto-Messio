@@ -3,7 +3,6 @@
 #include "LEDS/Reception_led_manager.h"
 #include "Others/Buzzer_manager.h"
 #include "Others/Servo_manager.h"
-
 namespace actuators {
 
     void init() {

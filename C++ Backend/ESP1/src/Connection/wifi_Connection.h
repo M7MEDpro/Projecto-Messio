@@ -4,6 +4,7 @@
 namespace wifi {
 
     void connectWiFi();
+    void checkAndReconnect();
 
 }
 

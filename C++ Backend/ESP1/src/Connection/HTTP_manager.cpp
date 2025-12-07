@@ -22,7 +22,7 @@ void sensorTask(void *parameter) {
             if (xSemaphoreTake(httpMutex, pdMS_TO_TICKS(100)) == pdTRUE) {
                 http::send_batch(sensorData);
                 xSemaphoreGive(httpMutex);
-            }
+            }-
         }
 
         vTaskDelay(pdMS_TO_TICKS(50));

@@ -5,8 +5,8 @@
 namespace wifi {
     const  char* ssid = "oppo reno 14 5G";
     const  char*  password = "1234567890";
-    IPAddress local_IP(192, 168, 1, 100); // 101
-    IPAddress gateway(192, 168,1 , 1);
+    IPAddress local_IP(10,205,248,101); // 101
+    IPAddress gateway(10,205,248,70  );
     IPAddress subnet(255, 255, 255, 0);
     void connectWiFi() {
         WiFi.config(local_IP, gateway, subnet);

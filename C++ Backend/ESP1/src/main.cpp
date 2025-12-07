@@ -22,16 +22,13 @@ void setup() {
 void loop() {
     Serial.println("Ready");
 
-    // Toggle EVERY LOOP
     ledState = !ledState;
     digitalWrite(LED_PIN, ledState);
 
-    // ---- Sensors ----
     auto sensorData = sensors::readAllSensors();
     http::send_batch(sensorData);
     delay(100);
 
-    // ---- Actuators ----
     std::vector<String> keys = {"g1", "r1", "r2", "r3", "r4", "buzz", "servo"};
     auto actuatorData = http::read_batch(keys);
 

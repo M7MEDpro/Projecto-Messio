@@ -5,7 +5,7 @@ namespace sensor20a {
     extern int SENSOR_PIN;
     
     void sensor20a_init();
-    void sensor20a_read();
+    std::vector<std::pair<String, String>> sensor20a_read();
 }
 
 #endif

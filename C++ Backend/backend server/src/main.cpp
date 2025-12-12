@@ -2,14 +2,14 @@
 #include "httplib.h"
 #include "server.h"
 #include "alarmManager.h"
-#include "Modes/bedTimeMode.h"
-#include "Modes/EmergencyMode.h"
-#include "Modes/homeAway.h"
-#include "Rooms/garage.h"
-#include "Rooms/outerLed.h"
-#include "Rooms/reception.h"
-#include "Rooms/room1.h"
-#include "Rooms/room2.h"
+#include "bedTimeMode.h"
+#include "EmergencyMode.h"
+#include "homeAway.h"
+#include "garage.h"
+#include "outerLed.h"
+#include "reception.h"
+#include "room1.h"
+#include "room2.h"
 
 void mainLoop() {
     while (true) {

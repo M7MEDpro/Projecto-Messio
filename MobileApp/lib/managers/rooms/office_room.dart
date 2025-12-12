@@ -11,14 +11,12 @@ class OfficeRoomManager implements RoomManager {
   @override
   void setBrightness(int value) {
     _data.brightness = value;
-    print("Setting brightnessRoom1 to $value");
     _api.put("brightnessRoom1", value.toString());
   }
 
   @override
   void setMode(int value) {
     _data.mode = value;
-    print("Setting modeRoom1 to $value");
     _api.put("modeRoom1", value.toString());
   }
 
@@ -33,9 +31,8 @@ class OfficeRoomManager implements RoomManager {
     }
 
     int apiValue = value ? 1 : 0;
-    print("Setting ldrRoom1 to $apiValue");
     _api.put("ldrRoom1", apiValue.toString());
-    print("Mode after daylight update: ${_data.mode}");
+    _api.put("modeRoom1", _data.mode.toString());
   }
 
   @override
@@ -49,8 +46,7 @@ class OfficeRoomManager implements RoomManager {
     }
 
     int apiValue = value ? 1 : 0;
-    print("Setting irRoom1 to $apiValue");
     _api.put("irRoom1", apiValue.toString());
-    print("Mode after motion update: ${_data.mode}");
+    _api.put("modeRoom1", _data.mode.toString());
   }
 }

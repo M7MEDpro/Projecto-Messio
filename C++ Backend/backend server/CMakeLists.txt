@@ -20,34 +20,35 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(httplib json)
 
+include_directories(include)
+
 add_executable(backend
         src/main.cpp
         src/server.cpp
-        src/server.h
+        include/server.h
         src/Rooms/room1.cpp
-        src/Rooms/room1.h
+        include/room1.h
         src/Rooms/room2.cpp
-        src/Rooms/room2.h
+        include/room2.h
         src/Rooms/garage.cpp
-        src/Rooms/garage.h
+        include/garage.h
         src/Rooms/reception.cpp
-        src/Rooms/reception.h
+        include/reception.h
         src/Rooms/outerLed.cpp
-        src/Rooms/outerLed.h
+        include/outerLed.h
         src/Modes/homeAway.cpp
-        src/Modes/homeAway.h
+        include/homeAway.h
         src/Modes/bedTimeMode.cpp
-        src/Modes/bedTimeMode.h
+        include/bedTimeMode.h
         src/Modes/EmergencyMode.cpp
-        src/Modes/EmergencyMode.h
+        include/EmergencyMode.h
         src/dataModel.cpp
         src/utilities.cpp
-        src/utilities.h
+        include/utilities.h
         src/flameAlarm.cpp
-        src/flameAlarm.h
+        include/flameAlarm.h
         src/alarmManager.cpp
-        src/alarmManager.h
-
+        include/alarmManager.h
 )
 
 target_link_libraries(backend

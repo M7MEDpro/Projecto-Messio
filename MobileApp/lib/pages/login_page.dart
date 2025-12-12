@@ -9,16 +9,18 @@ class login  extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
-  @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold (
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        width: MediaQuery.of(context). size.width,
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+        width: screenWidth,
         child: SingleChildScrollView(
           child: Column (
               children:<Widget> [
-                const SizedBox (height : 150),
+                 SizedBox (height : screenHeight * 0.18),
                 TextField(
                   decoration: InputDecoration(
                     hintText: 'Email',
@@ -26,7 +28,7 @@ class _loginState extends State<login> {
 
 
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(screenWidth * 0.05),
                       borderSide: const BorderSide(
                         color: Colors.red,
                         width: 1.0,
@@ -34,7 +36,7 @@ class _loginState extends State<login> {
                     ),
 
                     disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(screenWidth * 0.05),
                       borderSide: const BorderSide(
                         color: Colors.red,
                         width: 1.0,
@@ -42,7 +44,7 @@ class _loginState extends State<login> {
                     ),
 
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(screenWidth * 0.05),
                       borderSide: const BorderSide(
                         color: Colors.red,
                         width: 1.0,
@@ -50,14 +52,14 @@ class _loginState extends State<login> {
                     ),
                   ),
                 ),
-                const SizedBox (height : 30),
+                 SizedBox (height : screenHeight * 0.035),
 
                 TextField(
                   decoration: InputDecoration(
                     hintText: 'password',
 
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(screenWidth * 0.05),
                       borderSide: const BorderSide(
                         color: Colors.red,
                         width: 1.0,
@@ -65,7 +67,7 @@ class _loginState extends State<login> {
                     ),
 
                     disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(screenWidth * 0.05),
                       borderSide: const BorderSide(
                         color: Colors.blueAccent,
                         width: 1.0,
@@ -73,7 +75,7 @@ class _loginState extends State<login> {
                     ),
 
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(screenWidth * 0.05),
                       borderSide: const BorderSide(
                         color: Colors.red,
                         width: 1.0,
@@ -81,22 +83,22 @@ class _loginState extends State<login> {
                     ),
                   ),
                 ),
-               const SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.025),
                 MaterialButton(
                   elevation: 5.0,
                   color: Colors.blue,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 20, horizontal: 80), // EdgeInsets
-                  child: const Text(
+                  padding: EdgeInsets.symmetric(
+                      vertical: screenHeight * 0.025, horizontal: screenWidth * 0.2), // EdgeInsets
+                  child:  Text(
                     'Login',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 23,
+                      fontSize: screenWidth * 0.06,
                       fontWeight: FontWeight.bold,
                     ), // TextStyle
                   ), // Text
                   shape: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(screenWidth * 0.12),
                     borderSide: BorderSide.none,
                   ), // OutlineInputBorder
                   onPressed: () {}, // MaterialButton

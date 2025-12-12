@@ -1,7 +1,7 @@
 #include "reception.h"
 
-#include "../dataModel.h"
-#include "../utilities.h"
+#include "dataModel.h"
+#include "utilities.h"
 
 namespace reception {
     void updateLed() {

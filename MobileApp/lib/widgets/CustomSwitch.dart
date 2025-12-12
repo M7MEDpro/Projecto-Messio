@@ -5,8 +5,6 @@ class CustomSwitch extends StatelessWidget {
   final Function(bool) onChanged;
   final double top;
   final double left;
-  final double screenHeight;
-  final double screenWidth;
   final double width;
   final double height;
   final Color activeColor;
@@ -16,6 +14,7 @@ class CustomSwitch extends StatelessWidget {
   final String onText;
   final String offText;
   final double fontSize;
+  final Function()? onLongPress;
 
   const CustomSwitch({
     Key? key,
@@ -23,8 +22,6 @@ class CustomSwitch extends StatelessWidget {
     required this.onChanged,
     required this.top,
     required this.left,
-    required this.screenHeight,
-    required this.screenWidth,
     this.width = 80,
     this.height = 40,
     this.activeColor = const Color(0xFF5DAFB8),
@@ -34,16 +31,19 @@ class CustomSwitch extends StatelessWidget {
     this.onText = 'ON',
     this.offText = 'OFF',
     this.fontSize = 14,
+    this.onLongPress,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double thumbSize = height - 8;
+    double padding = height * 0.1;
+    double thumbSize = height - (padding * 2);
 
     return Positioned(
-      top: screenHeight * top / 866,
-      left: screenWidth * left / 398,
+      top: top,
+      left: left,
       child: GestureDetector(
+        onLongPress: onLongPress,
         onTap: () {
           onChanged(!value);
         },
@@ -59,8 +59,8 @@ class CustomSwitch extends StatelessWidget {
               AnimatedPositioned(
                 duration: Duration(milliseconds: 250),
                 curve: Curves.easeInOut,
-                left: value ? width - thumbSize - 4 : 4,
-                top: 4,
+                left: value ? width - thumbSize - padding : padding,
+                top: padding,
                 child: Container(
                   width: thumbSize,
                   height: thumbSize,
@@ -73,8 +73,8 @@ class CustomSwitch extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: EdgeInsets.only(
-                    left: value ? 0 : thumbSize + 4 + (width * -0.03),
-                    right: value ? thumbSize + 4 : 0,
+                    left: value ? 0 : thumbSize + padding + (width * -0.03),
+                    right: value ? thumbSize + padding : 0,
                   ),
                   child: Text(
                     value ? onText : offText,

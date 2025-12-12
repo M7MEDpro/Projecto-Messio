@@ -1,6 +1,6 @@
 #include "outerLed.h"
 
-#include "../dataModel.h"
+#include "dataModel.h"
 
 namespace outerLed {
 

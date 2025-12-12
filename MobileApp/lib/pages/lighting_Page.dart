@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:smart_homr/Widgets/CustomSwitch.dart';
+import 'package:smart_homr/widgets/CustomSwitch.dart';
 
 import '../data/rooms/office_room.dart';
 import '../data/rooms/bedroom_room.dart';
@@ -140,6 +140,10 @@ class _LightingPageState extends State<LightingPage> {
               ),
             CustomSwitch(
               value: roomData.mode == 1,
+              onLongPress: (){
+                 roomManager.setMode(2);
+                setState(() {});
+              },
               onChanged: isAutoMode
                   ? (_) {}
                   : (value) {
@@ -148,8 +152,6 @@ class _LightingPageState extends State<LightingPage> {
               },
               top: screenHeight * 50 / 866,
               left: screenWidth * 231 / 398,
-              screenHeight: screenHeight,
-              screenWidth: screenWidth,
               width: screenWidth * 46 / 398,
               height: screenHeight * 25 / 866,
               fontSize: screenWidth * 9 / 398,
@@ -157,7 +159,7 @@ class _LightingPageState extends State<LightingPage> {
             if (isAutoMode)
               Positioned(
                 top: screenHeight * 50 / 866,
-                left: screenWidth * 237 / 398,
+                left: screenWidth * 230 / 398,
                 child: Container(
                   width: screenWidth * 50 / 398,
                   height: screenHeight * 30 / 866,
@@ -175,8 +177,6 @@ class _LightingPageState extends State<LightingPage> {
               },
               top: screenHeight * 88 / 866,
               left: screenWidth * 231 / 398,
-              screenHeight: screenHeight,
-              screenWidth: screenWidth,
               width: screenWidth * 46 / 398,
               height: screenHeight * 25 / 866,
               fontSize: screenWidth * 9 / 398,
@@ -190,8 +190,6 @@ class _LightingPageState extends State<LightingPage> {
                 },
                 top: screenHeight * 130 / 866,
                 left: screenWidth * 231 / 398,
-                screenHeight: screenHeight,
-                screenWidth: screenWidth,
                 width: screenWidth * 46 / 398,
                 height: screenHeight * 25 / 866,
                 fontSize: screenWidth * 9 / 398,

@@ -1,8 +1,8 @@
 #include <Arduino.h>
-#include "Connection/wifi_Connection.h"
-#include "Connection/HTTP_manager.h"
-#include "Connection/Sensor_manager.h"
-#include "Connection/Actuator_manager.h"
+#include "wifi_Connection.h"
+#include "HTTP_manager.h"
+#include "Sensor_manager.h"
+#include "Actuator_manager.h"
 
 #define LED_PIN 2
 
@@ -30,10 +30,12 @@ void sensorTask(void *parameter) {
         sensorData.data = sensors::readAllSensors();
 
         if (!sensorData.data.empty()) {
-            xQueueSend(sensorDataQueue, &sensorData, 0);
+            if (xQueueSend(sensorDataQueue, &sensorData, 0) != pdTRUE) {
+                
+            }
         }
 
-        vTaskDelay(pdMS_TO_TICKS(10));
+        vTaskDelay(pdMS_TO_TICKS(50));
     }
 }
 
@@ -42,7 +44,7 @@ void httpSendTask(void *parameter) {
 
     while (true) {
         if (xQueueReceive(sensorDataQueue, &sensorData, portMAX_DELAY) == pdTRUE) {
-            if (xSemaphoreTake(httpMutex, pdMS_TO_TICKS(100)) == pdTRUE) {
+            if (xSemaphoreTake(httpMutex, pdMS_TO_TICKS(500)) == pdTRUE) {
                 http::send_batch(sensorData.data);
                 xSemaphoreGive(httpMutex);
             }
@@ -55,16 +57,16 @@ void httpReceiveTask(void *parameter) {
     ActuatorData actuatorData;
 
     while (true) {
-        if (xSemaphoreTake(httpMutex, pdMS_TO_TICKS(100)) == pdTRUE) {
+        if (xSemaphoreTake(httpMutex, pdMS_TO_TICKS(500)) == pdTRUE) {
             actuatorData.data = http::read_batch(keys);
             xSemaphoreGive(httpMutex);
 
             if (!actuatorData.data.empty()) {
-                xQueueSend(actuatorDataQueue, &actuatorData, 0);
+               xQueueSend(actuatorDataQueue, &actuatorData, 0);
             }
         }
 
-        vTaskDelay(pdMS_TO_TICKS(50));
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
 
@@ -90,7 +92,7 @@ void ledTask(void *parameter) {
 void wifiTask(void *parameter) {
     while (true) {
         wifi::checkAndReconnect();
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(5000));
     }
 }
 

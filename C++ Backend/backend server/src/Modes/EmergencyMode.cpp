@@ -1,7 +1,7 @@
 #include "EmergencyMode.h"
 
-#include "../alarmManager.h"
-#include "../dataModel.h"
+#include "alarmManager.h"
+#include "dataModel.h"
 
 namespace EmergencyMode {
     void update () {

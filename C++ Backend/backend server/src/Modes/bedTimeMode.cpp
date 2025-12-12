@@ -1,6 +1,6 @@
 #include "bedTimeMode.h"
 
-#include "../dataModel.h"
+#include "dataModel.h"
 
 namespace bedTimeMode {
     void update() {

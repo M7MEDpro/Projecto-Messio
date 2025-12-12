@@ -12,14 +12,12 @@ class YardRoomManager implements RoomManager {
   @override
   void setBrightness(int value) {
     _data.brightness = value;
-    print("Setting brightnessOuterLed to $value");
     _api.put("brightnessOuterLed", value.toString());
   }
 
   @override
   void setMode(int value) {
     _data.mode = value;
-    print("Setting modeOuterLed to $value");
     _api.put("modeOuterLed", value.toString());
   }
 
@@ -33,9 +31,8 @@ class YardRoomManager implements RoomManager {
     }
 
     int apiValue = value ? 1 : 0;
-    print("Setting ldrOuterLed to $apiValue");
     _api.put("ldrOuterLed", apiValue.toString());
-    print("Mode after daylight update: ${_data.mode}");
+    _api.put("modeOuterLed", _data.mode.toString());
   }
 
   @override

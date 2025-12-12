@@ -11,14 +11,12 @@ class GarageRoomManager implements RoomManager {
   @override
   void setBrightness(int value) {
     _data.brightness = value;
-    print("Setting brightnessGarage to $value");
     _api.put("brightnessGarage", value.toString());
   }
 
   @override
   void setMode(int value) {
     _data.mode = value;
-    print("Setting modeGarage to $value");
     _api.put("modeGarage", value.toString());
   }
 
@@ -33,9 +31,8 @@ class GarageRoomManager implements RoomManager {
     }
 
     int apiValue = value ? 1 : 0;
-    print("Setting ldrGarage to $apiValue");
     _api.put("ldrGarage", apiValue.toString());
-    print("Mode after daylight update: ${_data.mode}");
+    _api.put("modeGarage", _data.mode.toString());
   }
 
   @override
@@ -49,8 +46,7 @@ class GarageRoomManager implements RoomManager {
     }
 
     int apiValue = value ? 1 : 0;
-    print("Setting irGarage to $apiValue");
     _api.put("irGarage", apiValue.toString());
-    print("Mode after motion update: ${_data.mode}");
+    _api.put("modeGarage", _data.mode.toString());
   }
 }

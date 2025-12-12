@@ -2,6 +2,7 @@
 #include "dataModel.h"
 #include "nlohmann/json.hpp"
 #include "httplib.h"
+#include "serverConfig.h"
 
 namespace server {
 
@@ -187,12 +188,24 @@ namespace server {
     }
 
     void startServer() {
+        std::string ip = config::ip;
+        int port = config::port;
+
         httplib::Server svr;
+
+        svr.set_logger([](const httplib::Request& req, const httplib::Response&) {
+            std::cout << "[DEBUG] " << req.method << " " << req.path;
+            if (!req.body.empty()) {
+                std::cout << " | Body: " << req.body;
+            }
+            std::cout << std::endl;
+        });
+
         registerESP1(svr);
         registerESP2(svr);
         registerMobile(svr);
-        std::cout << "Server running on 192.168.1.200:5000" << std::endl;
-        svr.listen("192.168.1.200", 5000);
+        std::cout << "Server running on " << ip << ":" << port << std::endl;
+        svr.listen(ip.c_str(), port);
     }
 
 }

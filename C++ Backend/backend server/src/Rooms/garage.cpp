@@ -1,7 +1,7 @@
 #include "garage.h"
 
-#include "../dataModel.h"
-#include "../utilities.h"
+#include "dataModel.h"
+#include "utilities.h"
 
 namespace garage {
 

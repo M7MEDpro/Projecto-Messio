@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smart_homr/managers/home_Manager.dart';
+import 'package:smart_homr/services/weather_service.dart';
 
-import '../Widgets/CustomSwitch.dart';
+import '../widgets/CustomSwitch.dart';
 import '../data/home_Modes_Data.dart';
 
 HomeManager homeManager = HomeManager();
@@ -128,21 +129,26 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
-                              Positioned(
-                                top: screenHeight * 50 / 866,
-                                left: screenWidth * 50 / 398,
-                                child: Text(
-                                  '33',
-                                  style: TextStyle(
-                                    fontSize: screenWidth * 38 / 398,
-                                    fontWeight: FontWeight.w300,
-                                    color: Colors.black87,
-                                  ),
-                                ),
+                              FutureBuilder(
+                                future: Weather.getCurrentTemp(),
+                                builder: (context, asyncSnapshot) {
+                                  return Positioned(
+                                    top: screenHeight * 49 / 866,
+                                    left: screenWidth * 35 / 398,
+                                    child: Text(
+                                      '${asyncSnapshot.data}°C',
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 38 / 398,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  );
+                                }
                               ),
                               Positioned(
-                                top: screenHeight * 95 / 866,
-                                left: screenWidth * 105 / 398,
+                                top: screenHeight * 100 / 866,
+                                left: screenWidth * 110 / 398,
                                 child: Icon(
                                   Icons.cloud_outlined,
                                   size: screenWidth * 30 / 398,
@@ -232,8 +238,6 @@ class _HomePageState extends State<HomePage> {
                                     },
                                     top: screenHeight * 18 / 866,
                                     left: screenWidth * 80 / 398,
-                                    screenHeight: screenHeight,
-                                    screenWidth: screenWidth,
                                     width: screenWidth * 60/398,
                                     height: screenHeight * 30/866,
                                     fontSize: screenWidth * 12 / 398,
@@ -274,8 +278,6 @@ class _HomePageState extends State<HomePage> {
                                       },
                                       top: screenHeight * 18 / 866,
                                       left: screenWidth * 80 / 398,
-                                      screenHeight: screenHeight,
-                                      screenWidth: screenWidth,
                                       width: screenWidth * 60/398,
                                       height: screenHeight * 30/866,
                                       fontSize: screenWidth * 12 / 398,
@@ -326,8 +328,6 @@ class _HomePageState extends State<HomePage> {
                                     },
                                     top: screenHeight * 18 / 866,
                                     left: screenWidth * 80 / 398,
-                                    screenHeight: screenHeight,
-                                    screenWidth: screenWidth,
                                     width: screenWidth * 60/398,
                                     height: screenHeight * 30/866,
                                     fontSize: screenWidth * 12 / 398,
@@ -368,8 +368,6 @@ class _HomePageState extends State<HomePage> {
                                       },
                                       top: screenHeight * 18 / 866,
                                       left: screenWidth * 80 / 398,
-                                      screenHeight: screenHeight,
-                                      screenWidth: screenWidth,
                                       width: screenWidth * 60/398,
                                       height: screenHeight * 30/866,
                                       fontSize: screenWidth * 12 / 398,

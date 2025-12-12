@@ -1,7 +1,7 @@
 #include "room1.h"
 
-#include "../dataModel.h"
-#include "../utilities.h"
+#include "dataModel.h"
+#include "utilities.h"
 
 namespace room1 {
     void updateLed() {

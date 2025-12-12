@@ -1,34 +1,3 @@
-    #include "HTTP_manager.h"
-    #include <HTTPClient.h>
-    #include <ArduinoJson.h>
-
-    namespace http {
-
-        static HTTPClient httpClient;
-        static bool clientInitialized = false;
-        static std::map<String, String> cache;
-        static const unsigned long CACHE_DURATION = 500;
-        static std::map<String, unsigned long> cacheTime;
-
-        void initClient() {
-            if (!clientInitialized) {
-                httpClient.setReuse(true);
-                httpClient.setTimeout(2000);
-                clientInitialized = true;
-            }
-        }
-
-        bool send_batch(const std::vector<std::pair<String, String>>& data) {
-            if (data.empty()) return false;
-
-            initClient();
-            httpClient.begin("http://10.205.248.200:5000/esp1");
-            httpClient.addHeader("Content-Type", "application/json");
-
-            DynamicJsonDocument doc(2048);
-
-            for (const auto& pair : data) {
-                doc[pair.first] = pair.second.toInt();
             }
 
             String payload;
@@ -55,7 +24,7 @@
             if (keys.empty()) return results;
 
             initClient();
-            httpClient.begin("http://10.205.248.200:5000/esp1");
+            httpClient.begin(SERVER_URL_GET);
 
             int code = httpClient.GET();
 

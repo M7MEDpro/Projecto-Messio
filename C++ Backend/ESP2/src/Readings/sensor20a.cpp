@@ -1,6 +1,5 @@
-#include "Sensor20A_manager.h"
+#include "sensor20a.h"
 #include <Arduino.h>
-#include "Connections/HTTP_manager.h"
 
 namespace sensor20a {
     int SENSOR_PIN = 0;
@@ -13,7 +12,8 @@ namespace sensor20a {
         pinMode(SENSOR_PIN, INPUT);
     }
 
-    void sensor20a_read() {
+    std::vector<std::pair<String, String>> sensor20a_read() {
+        std::vector<std::pair<String, String>> updates;
         int val = digitalRead(SENSOR_PIN);
 
         if (val != lastState) {
@@ -21,8 +21,9 @@ namespace sensor20a {
                 lastState = val;
                 lastChangeTime = millis();
                 float power = val * VOLTAGE;
-                http::send_batch("S20A", String(power));
+                updates.push_back({"S20A", String(power)});
             }
         }
+        return updates;
     }
 }

@@ -1,6 +1,7 @@
 #include "HTTP_manager.h"
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include "NetworkConfig.h"
 
 namespace http {
 
@@ -13,7 +14,7 @@ namespace http {
     void initClient() {
         if (!clientInitialized) {
             httpClient.setReuse(true);
-            httpClient.setTimeout(2000);
+            httpClient.setTimeout(500);
             clientInitialized = true;
         }
     }
@@ -22,7 +23,7 @@ namespace http {
         if (data.empty()) return false;
 
         initClient();
-        httpClient.begin("http://192.168.1.200:5000/esp2");
+        httpClient.begin(SERVER_URL_PUT);
         httpClient.addHeader("Content-Type", "application/json");
 
         DynamicJsonDocument doc(2048);
@@ -55,7 +56,7 @@ namespace http {
         if (keys.empty()) return results;
 
         initClient();
-        httpClient.begin("http://192.168.1.200:5000/esp2");
+        httpClient.begin(SERVER_URL_GET);
 
         int code = httpClient.GET();
 

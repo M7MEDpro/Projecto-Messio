@@ -1,7 +1,7 @@
 #include "Sensor_manager.h"
-#include "Readings/IR_reading_manager.h"
-#include "Readings/LDR_reading_manager.h"
-#include "Connection/HTTP_manager.h"
+#include "IR_reading_manager.h"
+#include "LDR_reading_manager.h"
+#include "HTTP_manager.h"
 
 namespace sensors {
 

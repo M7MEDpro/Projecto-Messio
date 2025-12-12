@@ -1,7 +1,7 @@
 #include "homeAway.h"
 
-#include "../alarmManager.h"
-#include "../dataModel.h"
+#include "alarmManager.h"
+#include "dataModel.h"
 
 namespace homeAway {
     int alarmStats =0;

@@ -3,6 +3,7 @@
 #include "nlohmann/json.hpp"
 #include "httplib.h"
 #include "serverConfig.h"
+#include "utilities.h"
 
 namespace server {
 
@@ -11,13 +12,13 @@ namespace server {
             try {
                 auto json = nlohmann::json::parse(req.body);
                 for (auto& [key, val] : json.items()) {
-                    if (key == "LDR0") esp1::LDR0 = val.get<int>();
-                    else if (key == "LDR1") esp1::LDR1 = val.get<int>();
-                    else if (key == "M0") esp1::M0 = val.get<int>();
-                    else if (key == "M1") esp1::M1 = val.get<int>();
-                    else if (key == "M2") esp1::M2 = val.get<int>();
-                    else if (key == "M3") esp1::M3 = val.get<int>();
-                    else if (key == "M4") esp1::M4 = val.get<int>();
+                    if (key == "LDR0") esp1::LDR0 = jsonToNum(val);
+                    else if (key == "LDR1") esp1::LDR1 = jsonToNum(val);
+                    else if (key == "M0") esp1::M0 = jsonToNum(val);
+                    else if (key == "M1") esp1::M1 = jsonToNum(val);
+                    else if (key == "M2") esp1::M2 = jsonToNum(val);
+                    else if (key == "M3") esp1::M3 = utilities::jsonToNum(val);
+                    else if (key == "M4") esp1::M4 = utilities::jsonToNum(val);
                 }
                 res.set_content("OK", "text/plain");
             } catch (const std::exception& e) {
@@ -44,11 +45,11 @@ namespace server {
             try {
                 auto json = nlohmann::json::parse(req.body);
                 for (auto& [key, val] : json.items()) {
-                    if (key == "F1") esp2::F1 = val.get<int>();
-                    else if (key == "F2") esp2::F2 = val.get<int>();
-                    else if (key == "F3") esp2::F3 = val.get<int>();
-                    else if (key == "F4") esp2::F4 = val.get<int>();
-                    else if (key == "F5") esp2::F5 = val.get<int>();
+                    if (key == "F1") esp2::F1 = utilities::jsonToNum(val);
+                    else if (key == "F2") esp2::F2 = utilities::jsonToNum(val);
+                    else if (key == "F3") esp2::F3 = utilities::jsonToNum(val);
+                    else if (key == "F4") esp2::F4 = utilities::jsonToNum(val);
+                    else if (key == "F5") esp2::F5 = utilities::jsonToNum(val);
                 }
                 res.set_content("OK", "text/plain");
             } catch (const std::exception& e) {
@@ -64,7 +65,7 @@ namespace server {
             j["l2"] = esp2::l2;
             j["l3"] = esp2::l3;
             j["l4"] = esp2::l4;
-            j["mg"] = esp2::mg;
+            j["GD"] = esp2::mg;
             res.set_content(j.dump(), "application/json");
         });
     }
@@ -75,47 +76,48 @@ namespace server {
                 auto json = nlohmann::json::parse(req.body);
                 for (auto& [key, val] : json.items()) {
                     // Home Modes
-                    if (key == "homeAway") mobile_app::homeAway = val.get<int>();
-                    else if (key == "bedTimeMode") mobile_app::bedTimeMode = val.get<int>();
-                    else if (key == "powerSavingMode") mobile_app::powerSavingMode = val.get<int>();
-                    else if (key == "EmergencyMode") mobile_app::EmergencyMode = val.get<int>();
+                    if (key == "homeAway") mobile_app::homeAway = utilities::jsonToNum(val);
+                    else if (key == "bedTimeMode") mobile_app::bedTimeMode = utilities::jsonToNum(val);
+                    else if (key == "powerSavingMode") mobile_app::powerSavingMode = utilities::jsonToNum(val);
+                    else if (key == "EmergencyMode") mobile_app::EmergencyMode = utilities::jsonToNum(val);
 
                     // Room 1
-                    else if (key == "brightnessRoom1") mobile_app::room1::brightness = val.get<int>();
-                    else if (key == "modeRoom1") mobile_app::room1::mode = val.get<int>();
-                    else if (key == "ldrRoom1") mobile_app::room1::ldr = val.get<int>();
-                    else if (key == "irRoom1") mobile_app::room1::ir = val.get<int>();
-                    else if (key == "alarmModeRoom1") mobile_app::room1::alarmMode = val.get<int>();
+                    else if (key == "brightnessRoom1") mobile_app::room1::brightness = utilities::jsonToNum(val);
+                    else if (key == "modeRoom1") mobile_app::room1::mode = utilities::jsonToNum(val);
+                    else if (key == "ldrRoom1") mobile_app::room1::ldr = utilities::jsonToNum(val);
+                    else if (key == "irRoom1") mobile_app::room1::ir = utilities::jsonToNum(val);
+                    else if (key == "alarmModeRoom1") mobile_app::room1::alarmMode = utilities::jsonToNum(val);
 
                     // Room 2
-                    else if (key == "brightnessRoom2") mobile_app::room2::brightness = val.get<int>();
-                    else if (key == "modeRoom2") mobile_app::room2::mode = val.get<int>();
-                    else if (key == "ldrRoom2") mobile_app::room2::ldr = val.get<int>();
-                    else if (key == "irRoom2") mobile_app::room2::ir = val.get<int>();
-                    else if (key == "alarmModeRoom2") mobile_app::room2::alarmMode = val.get<int>();
+                    else if (key == "brightnessRoom2") mobile_app::room2::brightness = utilities::jsonToNum(val);
+                    else if (key == "modeRoom2") mobile_app::room2::mode = utilities::jsonToNum(val);
+                    else if (key == "ldrRoom2") mobile_app::room2::ldr = utilities::jsonToNum(val);
+                    else if (key == "irRoom2") mobile_app::room2::ir = utilities::jsonToNum(val);
+                    else if (key == "alarmModeRoom2") mobile_app::room2::alarmMode = utilities::jsonToNum(val);
 
                     // Reception
-                    else if (key == "brightnessReception") mobile_app::reception::brightness = val.get<int>();
-                    else if (key == "modeReception") mobile_app::reception::mode = val.get<int>();
-                    else if (key == "ldrReception") mobile_app::reception::ldr = val.get<int>();
-                    else if (key == "irReception") mobile_app::reception::ir = val.get<int>();
-                    else if (key == "alarmModeReception") mobile_app::reception::alarmMode = val.get<int>();
+                    else if (key == "brightnessReception") mobile_app::reception::brightness = utilities::jsonToNum(val);
+                    else if (key == "modeReception") mobile_app::reception::mode = utilities::jsonToNum(val);
+                    else if (key == "ldrReception") mobile_app::reception::ldr = utilities::jsonToNum(val);
+                    else if (key == "irReception") mobile_app::reception::ir = utilities::jsonToNum(val);
+                    else if (key == "alarmModeReception") mobile_app::reception::alarmMode = utilities::jsonToNum(val);
 
                     // Garage
-                    else if (key == "brightnessGarage") mobile_app::garage::brightness = val.get<int>();
-                    else if (key == "modeGarage") mobile_app::garage::mode = val.get<int>();
-                    else if (key == "ldrGarage") mobile_app::garage::ldr = val.get<int>();
-                    else if (key == "irGarage") mobile_app::garage::ir = val.get<int>();
-                    else if (key == "alarmModeGarage") mobile_app::garage::alarmMode = val.get<int>();
+                    else if (key == "brightnessGarage") mobile_app::garage::brightness = utilities::jsonToNum(val);
+                    else if (key == "modeGarage") mobile_app::garage::mode = utilities::jsonToNum(val);
+                    else if (key == "ldrGarage") mobile_app::garage::ldr = utilities::jsonToNum(val);
+                    else if (key == "irGarage") mobile_app::garage::ir = utilities::jsonToNum(val);
+                    else if (key == "alarmModeGarage") mobile_app::garage::alarmMode = utilities::jsonToNum(val);
 
                     // Outer LED
-                    else if (key == "brightnessOuterLed") mobile_app::outerLed::brightness = val.get<int>();
-                    else if (key == "modeOuterLed") mobile_app::outerLed::mode = val.get<int>();
-                    else if (key == "ldrOuterLed") mobile_app::outerLed::ldr = val.get<int>();
+                    else if (key == "brightnessOuterLed") mobile_app::outerLed::brightness = utilities::jsonToNum(val);
+                    else if (key == "modeOuterLed") mobile_app::outerLed::mode = utilities::jsonToNum(val);
+                    else if (key == "ldrOuterLed") mobile_app::outerLed::ldr = utilities::jsonToNum(val);
 
                     // Doors
-                    else if (key == "mainDoor") esp1::servo = val.get<int>();
-                    else if (key == "garageDoor") esp2::mg = val.get<int>();
+                    else if (key == "mainDoor") esp1::servo = utilities::jsonToNum(val);
+                    else if (key == "servo") esp1::servo = utilities::jsonToNum(val);
+                    else if (key == "garageDoor") esp2::mg = utilities::jsonToNum(val);
                 }
                 res.set_content("OK", "text/plain");
             } catch (const std::exception& e) {
@@ -176,11 +178,10 @@ namespace server {
             j["modeOuterLed"] = mobile_app::outerLed::mode;
             j["ldrOuterLed"] = mobile_app::outerLed::ldr;
 
-            // Doors (Mapped to ESP variables)
+            // Doors 
             j["mainDoor"] = esp1::servo;
             j["garageDoor"] = esp2::mg;
 
-            // Alarm Status (Included here too just in case)
             j["AlarmStatues"] = esp1::buzz;
 
             res.set_content(j.dump(), "application/json");

@@ -49,17 +49,17 @@ namespace esp2 {
 }
 namespace mobile_app {
     //Home modes
-    bool homeAway = false; // post
-    bool bedTimeMode = false; // post
-    bool powerSavingMode = false;// post
-    bool EmergencyMode = false; //post
+    int homeAway = 0; // post
+    int bedTimeMode = 0; // post
+    int powerSavingMode = 0;// post
+    int EmergencyMode = 0; //post
     //Room1
     namespace  room1 {
         int brightness = 0; //post
         int mode = 0; // 0 is off 1 is on 2 is auto //post
-        bool ldr = false;//post
-        bool ir =  false; //post
-        bool alarmMode = false; //post
+        int ldr = 0;//post
+        int ir =  0; //post
+        int alarmMode = 0; //post
 
     }
 
@@ -67,31 +67,31 @@ namespace mobile_app {
     namespace room2 {
         int brightness = 0; //post
         int mode = 0; // 0 is off 1 is on 2 is auto //post
-        bool ldr = false; //post
-        bool ir =  false; //post
-        bool alarmMode = false; //post
+        int ldr = 0; //post
+        int ir =  0; //post
+        int alarmMode = 0; //post
 
 
     }
     namespace reception {
         int brightness = 0; //post
         int mode = 0; // 0 is off 1 is on 2 is auto //post
-        bool ldr = false; //post
-        bool ir =  false; //post
-        bool alarmMode = false; //post
+        int ldr = 0; //post
+        int ir =  0; //post
+        int alarmMode = 0; //post
     }
     namespace garage {
         int brightness = 0; //post
         int mode = 0; // 0 is off 1 is on 2 is auto //post
-        bool ldr = false; //post
-        bool ir  = false; //post
-        bool alarmMode = false; //post
+        int ldr = 0; //post
+        int ir  = 0; //post
+        int alarmMode = 0; //post
     }
     namespace outerLed {
         int brightness = 0; //post
         int mode = 0; // 0 is off 1 is on 2 is auto //post
-        bool ldr = false; //post
-        bool ir =  false; //post
+        int ldr = 0; //post
+        int ir =  0; //post
     }
 
 

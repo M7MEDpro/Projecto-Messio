@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../managers/doors_Manager.dart';
 import 'CustomAppBar.dart';
 
 class SecurityPage extends StatefulWidget {
@@ -14,6 +15,8 @@ bool isGarageDoorClicked = false;
 class _SecurityPageState extends State<SecurityPage> {
   String garageDoorStatus = "CLOSED";
   String homeDoorStatus = "CLOSED";
+
+  final doorsManager _doorsManager = doorsManager();
 
   @override
   Widget build(BuildContext context) {
@@ -185,8 +188,10 @@ class _SecurityPageState extends State<SecurityPage> {
                           setState(() {
                             if (isGarageDoorClicked) {
                               garageDoorStatus = "CLOSED";
+                              _doorsManager.closeGarage(0);
                             } else {
                               homeDoorStatus = "CLOSED";
+                              _doorsManager.closeMain(0);
                             }
                           });
                         },
@@ -218,8 +223,10 @@ class _SecurityPageState extends State<SecurityPage> {
                           setState(() {
                             if (isGarageDoorClicked) {
                               garageDoorStatus = "OPEN";
+                              _doorsManager.openGarage(1);
                             } else {
                               homeDoorStatus = "OPEN";
+                              _doorsManager.openMain(1);
                             }
                           });
                         },

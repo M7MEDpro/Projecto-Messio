@@ -129,24 +129,66 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
-                              FutureBuilder(
-                                future: Weather.getCurrentTemp(),
-                                builder: (context, asyncSnapshot) {
-                                  return Positioned(
-                                    top: screenHeight * 49 / 866,
-                                    left: screenWidth * 35 / 398,
-                                    child: Text(
-                                      '${asyncSnapshot.data}°C',
-                                      style: TextStyle(
-                                        fontSize: screenWidth * 38 / 398,
-                                        fontWeight: FontWeight.w300,
-                                        color: Colors.black87,
-                                      ),
+                          FutureBuilder<double>(
+                            future: Weather.getCurrentTemp(),
+                            builder: (context, asyncSnapshot) {
+                              if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+                                return Positioned(
+                                  top: screenHeight * 49 / 866,
+                                  left: screenWidth * 35 / 398,
+                                  child: Text(
+                                    'Loading...',
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 25 / 398,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black87,
                                     ),
-                                  );
-                                }
-                              ),
-                              Positioned(
+                                  ),
+                                );
+                              } else if (asyncSnapshot.hasError) {
+                                return Positioned(
+                                  top: screenHeight * 49 / 866,
+                                  left: screenWidth * 35 / 398,
+                                  child: Text(
+                                    'Error!',
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 38 / 398,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                );
+                              } else if (!asyncSnapshot.hasData) {
+                                return Positioned(
+                                  top: screenHeight * 49 / 866,
+                                  left: screenWidth * 35 / 398,
+                                  child: Text(
+                                    'No data',
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 38 / 398,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Positioned(
+                                  top: screenHeight * 49 / 866,
+                                  left: screenWidth * 35 / 398,
+                                  child: Text(
+                                    '${asyncSnapshot.data}°C',
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 38 / 398,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+
+                          Positioned(
                                 top: screenHeight * 100 / 866,
                                 left: screenWidth * 110 / 398,
                                 child: Icon(

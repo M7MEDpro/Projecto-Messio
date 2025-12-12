@@ -36,7 +36,7 @@ namespace gm {
     }
 
     void garagedoor_update() {
-        if (motorRunning && (millis() - motorStartTime >= 3000)) {
+        if (motorRunning && (millis() - motorStartTime >= 2000)) {
             stopMotor();
         }
     }
@@ -48,9 +48,9 @@ namespace gm {
 
         lastCommand = command;
 
-        if (command == "open") {
+        if (command == "1") {
             runMotor(true);
-        } else if (command == "close") {
+        } else if (command == "0") {
             runMotor(false);
         }
     }

@@ -1,34 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:smart_homr/managers/home_Manager.dart';
 import 'package:smart_homr/widgets/CustomSwitch.dart';
 
-import '../data/rooms/office_room.dart';
-import '../data/rooms/bedroom_room.dart';
-import '../data/rooms/living_room.dart';
-import '../data/rooms/garage_room.dart';
-import '../data/rooms/yard_room.dart';
 
-import '../managers/rooms/office_room.dart';
-import '../managers/rooms/bedroom_room_manager.dart';
-import '../managers/rooms/living_room_manager.dart';
-import '../managers/rooms/garage_room_manager.dart';
-import '../managers/rooms/yard_room_manager.dart';
+import '../managers/rooms/room.dart';
 
 import 'CustomAppBar.dart';
 
-// Initialize all room data
-OfficeRoomData officeData = OfficeRoomData();
-BedroomRoomData bedroomData = BedroomRoomData();
-LivingRoomData livingData = LivingRoomData();
-GarageRoomData garageData = GarageRoomData();
-YardRoomData yardData = YardRoomData();
-
-// Initialize all room managers
-OfficeRoomManager officeManager = OfficeRoomManager(officeData);
-BedroomRoomManager bedroomManager = BedroomRoomManager(bedroomData);
-LivingRoomManager livingManager = LivingRoomManager(livingData);
-GarageRoomManager garageManager = GarageRoomManager(garageData);
-YardRoomManager yardManager = YardRoomManager(yardData);
 
 class LightingPage extends StatefulWidget {
   const LightingPage({super.key});
@@ -38,26 +17,20 @@ class LightingPage extends StatefulWidget {
 }
 
 class _LightingPageState extends State<LightingPage> {
-  Timer? _officeTimer;
-  Timer? _bedroomTimer;
-  Timer? _livingTimer;
-  Timer? _garageTimer;
-  Timer? _yardTimer;
+  final Map<String, Timer> _debounceTimers = {};
 
   @override
   void dispose() {
-    _officeTimer?.cancel();
-    _bedroomTimer?.cancel();
-    _livingTimer?.cancel();
-    _garageTimer?.cancel();
-    _yardTimer?.cancel();
+    for (var timer in _debounceTimers.values) {
+      timer.cancel();
+    }
     super.dispose();
   }
 
-  void _debounceBrightness(Timer? timer, Function(int) setBrightness, int value) {
-    timer?.cancel();
-    timer = Timer(const Duration(milliseconds: 300), () {
-      setBrightness(value);
+  void _debounceSetBrightness(String roomName, RoomManager manager, int value) {
+    _debounceTimers[roomName]?.cancel();
+    _debounceTimers[roomName] = Timer(const Duration(milliseconds: 300), () {
+      manager.setBrightness(value);
     });
   }
 
@@ -68,11 +41,11 @@ class _LightingPageState extends State<LightingPage> {
     required dynamic roomManager,
     required double screenHeight,
     required double screenWidth,
-    required Timer? brightnessTimer,
-    required Function(Timer?) onTimerUpdate,
     bool hasMotion = true,
   }) {
     bool isAutoMode = roomData.mode == 2;
+    bool isPowerSaving = HomeManager().homeModes.powerSaving;
+    double maxBrightness = isPowerSaving ? 30.0 : 100.0;
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -225,19 +198,17 @@ class _LightingPageState extends State<LightingPage> {
                         overlayRadius: screenHeight * 8 / 866),
                   ),
                   child: Slider(
-                    value: roomData.brightness.toDouble(),
-                    onChanged: (value) {
+                    value: isPowerSaving ? 30.0 : roomData.brightness.toDouble(),
+                    onChanged: isPowerSaving ? null : (value) {
                       setState(() {
+                         // Clamp visual value
+                        if (value > maxBrightness) value = maxBrightness;
                         roomData.brightness = value.toInt();
                       });
-
-                      brightnessTimer?.cancel();
-                      onTimerUpdate(Timer(const Duration(milliseconds: 300), () {
-                        roomManager.setBrightness(value.toInt());
-                      }));
+                      _debounceSetBrightness(roomName, roomManager, value.toInt());
                     },
                     min: 0.0,
-                    max: 100.0,
+                    max: 100.0, // Keep scale consistent
                   ),
                 ),
               ),
@@ -275,57 +246,47 @@ class _LightingPageState extends State<LightingPage> {
             buildRoomContainer(
               roomName: "OFFICE",
               imagePath: "assets/images/office.png",
-              roomData: officeData,
-              roomManager: officeManager,
+              roomData: HomeManager().officeData,
+              roomManager: HomeManager().officeManager,
               screenHeight: screenHeight,
               screenWidth: screenWidth,
-              brightnessTimer: _officeTimer,
-              onTimerUpdate: (timer) => _officeTimer = timer,
             ),
             // Bed Room
             buildRoomContainer(
               roomName: "BED ROOM",
               imagePath: "assets/images/bedroom1.png",
-              roomData: bedroomData,
-              roomManager: bedroomManager,
+              roomData: HomeManager().bedroomData,
+              roomManager: HomeManager().bedroomManager,
               screenHeight: screenHeight,
               screenWidth: screenWidth,
-              brightnessTimer: _bedroomTimer,
-              onTimerUpdate: (timer) => _bedroomTimer = timer,
             ),
             // Living Room
             buildRoomContainer(
               roomName: "LIVING ROOM",
               imagePath: "assets/images/living.png",
-              roomData: livingData,
-              roomManager: livingManager,
+              roomData: HomeManager().livingData,
+              roomManager: HomeManager().livingManager,
               screenHeight: screenHeight,
               screenWidth: screenWidth,
-              brightnessTimer: _livingTimer,
-              onTimerUpdate: (timer) => _livingTimer = timer,
             ),
             // Garage
             buildRoomContainer(
               roomName: "GARAGE",
               imagePath: "assets/images/garage.png",
-              roomData: garageData,
-              roomManager: garageManager,
+              roomData: HomeManager().garageData,
+              roomManager: HomeManager().garageManager,
               screenHeight: screenHeight,
               screenWidth: screenWidth,
-              brightnessTimer: _garageTimer,
-              onTimerUpdate: (timer) => _garageTimer = timer,
             ),
             // Yard (no motion sensor)
             buildRoomContainer(
               roomName: "YARD",
               imagePath: "assets/images/yard.png",
-              roomData: yardData,
-              roomManager: yardManager,
+              roomData: HomeManager().yardData,
+              roomManager: HomeManager().yardManager,
               screenHeight: screenHeight,
               screenWidth: screenWidth,
               hasMotion: false,
-              brightnessTimer: _yardTimer,
-              onTimerUpdate: (timer) => _yardTimer = timer,
             ),
           ],
         ),

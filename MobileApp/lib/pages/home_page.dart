@@ -5,9 +5,6 @@ import 'package:smart_homr/services/weather_service.dart';
 import '../widgets/CustomSwitch.dart';
 import '../data/home_Modes_Data.dart';
 
-HomeManager homeManager = HomeManager();
-HomeModesData homeModes = homeManager.getHomeModes();
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -17,6 +14,14 @@ class HomePage extends StatefulWidget {
 
 
 class _HomePageState extends State<HomePage> {
+  HomeManager homeManager = HomeManager();
+  late HomeModesData homeModes;
+
+  @override
+  void initState() {
+    super.initState();
+    homeModes = homeManager.getHomeModes();
+  }
 
   @override
   Widget build(BuildContext context) {

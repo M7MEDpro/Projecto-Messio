@@ -7,4 +7,5 @@ class HomeModesData {
   bool bedTime = false;
   bool powerSaving = false;
   bool emergency = false;
+  double powerConsumption = 1.2;
 }

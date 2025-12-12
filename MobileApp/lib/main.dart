@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_homr/pages/NavigationBar.dart';
+import 'package:smart_homr/pages/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AppNavigationBar(),
+      home: LoginPage(),
     );
 
   }

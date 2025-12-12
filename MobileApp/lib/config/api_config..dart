@@ -1,8 +1,14 @@
-enum ApiBase {
-  local('192.168.1.104:5000');
+class Config {
+  static const String ip = "192.168.1.104";
+  static const int port = 5000;
+  static const String apiKey = "home12345";
+}
 
-  final String url;
-  const ApiBase(this.url);
+enum ApiBase {
+  local;
+
+  String get url => "${Config.ip}:${Config.port}";
+  static String get key => Config.apiKey;
 }
 
 enum ApiEndpoint {
@@ -13,4 +19,3 @@ enum ApiEndpoint {
   final String path;
   const ApiEndpoint(this.path);
 }
-

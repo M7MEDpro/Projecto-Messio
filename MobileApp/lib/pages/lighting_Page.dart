@@ -10,7 +10,8 @@ import 'CustomAppBar.dart';
 
 
 class LightingPage extends StatefulWidget {
-  const LightingPage({super.key});
+  final String username;
+  const LightingPage({super.key, required this.username});
 
   @override
   State<LightingPage> createState() => _LightingPageState();
@@ -239,7 +240,7 @@ class _LightingPageState extends State<LightingPage> {
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: "WELCOME HOME",
-        subtitle: "ABDO",
+        subtitle: widget.username.toUpperCase(),
         height: screenHeight * 0.20,
       ),
       body: Container(

@@ -2,28 +2,61 @@
 #include <Arduino.h>
 
 namespace sensor20a {
-    int SENSOR_PIN = 0;
-    int lastState = -1;
-    unsigned long lastChangeTime = 0;
-    const unsigned long DEBOUNCE_DELAY = 50;
-    const float VOLTAGE = 6.1;
+
+    
+    const int SENSOR_PIN = 33; 
+    const float SENSITIVITY = 0.100;
+    double voltage = 0;
+    double vRMS = 0;
+    double AmpsRMS = 0;
 
     void sensor20a_init() {
         pinMode(SENSOR_PIN, INPUT);
     }
 
-    std::vector<std::pair<String, String>> sensor20a_read() {
-        std::vector<std::pair<String, String>> updates;
-        int val = digitalRead(SENSOR_PIN);
+    float getVPP() {
+        float result;
+        int readValue;             
+        int maxValue = 0;         
+        int minValue = 4095;    
+        
+        uint32_t start_time = millis();
 
-        if (val != lastState) {
-            if (millis() - lastChangeTime > DEBOUNCE_DELAY) {
-                lastState = val;
-                lastChangeTime = millis();
-                float power = val * VOLTAGE;
-                updates.push_back({"S20A", String(power)});
+        while((millis()-start_time) < 1000) 
+        {
+            readValue = analogRead(SENSOR_PIN);
+            if (readValue > maxValue) 
+            {
+                maxValue = readValue;
+            }
+            if (readValue < minValue) 
+            {
+                minValue = readValue;
             }
         }
+        
+
+        result = ((maxValue - minValue) * 3.3) / 4095.0;
+        
+        return result;
+    }
+
+    std::vector<std::pair<String, String>> sensor20a_read() {
+        std::vector<std::pair<String, String>> updates;
+        
+        voltage = getVPP();
+        
+        vRMS = (voltage / 2.0) * 0.707; 
+        
+
+        AmpsRMS = (vRMS * 1000) / 100; /
+        float power = 220 * AmpsRMS;
+        
+        if (power < 0) power = 0;
+        
+
+        
+        updates.push_back({"S20A", String(power)});
         return updates;
     }
 }

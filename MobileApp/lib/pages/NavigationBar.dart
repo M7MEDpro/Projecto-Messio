@@ -4,7 +4,8 @@ import 'home_page.dart';
 import 'lighting_Page.dart';
 
 class AppNavigationBar extends StatefulWidget {
-  const AppNavigationBar({super.key});
+  final String username;
+  const AppNavigationBar({super.key, required this.username});
 
   @override
   State<AppNavigationBar> createState() => _AppNavigationBarState();
@@ -19,11 +20,17 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
     });
   }
 
-  final List<Widget> _pages = [
-    const HomePage(),
-    const LightingPage(),
-    const SecurityPage(),
-  ];
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      HomePage(username: widget.username),
+      LightingPage(username: widget.username),
+      SecurityPage(username: widget.username),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {

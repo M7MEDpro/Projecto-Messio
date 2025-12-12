@@ -54,35 +54,52 @@ class HomeManager{
     api.put("bedTimeMode", apiValue);
   }
   
-  setPowerSaving(bool value){
+  Future<void> setPowerSaving(bool value) async {
     homeModes.powerSaving = value;
     String apiValue = (value ? 1 : 0).toString();
     api.put("powerSavingMode", apiValue);
 
     if (value) {
-      // Save current brightness and set to 30
       _savedBrightness['office'] = officeData.brightness;
       officeManager.setBrightness(30);
+      await Future.delayed(const Duration(milliseconds: 20));
 
       _savedBrightness['bedroom'] = bedroomData.brightness;
       bedroomManager.setBrightness(30);
+      await Future.delayed(const Duration(milliseconds: 20));
 
       _savedBrightness['living'] = livingData.brightness;
       livingManager.setBrightness(30);
+      await Future.delayed(const Duration(milliseconds: 20));
 
       _savedBrightness['garage'] = garageData.brightness;
       garageManager.setBrightness(30);
+      await Future.delayed(const Duration(milliseconds: 20));
 
       _savedBrightness['yard'] = yardData.brightness;
       yardManager.setBrightness(30);
 
     } else {
       // Restore brightness
-      if (_savedBrightness.containsKey('office')) officeManager.setBrightness(_savedBrightness['office']!);
-      if (_savedBrightness.containsKey('bedroom')) bedroomManager.setBrightness(_savedBrightness['bedroom']!);
-      if (_savedBrightness.containsKey('living')) livingManager.setBrightness(_savedBrightness['living']!);
-      if (_savedBrightness.containsKey('garage')) garageManager.setBrightness(_savedBrightness['garage']!);
-      if (_savedBrightness.containsKey('yard')) yardManager.setBrightness(_savedBrightness['yard']!);
+      if (_savedBrightness.containsKey('office')) {
+        officeManager.setBrightness(_savedBrightness['office']!);
+        await Future.delayed(const Duration(milliseconds: 20));
+      }
+      if (_savedBrightness.containsKey('bedroom')) {
+        bedroomManager.setBrightness(_savedBrightness['bedroom']!);
+        await Future.delayed(const Duration(milliseconds: 20));
+      }
+      if (_savedBrightness.containsKey('living')) {
+        livingManager.setBrightness(_savedBrightness['living']!);
+        await Future.delayed(const Duration(milliseconds: 20));
+      }
+      if (_savedBrightness.containsKey('garage')) {
+        garageManager.setBrightness(_savedBrightness['garage']!);
+        await Future.delayed(const Duration(milliseconds: 20));
+      }
+      if (_savedBrightness.containsKey('yard')) {
+        yardManager.setBrightness(_savedBrightness['yard']!);
+      }
 
       _savedBrightness.clear();
     }
@@ -102,6 +119,7 @@ class HomeManager{
         homeModes.bedTime = response['bedTimeMode'] == 1;
         homeModes.powerSaving = response['powerSavingMode'] == 1;
         homeModes.emergency = response['EmergencyMode'] == 1;
+        homeModes.powerConsumption = (response['powerConsumption'] as num).toDouble();
       }
     } catch (e) {
       print('Error syncing home modes: $e');

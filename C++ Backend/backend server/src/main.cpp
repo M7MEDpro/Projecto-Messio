@@ -10,6 +10,7 @@
 #include "reception.h"
 #include "room1.h"
 #include "room2.h"
+#include "serverConfig.h"
 
 void mainLoop() {
     while (true) {
@@ -30,6 +31,7 @@ void mainLoop() {
 }
 int main()
 {
+    config::loadConfig();
 
     std::thread mainLoopThread(mainLoop);
     mainLoopThread.detach();

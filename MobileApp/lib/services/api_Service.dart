@@ -16,7 +16,10 @@ class ApiService{
 
       await http.put(
         Uri.http(ApiBase.local.url, ApiEndpoint.mobile.path),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Auth-Key': ApiBase.key,
+        },
         body: jsonBody,
       );
     } on Exception catch (e) {
@@ -30,7 +33,19 @@ class ApiService{
         '${ApiEndpoint.mobile.path}/$endpoint'
     );
 
-    final response = await http.get(uri);
+    final response = await http.get(uri, headers: {
+      'Auth-Key': ApiBase.key,
+    });
+    return json.decode(response.body);
+  }
+
+  Future<Map<String, dynamic>> validateKey(String key) async {
+    final uri = Uri.http(ApiBase.local.url, '/auth/validate');
+    final response = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'key': key}),
+    );
     return json.decode(response.body);
   }
 }

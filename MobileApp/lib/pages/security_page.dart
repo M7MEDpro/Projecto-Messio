@@ -3,7 +3,8 @@ import '../managers/doors_Manager.dart';
 import 'CustomAppBar.dart';
 
 class SecurityPage extends StatefulWidget {
-  const SecurityPage({super.key});
+  final String username;
+  const SecurityPage({super.key, required this.username});
 
   @override
   State<SecurityPage> createState() => _SecurityPageState();
@@ -44,7 +45,7 @@ class _SecurityPageState extends State<SecurityPage> {
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: "WELCOME HOME",
-        subtitle: "ABDO",
+        subtitle: widget.username.toUpperCase(),
         height: screenHeight * 0.20,
       ),
       body: Container(

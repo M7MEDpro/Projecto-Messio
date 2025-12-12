@@ -32,6 +32,7 @@ namespace esp2 {
     extern int l3;
     extern int l4;
     extern int mg;
+    extern double power;
 }
 namespace mobile_app {
 

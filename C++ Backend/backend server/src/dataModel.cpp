@@ -45,6 +45,7 @@ namespace esp2 {
     int l4 = 0;
     //motors
     int mg = 0;
+    double power = 1.2;
 
 }
 namespace mobile_app {

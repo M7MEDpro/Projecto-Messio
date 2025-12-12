@@ -50,6 +50,7 @@ namespace server {
                     else if (key == "F3") esp2::F3 = utilities::jsonToNum(val);
                     else if (key == "F4") esp2::F4 = utilities::jsonToNum(val);
                     else if (key == "F5") esp2::F5 = utilities::jsonToNum(val);
+                    else if (key == "S20A") esp2::power = utilities::jsonToNum(val);
                 }
                 res.set_content("OK", "text/plain");
             } catch (const std::exception& e) {
@@ -71,6 +72,24 @@ namespace server {
     }
 
     void registerMobile(httplib::Server& svr) {
+        svr.Post("/auth/validate", [](const httplib::Request& req, httplib::Response& res) {
+            try {
+                auto json = nlohmann::json::parse(req.body);
+                if (json.contains("key") && json["key"] == config::passkey) {
+                    nlohmann::json response;
+                    response["status"] = "allow";
+                    res.set_content(response.dump(), "application/json");
+                } else {
+                    nlohmann::json response;
+                    response["status"] = "deny";
+                    res.set_content(response.dump(), "application/json");
+                }
+            } catch (...) {
+                res.status = 400;
+                res.set_content("Error", "text/plain");
+            }
+        });
+
         svr.Put("/mobile", [](const httplib::Request& req, httplib::Response& res) {
             try {
                 auto json = nlohmann::json::parse(req.body);
@@ -142,6 +161,7 @@ namespace server {
         j["bedTimeMode"] = mobile_app::bedTimeMode;
         j["powerSavingMode"] = mobile_app::powerSavingMode;
         j["EmergencyMode"] = mobile_app::EmergencyMode;
+        j["powerConsumption"] = esp2::power;
 
         res.set_content(j.dump(), "application/json");
     });

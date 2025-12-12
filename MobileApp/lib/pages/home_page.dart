@@ -6,7 +6,8 @@ import '../widgets/CustomSwitch.dart';
 import '../data/home_Modes_Data.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final String username;
+  const HomePage({super.key, required this.username});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SizedBox(height: screenHeight * 0.003),
                     Text(
-                      'ABDO',
+                      widget.username.toUpperCase(),
                       style: TextStyle(
                         fontSize: screenWidth * 0.06,
                         fontWeight: FontWeight.bold,
@@ -139,7 +140,29 @@ class _HomePageState extends State<HomePage> {
                               ),
                               FutureBuilder<double>(
                                 future: Weather.getCurrentTemp(),
+                                initialData: Weather.lastTemp,
                                 builder: (context, asyncSnapshot) {
+                                  // Determine if we have valid data to show
+                                  double? displayTemp;
+                                  if (asyncSnapshot.hasData && asyncSnapshot.data != 0.0) {
+                                    displayTemp = asyncSnapshot.data;
+                                  }
+
+                                  if (displayTemp != null) {
+                                    return Positioned(
+                                      top: screenHeight * 49 / 866,
+                                      left: screenWidth * 35 / 398,
+                                      child: Text(
+                                        '$displayTemp°C',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 38 / 398,
+                                          fontWeight: FontWeight.w300,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    );
+                                  }
+
                                   if (asyncSnapshot.connectionState == ConnectionState.waiting) {
                                     return Positioned(
                                       top: screenHeight * 49 / 866,
@@ -166,27 +189,15 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                                     );
-                                  } else if (!asyncSnapshot.hasData) {
-                                    return Positioned(
-                                      top: screenHeight * 49 / 866,
-                                      left: screenWidth * 35 / 398,
-                                      child: Text(
-                                        'No data',
-                                        style: TextStyle(
-                                          fontSize: screenWidth * 38 / 398,
-                                          fontWeight: FontWeight.w300,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    );
                                   } else {
-                                    return Positioned(
+                                     // Fallback
+                                     return Positioned(
                                       top: screenHeight * 49 / 866,
                                       left: screenWidth * 35 / 398,
                                       child: Text(
-                                        '${asyncSnapshot.data}°C',
+                                        'Loading...',
                                         style: TextStyle(
-                                          fontSize: screenWidth * 38 / 398,
+                                          fontSize: screenWidth * 25 / 398,
                                           fontWeight: FontWeight.w300,
                                           color: Colors.black87,
                                         ),
@@ -241,7 +252,7 @@ class _HomePageState extends State<HomePage> {
                                 top: screenHeight * 50 / 866,
                                 left: screenWidth * 225 / 398,
                                 child: Text(
-                                  '33',
+                                  homeModes.powerConsumption.toStringAsFixed(1),
                                   style: TextStyle(
                                     fontSize: screenWidth * 38 / 398,
                                     fontWeight: FontWeight.w300,
@@ -277,18 +288,19 @@ class _HomePageState extends State<HomePage> {
                               ),
                               child: Stack(
                                 children: [
-                                  CustomSwitch(
-                                    value: homeModes.homeAway,
-                                    onChanged: (newValue) {
-                                      homeManager.setHomeAway(newValue);
-                                      setState(() {});
-                                    },
-                                    top: screenHeight * 18 / 866,
-                                    left: screenWidth * 80 / 398,
-                                    width: screenWidth * 60/398,
-                                    height: screenHeight * 30/866,
-                                    fontSize: screenWidth * 12 / 398,
-                                  ),
+                                    CustomSwitch(
+                                      value: homeModes.homeAway,
+                                      onChanged: (newValue) async {
+                                        homeManager.setHomeAway(newValue);
+                                        await Future.delayed(const Duration(milliseconds: 200));
+                                        _syncData();
+                                      },
+                                      top: screenHeight * 18 / 866,
+                                      left: screenWidth * 80 / 398,
+                                      width: screenWidth * 60/398,
+                                      height: screenHeight * 30/866,
+                                      fontSize: screenWidth * 12 / 398,
+                                    ),
                                   Positioned(
                                     bottom: screenHeight * 20 / 866,
                                     left: screenWidth * 15 / 398,
@@ -317,9 +329,10 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     CustomSwitch(
                                       value: homeModes.bedTime,
-                                      onChanged: (newValue) {
+                                      onChanged: (newValue) async {
                                         homeManager.setBedTime(newValue);
-                                        setState(() {});
+                                        await Future.delayed(const Duration(milliseconds: 200));
+                                        _syncData();
                                       },
                                       top: screenHeight * 18 / 866,
                                       left: screenWidth * 80 / 398,
@@ -365,9 +378,10 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   CustomSwitch(
                                     value: homeModes.powerSaving,
-                                    onChanged: (newValue) {
-                                      homeManager.setPowerSaving(newValue);
-                                      setState(() {});
+                                    onChanged: (newValue) async {
+                                      await homeManager.setPowerSaving(newValue);
+                                      await Future.delayed(const Duration(milliseconds: 200));
+                                      _syncData();
                                     },
                                     top: screenHeight * 18 / 866,
                                     left: screenWidth * 80 / 398,
@@ -403,9 +417,10 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     CustomSwitch(
                                       value: homeModes.emergency,
-                                      onChanged: (newValue) {
+                                      onChanged: (newValue) async {
                                         homeManager.setEmergency(newValue);
-                                        setState(() {});
+                                        await Future.delayed(const Duration(milliseconds: 200));
+                                        _syncData();
                                       },
                                       top: screenHeight * 18 / 866,
                                       left: screenWidth * 80 / 398,

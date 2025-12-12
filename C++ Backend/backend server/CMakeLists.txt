@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
+
 project(backend LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -18,7 +19,13 @@ FetchContent_Declare(
         GIT_TAG v3.11.3
 )
 
-FetchContent_MakeAvailable(httplib json)
+FetchContent_Declare(
+        yamlcpp
+        GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
+        GIT_TAG 0.8.0
+)
+
+FetchContent_MakeAvailable(httplib json yamlcpp)
 
 include_directories(include)
 
@@ -49,14 +56,18 @@ add_executable(backend
         include/flameAlarm.h
         src/alarmManager.cpp
         include/alarmManager.h
+        src/serverConfig.cpp
 )
 
 target_link_libraries(backend
         PRIVATE
         httplib::httplib
         nlohmann_json::nlohmann_json
+        yaml-cpp
 )
 
 if(WIN32)
     target_link_libraries(backend PRIVATE ws2_32)
 endif()
+
+configure_file(src/config.yml config.yml COPYONLY)

@@ -12,11 +12,11 @@ namespace server {
             try {
                 auto json = nlohmann::json::parse(req.body);
                 for (auto& [key, val] : json.items()) {
-                    if (key == "LDR0") esp1::LDR0 = jsonToNum(val);
-                    else if (key == "LDR1") esp1::LDR1 = jsonToNum(val);
-                    else if (key == "M0") esp1::M0 = jsonToNum(val);
-                    else if (key == "M1") esp1::M1 = jsonToNum(val);
-                    else if (key == "M2") esp1::M2 = jsonToNum(val);
+                    if (key == "LDR0") esp1::LDR0 = utilities::jsonToNum(val);
+                    else if (key == "LDR1") esp1::LDR1 = utilities::jsonToNum(val);
+                    else if (key == "M0") esp1::M0 = utilities::jsonToNum(val);
+                    else if (key == "M1") esp1::M1 = utilities::jsonToNum(val);
+                    else if (key == "M2") esp1::M2 = utilities::jsonToNum(val);
                     else if (key == "M3") esp1::M3 = utilities::jsonToNum(val);
                     else if (key == "M4") esp1::M4 = utilities::jsonToNum(val);
                 }
@@ -134,58 +134,66 @@ namespace server {
             res.set_content(j.dump(), "application/json");
         });
 
-        // 2. GET for Full Sync (Everything)
-        // Path: /mobile/sync
-        svr.Get("/mobile/sync", [](const httplib::Request&, httplib::Response& res) {
-            nlohmann::json j;
+    // Path: /mobile/sync/home-modes
+    svr.Get("/mobile/sync/home-modes", [](const httplib::Request&, httplib::Response& res) {
+        nlohmann::json j;
 
-            // Global Home Modes
-            j["homeAway"] = mobile_app::homeAway;
-            j["bedTimeMode"] = mobile_app::bedTimeMode;
-            j["powerSavingMode"] = mobile_app::powerSavingMode;
-            j["EmergencyMode"] = mobile_app::EmergencyMode;
+        j["homeAway"] = mobile_app::homeAway;
+        j["bedTimeMode"] = mobile_app::bedTimeMode;
+        j["powerSavingMode"] = mobile_app::powerSavingMode;
+        j["EmergencyMode"] = mobile_app::EmergencyMode;
 
-            // Room 1
-            j["brightnessRoom1"] = mobile_app::room1::brightness;
-            j["modeRoom1"] = mobile_app::room1::mode;
-            j["ldrRoom1"] = mobile_app::room1::ldr;
-            j["irRoom1"] = mobile_app::room1::ir;
-            j["alarmModeRoom1"] = mobile_app::room1::alarmMode;
+        res.set_content(j.dump(), "application/json");
+    });
 
-            // Room 2
-            j["brightnessRoom2"] = mobile_app::room2::brightness;
-            j["modeRoom2"] = mobile_app::room2::mode;
-            j["ldrRoom2"] = mobile_app::room2::ldr;
-            j["irRoom2"] = mobile_app::room2::ir;
-            j["alarmModeRoom2"] = mobile_app::room2::alarmMode;
+    // 2. GET for All Rooms
+    // Path: /mobile/sync/rooms
+    svr.Get("/mobile/sync/rooms", [](const httplib::Request&, httplib::Response& res) {
+        nlohmann::json j;
 
-            // Reception
-            j["brightnessReception"] = mobile_app::reception::brightness;
-            j["modeReception"] = mobile_app::reception::mode;
-            j["ldrReception"] = mobile_app::reception::ldr;
-            j["irReception"] = mobile_app::reception::ir;
-            j["alarmModeReception"] = mobile_app::reception::alarmMode;
+        // Room 1
+        j["brightnessRoom1"] = mobile_app::room1::brightness;
+        j["modeRoom1"] = mobile_app::room1::mode;
+        j["ldrRoom1"] = mobile_app::room1::ldr;
+        j["irRoom1"] = mobile_app::room1::ir;
 
-            // Garage
-            j["brightnessGarage"] = mobile_app::garage::brightness;
-            j["modeGarage"] = mobile_app::garage::mode;
-            j["ldrGarage"] = mobile_app::garage::ldr;
-            j["irGarage"] = mobile_app::garage::ir;
-            j["alarmModeGarage"] = mobile_app::garage::alarmMode;
+        // Room 2
+        j["brightnessRoom2"] = mobile_app::room2::brightness;
+        j["modeRoom2"] = mobile_app::room2::mode;
+        j["ldrRoom2"] = mobile_app::room2::ldr;
+        j["irRoom2"] = mobile_app::room2::ir;
 
-            // Outer LED
-            j["brightnessOuterLed"] = mobile_app::outerLed::brightness;
-            j["modeOuterLed"] = mobile_app::outerLed::mode;
-            j["ldrOuterLed"] = mobile_app::outerLed::ldr;
+        // Reception
+        j["brightnessReception"] = mobile_app::reception::brightness;
+        j["modeReception"] = mobile_app::reception::mode;
+        j["ldrReception"] = mobile_app::reception::ldr;
+        j["irReception"] = mobile_app::reception::ir;
 
-            // Doors 
-            j["mainDoor"] = esp1::servo;
-            j["garageDoor"] = esp2::mg;
+        // Garage
+        j["brightnessGarage"] = mobile_app::garage::brightness;
+        j["modeGarage"] = mobile_app::garage::mode;
+        j["ldrGarage"] = mobile_app::garage::ldr;
+        j["irGarage"] = mobile_app::garage::ir;
 
-            j["AlarmStatues"] = esp1::buzz;
+        // Outer LED
+        j["brightnessOuterLed"] = mobile_app::outerLed::brightness;
+        j["modeOuterLed"] = mobile_app::outerLed::mode;
+        j["ldrOuterLed"] = mobile_app::outerLed::ldr;
 
-            res.set_content(j.dump(), "application/json");
-        });
+        res.set_content(j.dump(), "application/json");
+    });
+
+    // 3. GET for Doors
+    // Path: /mobile/sync/doors
+    svr.Get("/mobile/sync/doors", [](const httplib::Request&, httplib::Response& res) {
+        nlohmann::json j;
+
+        j["mainDoor"] = esp1::servo;
+        j["garageDoor"] = esp2::mg;
+
+        res.set_content(j.dump(), "application/json");
+    });
+
     }
 
     void startServer() {

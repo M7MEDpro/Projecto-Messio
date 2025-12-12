@@ -11,13 +11,13 @@ class BedroomRoomManager implements RoomManager {
   @override
   void setBrightness(int value) {
     _data.brightness = value;
-    _api.put("brightnessRoom2", value.toString());
+    _api.put("brightnessRoom1", value.toString());
   }
 
   @override
   void setMode(int value) {
     _data.mode = value;
-    _api.put("modeRoom2", value.toString());
+    _api.put("modeRoom1", value.toString());
   }
 
   @override
@@ -31,8 +31,8 @@ class BedroomRoomManager implements RoomManager {
     }
 
     int apiValue = value ? 1 : 0;
-    _api.put("ldrRoom2", apiValue.toString());
-    _api.put("modeRoom2", _data.mode.toString());
+    _api.put("ldrRoom1", apiValue.toString());
+    _api.put("modeRoom1", _data.mode.toString());
   }
 
   @override
@@ -46,7 +46,7 @@ class BedroomRoomManager implements RoomManager {
     }
 
     int apiValue = value ? 1 : 0;
-    _api.put("irRoom2", apiValue.toString());
-    _api.put("modeRoom2", _data.mode.toString());
+    _api.put("irRoom1", apiValue.toString());
+    _api.put("modeRoom1", _data.mode.toString());
   }
 }

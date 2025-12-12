@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../config/api_config..dart';
+
 class ApiService{
   ApiService._privateConstructor();
   static final ApiService instance = ApiService._privateConstructor();
-
-
 
   void put(String key, dynamic value) async {
     try {
@@ -25,8 +24,13 @@ class ApiService{
     }
   }
 
+  Future<Map<String, dynamic>> get(String endpoint) async {
+    final uri = Uri.http(
+        ApiBase.local.url,
+        '${ApiEndpoint.mobile.path}/$endpoint'
+    );
 
+    final response = await http.get(uri);
+    return json.decode(response.body);
+  }
 }
-
-
-

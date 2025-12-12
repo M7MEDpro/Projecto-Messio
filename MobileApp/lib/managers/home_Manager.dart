@@ -12,6 +12,7 @@ import 'rooms/bedroom_room_manager.dart';
 import 'rooms/living_room_manager.dart';
 import 'rooms/garage_room_manager.dart';
 import 'rooms/yard_room_manager.dart';
+import 'rooms/sync_rooms.dart';
 
 class HomeManager{
   static final HomeManager _instance = HomeManager._internal();
@@ -40,15 +41,21 @@ class HomeManager{
   HomeModesData getHomeModes(){
     return homeModes;
   }
+  
   setHomeAway(bool value){
+    homeModes.homeAway = value;
     String apiValue = (value ? 1 : 0).toString();
     api.put("homeAway", apiValue);
   }
+  
   setBedTime(bool value){
+    homeModes.bedTime = value;
     String apiValue = (value ? 1 : 0).toString();
     api.put("bedTimeMode", apiValue);
   }
+  
   setPowerSaving(bool value){
+    homeModes.powerSaving = value;
     String apiValue = (value ? 1 : 0).toString();
     api.put("powerSavingMode", apiValue);
 
@@ -80,15 +87,28 @@ class HomeManager{
       _savedBrightness.clear();
     }
   }
+  
   setEmergency(bool value){
+    homeModes.emergency = value;
     String apiValue = (value ? 1 : 0).toString();
     api.put("EmergencyMode", apiValue);
-
   }
 
+  Future<void> syncHomeModes() async {
+    try {
+      final response = await api.get("sync/home-modes");
+      if (response != null) {
+        homeModes.homeAway = response['homeAway'] == 1;
+        homeModes.bedTime = response['bedTimeMode'] == 1;
+        homeModes.powerSaving = response['powerSavingMode'] == 1;
+        homeModes.emergency = response['EmergencyMode'] == 1;
+      }
+    } catch (e) {
+      print('Error syncing home modes: $e');
+    }
+  }
 
-
-
-
-
+  Future<void> syncRooms() async {
+    await SyncRooms().syncRooms();
+  }
 }

@@ -12,15 +12,19 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-
 class _HomePageState extends State<HomePage> {
   HomeManager homeManager = HomeManager();
-  late HomeModesData homeModes;
+  HomeModesData homeModes = HomeModesData();
 
   @override
   void initState() {
     super.initState();
-    homeModes = homeManager.getHomeModes();
+    _syncData();
+  }
+
+  Future<void> _syncData() async {
+    await homeManager.syncHomeModes();
+    setState(() {});
   }
 
   @override
@@ -48,7 +52,6 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     Container(
                       width: screenWidth * 0.13,
                       height: screenWidth * 0.13,
@@ -134,66 +137,65 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
-                          FutureBuilder<double>(
-                            future: Weather.getCurrentTemp(),
-                            builder: (context, asyncSnapshot) {
-                              if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-                                return Positioned(
-                                  top: screenHeight * 49 / 866,
-                                  left: screenWidth * 35 / 398,
-                                  child: Text(
-                                    'Loading...',
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 25 / 398,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                );
-                              } else if (asyncSnapshot.hasError) {
-                                return Positioned(
-                                  top: screenHeight * 49 / 866,
-                                  left: screenWidth * 35 / 398,
-                                  child: Text(
-                                    'Error!',
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 38 / 398,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                );
-                              } else if (!asyncSnapshot.hasData) {
-                                return Positioned(
-                                  top: screenHeight * 49 / 866,
-                                  left: screenWidth * 35 / 398,
-                                  child: Text(
-                                    'No data',
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 38 / 398,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return Positioned(
-                                  top: screenHeight * 49 / 866,
-                                  left: screenWidth * 35 / 398,
-                                  child: Text(
-                                    '${asyncSnapshot.data}°C',
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 38 / 398,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-
-                          Positioned(
+                              FutureBuilder<double>(
+                                future: Weather.getCurrentTemp(),
+                                builder: (context, asyncSnapshot) {
+                                  if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+                                    return Positioned(
+                                      top: screenHeight * 49 / 866,
+                                      left: screenWidth * 35 / 398,
+                                      child: Text(
+                                        'Loading...',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 25 / 398,
+                                          fontWeight: FontWeight.w300,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    );
+                                  } else if (asyncSnapshot.hasError) {
+                                    return Positioned(
+                                      top: screenHeight * 49 / 866,
+                                      left: screenWidth * 35 / 398,
+                                      child: Text(
+                                        'Error!',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 38 / 398,
+                                          fontWeight: FontWeight.w300,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    );
+                                  } else if (!asyncSnapshot.hasData) {
+                                    return Positioned(
+                                      top: screenHeight * 49 / 866,
+                                      left: screenWidth * 35 / 398,
+                                      child: Text(
+                                        'No data',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 38 / 398,
+                                          fontWeight: FontWeight.w300,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    return Positioned(
+                                      top: screenHeight * 49 / 866,
+                                      left: screenWidth * 35 / 398,
+                                      child: Text(
+                                        '${asyncSnapshot.data}°C',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 38 / 398,
+                                          fontWeight: FontWeight.w300,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                              Positioned(
                                 top: screenHeight * 100 / 866,
                                 left: screenWidth * 110 / 398,
                                 child: Icon(
@@ -279,9 +281,7 @@ class _HomePageState extends State<HomePage> {
                                     value: homeModes.homeAway,
                                     onChanged: (newValue) {
                                       homeManager.setHomeAway(newValue);
-                                      setState(() {
-                                        homeModes. homeAway = newValue;
-                                      });
+                                      setState(() {});
                                     },
                                     top: screenHeight * 18 / 866,
                                     left: screenWidth * 80 / 398,
@@ -319,9 +319,7 @@ class _HomePageState extends State<HomePage> {
                                       value: homeModes.bedTime,
                                       onChanged: (newValue) {
                                         homeManager.setBedTime(newValue);
-                                        setState(() {
-                                          homeModes.bedTime = newValue;
-                                        });
+                                        setState(() {});
                                       },
                                       top: screenHeight * 18 / 866,
                                       left: screenWidth * 80 / 398,
@@ -369,9 +367,7 @@ class _HomePageState extends State<HomePage> {
                                     value: homeModes.powerSaving,
                                     onChanged: (newValue) {
                                       homeManager.setPowerSaving(newValue);
-                                      setState(() {
-                                        homeModes. powerSaving = newValue;
-                                      });
+                                      setState(() {});
                                     },
                                     top: screenHeight * 18 / 866,
                                     left: screenWidth * 80 / 398,
@@ -409,9 +405,7 @@ class _HomePageState extends State<HomePage> {
                                       value: homeModes.emergency,
                                       onChanged: (newValue) {
                                         homeManager.setEmergency(newValue);
-                                        setState(() {
-                                          homeModes.emergency = newValue;
-                                        });
+                                        setState(() {});
                                       },
                                       top: screenHeight * 18 / 866,
                                       left: screenWidth * 80 / 398,

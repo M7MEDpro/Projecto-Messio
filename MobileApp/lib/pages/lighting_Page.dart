@@ -20,6 +20,17 @@ class _LightingPageState extends State<LightingPage> {
   final Map<String, Timer> _debounceTimers = {};
 
   @override
+  void initState() {
+    super.initState();
+    _syncData();
+  }
+
+  Future<void> _syncData() async {
+    await HomeManager().syncRooms();
+    if (mounted) setState(() {});
+  }
+
+  @override
   void dispose() {
     for (var timer in _debounceTimers.values) {
       timer.cancel();

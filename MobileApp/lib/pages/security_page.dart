@@ -19,6 +19,23 @@ class _SecurityPageState extends State<SecurityPage> {
   final doorsManager _doorsManager = doorsManager();
 
   @override
+  void initState() {
+    super.initState();
+    _syncData();
+  }
+
+  Future<void> _syncData() async {
+    await _doorsManager.syncDoors();
+    if (mounted) {
+      setState(() {
+        // Update local state based on synced data
+        homeDoorStatus = _doorsManager.data.homeDoor == 1 ? "OPEN" : "CLOSED";
+        garageDoorStatus = _doorsManager.data.garageDoor == 1 ? "OPEN" : "CLOSED";
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;

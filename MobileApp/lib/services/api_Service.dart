@@ -16,10 +16,7 @@ class ApiService{
 
       await http.put(
         Uri.http(ApiBase.local.url, ApiEndpoint.mobile.path),
-        headers: {
-          'Content-Type': 'application/json',
-          'Auth-Key': ApiBase.key,
-        },
+        headers: {'Content-Type': 'application/json'},
         body: jsonBody,
       );
     } on Exception catch (e) {
@@ -33,9 +30,7 @@ class ApiService{
         '${ApiEndpoint.mobile.path}/$endpoint'
     );
 
-    final response = await http.get(uri, headers: {
-      'Auth-Key': ApiBase.key,
-    });
+    final response = await http.get(uri);
     return json.decode(response.body);
   }
 

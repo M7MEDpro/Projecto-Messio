@@ -3,7 +3,7 @@
 
 namespace wifi {
 
-    void connectWiFi();
+    void connectWiFi(unsigned long timeout = 10000);
     void checkAndReconnect();
 
 }

@@ -45,17 +45,14 @@ void displayTaskCode(void * parameter) {
 
 void wifiTaskCode(void * parameter) {
     for(;;) {
-        if (WiFi.status() != WL_CONNECTED) {
-             wifi::connectWiFi();
-        }
-        vTaskDelay(5000 / portTICK_PERIOD_MS);
+        wifi::checkAndReconnect();
+        vTaskDelay(100 / portTICK_PERIOD_MS); 
     }
 }
 
 void setup() {
     Serial.begin(115200);
 
-    // Create mutex before starting tasks
     httpMutex = xSemaphoreCreateMutex();
 
     pinMode(LED_BUILTIN, OUTPUT);
@@ -89,7 +86,7 @@ void setup() {
     xTaskCreatePinnedToCore(
         displayTaskCode,
         "DisplayTask",
-        4096, // Reduced stack size for display if possible
+        4096,
         NULL,
         1,
         &DisplayTask,

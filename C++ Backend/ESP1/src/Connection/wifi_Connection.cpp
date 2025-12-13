@@ -8,20 +8,27 @@ namespace wifi {
     IPAddress subnet(SUBNET_MASK[0], SUBNET_MASK[1], SUBNET_MASK[2], SUBNET_MASK[3]);
 
     unsigned long lastReconnectAttempt = 0;
-    const unsigned long RECONNECT_INTERVAL = 5000; // Try reconnect every 5 seconds
+    const unsigned long RECONNECT_INTERVAL = 5000;
 
-    void connectWiFi() {
+    void connectWiFi(unsigned long timeout) {
         WiFi.config(local_IP, gateway, subnet);
         WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
         Serial.print("Connecting to WiFi");
-        while (WiFi.status() != WL_CONNECTED) {
+        unsigned long startAttemptTime = millis();
+
+        while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < timeout) {
             delay(500);
             Serial.print(".");
         }
-        Serial.println("\nWiFi Connected!");
-        Serial.print("IP Address: ");
-        Serial.println(WiFi.localIP());
+        
+        if (WiFi.status() == WL_CONNECTED) {
+            Serial.println("\nWiFi Connected!");
+            Serial.print("IP Address: ");
+            Serial.println(WiFi.localIP());
+        } else {
+             Serial.println("\nWiFi Connection timed out. Starting background tasks...");
+        }
     }
 
     void checkAndReconnect() {

@@ -30,18 +30,19 @@ namespace flame {
 
     void process_sensor(int pin, const char* key, int& lastState, unsigned long& lowTime, std::vector<std::pair<String, String>>& updates) {
         int val = digitalRead(pin);
-        if (val == HIGH) {
-            if (lastState != HIGH) {
+        // Inverted Logic: LOW = Detected ("1"), HIGH = Idle ("0")
+        if (val == LOW) { // Detected
+            if (lastState != LOW) {
                 updates.push_back({key, "1"});
-                lastState = HIGH;
+                lastState = LOW;
             }
             lowTime = 0;
-        } else {
+        } else { // Idle
             if (lowTime == 0) {
                 lowTime = millis();
-            } else if (millis() - lowTime >= 2000 && lastState != LOW) {
+            } else if (millis() - lowTime >= 2000 && lastState != HIGH) {
                 updates.push_back({key, "0"});
-                lastState = LOW;
+                lastState = HIGH;
             }
         }
     }

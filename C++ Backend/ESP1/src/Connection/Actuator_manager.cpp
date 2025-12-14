@@ -1,8 +1,8 @@
 #include "Actuator_manager.h"
-#include "LEDS/Garage_led_manager.h"
-#include "LEDS/Reception_led_manager.h"
-#include "Others/Buzzer_manager.h"
-#include "Others/Servo_manager.h"
+#include "Garage_led_manager.h"
+#include "Reception_led_manager.h"
+#include "Buzzer_manager.h"
+#include "Servo_manager.h"
 namespace actuators {
 
     void init() {

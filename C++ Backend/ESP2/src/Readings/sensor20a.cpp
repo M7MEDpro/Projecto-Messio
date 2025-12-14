@@ -3,8 +3,7 @@
 
 namespace sensor20a {
 
-    
-    const int SENSOR_PIN = 33; 
+    const int SENSOR_PIN = 33;
     const float SENSITIVITY = 0.100;
     double voltage = 0;
     double vRMS = 0;
@@ -16,47 +15,45 @@ namespace sensor20a {
 
     float getVPP() {
         float result;
-        int readValue;             
-        int maxValue = 0;         
-        int minValue = 4095;    
-        
+        int readValue;
+        int maxValue = 0;
+        int minValue = 4095;
+
         uint32_t start_time = millis();
 
-        while((millis()-start_time) < 1000) 
+        while((millis()-start_time) < 1000)
         {
             readValue = analogRead(SENSOR_PIN);
-            if (readValue > maxValue) 
+            if (readValue > maxValue)
             {
                 maxValue = readValue;
             }
-            if (readValue < minValue) 
+            if (readValue < minValue)
             {
                 minValue = readValue;
             }
         }
-        
 
         result = ((maxValue - minValue) * 3.3) / 4095.0;
-        
+
         return result;
     }
 
     std::vector<std::pair<String, String>> sensor20a_read() {
         std::vector<std::pair<String, String>> updates;
-        
+
         voltage = getVPP();
-        
-        vRMS = (voltage / 2.0) * 0.707; 
-        
+        vRMS = voltage / 2.828;
+        AmpsRMS = vRMS / SENSITIVITY;
+        float power = 220.0 * AmpsRMS;
 
-        AmpsRMS = (vRMS * 1000) / 100; /
-        float power = 220 * AmpsRMS;
-        
         if (power < 0) power = 0;
-        
 
-        
-        updates.push_back({"S20A", String(power)});
+        if (AmpsRMS < 0.1) {
+            power = 0;
+        }
+
+        updates.push_back({"S20A", String((int)power)});
         return updates;
     }
 }

@@ -2,7 +2,7 @@
 #include "Arduino.h"
 
 namespace OL {
-    int OL_pin = 16;
+    int OL_pin = 17;
 
     void OL_initial() {
         pinMode(OL_pin, OUTPUT);

@@ -1,6 +1,6 @@
 #include "Buzzer_manager.h"
 #include "Arduino.h"
-#include "Connection/HTTP_manager.h"
+#include "HTTP_manager.h"
 
 namespace buzzer {
     int buzzerPin = 17;

@@ -1,4 +1,4 @@
-#include "flameAlarm.h"
+    #include "flameAlarm.h"
 
 #include "dataModel.h"
 #include "utilities.h"

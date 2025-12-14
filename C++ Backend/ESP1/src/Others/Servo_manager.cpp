@@ -1,7 +1,7 @@
 #include "Servo_manager.h"
 #include "Arduino.h"
 #include "ESP32Servo.h"
-#include "Connection/HTTP_manager.h"
+#include "HTTP_manager.h"
 
 namespace servo {
     Servo myServo;

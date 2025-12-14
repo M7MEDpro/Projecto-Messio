@@ -4,13 +4,18 @@
 #include "httplib.h"
 #include "serverConfig.h"
 #include "utilities.h"
+#include <mutex>
 
 namespace server {
+
+    // Mutex for thread-safe access to shared data
+    std::mutex dataMutex;
 
     void registerESP1(httplib::Server& svr) {
         svr.Put("/esp1", [](const httplib::Request& req, httplib::Response& res) {
             try {
                 auto json = nlohmann::json::parse(req.body);
+                std::lock_guard<std::mutex> lock(dataMutex);
                 for (auto& [key, val] : json.items()) {
                     if (key == "LDR0") esp1::LDR0 = utilities::jsonToNum(val);
                     else if (key == "LDR1") esp1::LDR1 = utilities::jsonToNum(val);
@@ -29,13 +34,16 @@ namespace server {
 
         svr.Get("/esp1", [](const httplib::Request&, httplib::Response& res) {
             nlohmann::json j;
-            j["g1"] = esp1::g1;
-            j["r1"] = esp1::r1;
-            j["r2"] = esp1::r2;
-            j["r3"] = esp1::r3;
-            j["r4"] = esp1::r4;
-            j["buzz"] = esp1::buzz;
-            j["servo"] = esp1::servo;
+            {
+                std::lock_guard<std::mutex> lock(dataMutex);
+                j["g1"] = esp1::g1;
+                j["r1"] = esp1::r1;
+                j["r2"] = esp1::r2;
+                j["r3"] = esp1::r3;
+                j["r4"] = esp1::r4;
+                j["buzz"] = esp1::buzz;
+                j["servo"] = esp1::servo;
+            }
             res.set_content(j.dump(), "application/json");
         });
     }
@@ -44,6 +52,7 @@ namespace server {
         svr.Put("/esp2", [](const httplib::Request& req, httplib::Response& res) {
             try {
                 auto json = nlohmann::json::parse(req.body);
+                std::lock_guard<std::mutex> lock(dataMutex);
                 for (auto& [key, val] : json.items()) {
                     if (key == "F1") esp2::F1 = utilities::jsonToNum(val);
                     else if (key == "F2") esp2::F2 = utilities::jsonToNum(val);
@@ -61,12 +70,15 @@ namespace server {
 
         svr.Get("/esp2", [](const httplib::Request&, httplib::Response& res) {
             nlohmann::json j;
-            j["OL"] = esp2::OL;
-            j["l1"] = esp2::l1;
-            j["l2"] = esp2::l2;
-            j["l3"] = esp2::l3;
-            j["l4"] = esp2::l4;
-            j["GD"] = esp2::mg;
+            {
+                std::lock_guard<std::mutex> lock(dataMutex);
+                j["OL"] = esp2::OL;
+                j["l1"] = esp2::l1;
+                j["l2"] = esp2::l2;
+                j["l3"] = esp2::l3;
+                j["l4"] = esp2::l4;
+                j["GD"] = esp2::mg;
+            }
             res.set_content(j.dump(), "application/json");
         });
     }
@@ -93,6 +105,7 @@ namespace server {
         svr.Put("/mobile", [](const httplib::Request& req, httplib::Response& res) {
             try {
                 auto json = nlohmann::json::parse(req.body);
+                std::lock_guard<std::mutex> lock(dataMutex);
                 for (auto& [key, val] : json.items()) {
                     // Home Modes
                     if (key == "homeAway") mobile_app::homeAway = utilities::jsonToNum(val);
@@ -145,75 +158,73 @@ namespace server {
             }
         });
 
-        // 1. GET for Alarm Status Only
-        // Path: /mobile/alarm
         svr.Get("/mobile/alarm", [](const httplib::Request&, httplib::Response& res) {
             nlohmann::json j;
-            j["AlarmStatues"] = esp1::buzz;
+            {
+                std::lock_guard<std::mutex> lock(dataMutex);
+                j["AlarmStatues"] = esp1::buzz;
+            }
             res.set_content(j.dump(), "application/json");
         });
 
-    // Path: /mobile/sync/home-modes
-    svr.Get("/mobile/sync/home-modes", [](const httplib::Request&, httplib::Response& res) {
-        nlohmann::json j;
+        svr.Get("/mobile/sync/home-modes", [](const httplib::Request&, httplib::Response& res) {
+            nlohmann::json j;
+            {
+                std::lock_guard<std::mutex> lock(dataMutex);
+                j["homeAway"] = mobile_app::homeAway;
+                j["bedTimeMode"] = mobile_app::bedTimeMode;
+                j["powerSavingMode"] = mobile_app::powerSavingMode;
+                j["EmergencyMode"] = mobile_app::EmergencyMode;
+                j["powerConsumption"] = esp2::power;
+            }
+            res.set_content(j.dump(), "application/json");
+        });
 
-        j["homeAway"] = mobile_app::homeAway;
-        j["bedTimeMode"] = mobile_app::bedTimeMode;
-        j["powerSavingMode"] = mobile_app::powerSavingMode;
-        j["EmergencyMode"] = mobile_app::EmergencyMode;
-        j["powerConsumption"] = esp2::power;
+        svr.Get("/mobile/sync/rooms", [](const httplib::Request&, httplib::Response& res) {
+            nlohmann::json j;
+            {
+                std::lock_guard<std::mutex> lock(dataMutex);
+                // Room 1
+                j["brightnessRoom1"] = mobile_app::room1::brightness;
+                j["modeRoom1"] = mobile_app::room1::mode;
+                j["ldrRoom1"] = mobile_app::room1::ldr;
+                j["irRoom1"] = mobile_app::room1::ir;
 
-        res.set_content(j.dump(), "application/json");
-    });
+                // Room 2
+                j["brightnessRoom2"] = mobile_app::room2::brightness;
+                j["modeRoom2"] = mobile_app::room2::mode;
+                j["ldrRoom2"] = mobile_app::room2::ldr;
+                j["irRoom2"] = mobile_app::room2::ir;
 
-    // 2. GET for All Rooms
-    // Path: /mobile/sync/rooms
-    svr.Get("/mobile/sync/rooms", [](const httplib::Request&, httplib::Response& res) {
-        nlohmann::json j;
+                // Reception
+                j["brightnessReception"] = mobile_app::reception::brightness;
+                j["modeReception"] = mobile_app::reception::mode;
+                j["ldrReception"] = mobile_app::reception::ldr;
+                j["irReception"] = mobile_app::reception::ir;
 
-        // Room 1
-        j["brightnessRoom1"] = mobile_app::room1::brightness;
-        j["modeRoom1"] = mobile_app::room1::mode;
-        j["ldrRoom1"] = mobile_app::room1::ldr;
-        j["irRoom1"] = mobile_app::room1::ir;
+                // Garage
+                j["brightnessGarage"] = mobile_app::garage::brightness;
+                j["modeGarage"] = mobile_app::garage::mode;
+                j["ldrGarage"] = mobile_app::garage::ldr;
+                j["irGarage"] = mobile_app::garage::ir;
 
-        // Room 2
-        j["brightnessRoom2"] = mobile_app::room2::brightness;
-        j["modeRoom2"] = mobile_app::room2::mode;
-        j["ldrRoom2"] = mobile_app::room2::ldr;
-        j["irRoom2"] = mobile_app::room2::ir;
+                // Outer LED
+                j["brightnessOuterLed"] = mobile_app::outerLed::brightness;
+                j["modeOuterLed"] = mobile_app::outerLed::mode;
+                j["ldrOuterLed"] = mobile_app::outerLed::ldr;
+            }
+            res.set_content(j.dump(), "application/json");
+        });
 
-        // Reception
-        j["brightnessReception"] = mobile_app::reception::brightness;
-        j["modeReception"] = mobile_app::reception::mode;
-        j["ldrReception"] = mobile_app::reception::ldr;
-        j["irReception"] = mobile_app::reception::ir;
-
-        // Garage
-        j["brightnessGarage"] = mobile_app::garage::brightness;
-        j["modeGarage"] = mobile_app::garage::mode;
-        j["ldrGarage"] = mobile_app::garage::ldr;
-        j["irGarage"] = mobile_app::garage::ir;
-
-        // Outer LED
-        j["brightnessOuterLed"] = mobile_app::outerLed::brightness;
-        j["modeOuterLed"] = mobile_app::outerLed::mode;
-        j["ldrOuterLed"] = mobile_app::outerLed::ldr;
-
-        res.set_content(j.dump(), "application/json");
-    });
-
-    // 3. GET for Doors
-    // Path: /mobile/sync/doors
-    svr.Get("/mobile/sync/doors", [](const httplib::Request&, httplib::Response& res) {
-        nlohmann::json j;
-
-        j["mainDoor"] = esp1::servo;
-        j["garageDoor"] = esp2::mg;
-
-        res.set_content(j.dump(), "application/json");
-    });
-
+        svr.Get("/mobile/sync/doors", [](const httplib::Request&, httplib::Response& res) {
+            nlohmann::json j;
+            {
+                std::lock_guard<std::mutex> lock(dataMutex);
+                j["mainDoor"] = esp1::servo;
+                j["garageDoor"] = esp2::mg;
+            }
+            res.set_content(j.dump(), "application/json");
+        });
     }
 
     void startServer() {

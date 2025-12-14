@@ -2,19 +2,22 @@
 #include <Arduino.h>
 
 namespace gm {
-    int MOTOR_PIN1 = 16;
-    int MOTOR_PIN2 =4;
+    const int MOTOR_PIN1 = 16;
+    const int MOTOR_PIN2 = 4;
 
     unsigned long motorStartTime = 0;
     bool motorRunning = false;
-    bool motorDirection = false;
-    String lastCommand = "";
+
+    int lastProcessedGD = -1;
 
     void garagedoor_init() {
         pinMode(MOTOR_PIN1, OUTPUT);
         pinMode(MOTOR_PIN2, OUTPUT);
         digitalWrite(MOTOR_PIN1, LOW);
         digitalWrite(MOTOR_PIN2, LOW);
+
+        motorRunning = false;
+        lastProcessedGD = -1;
     }
 
     void stopMotor() {
@@ -23,35 +26,44 @@ namespace gm {
         motorRunning = false;
     }
 
-    void runMotor(bool forward) {
-        if (forward) {
+    // direction: 1 = Forward (Open), 0 = Reverse (Close/Reverse)
+    void runMotor(int direction) {
+        if (direction == 1) {
+            // Forward Direction (1)
             digitalWrite(MOTOR_PIN1, HIGH);
             digitalWrite(MOTOR_PIN2, LOW);
         } else {
+            // Reverse Direction (0)
             digitalWrite(MOTOR_PIN1, LOW);
             digitalWrite(MOTOR_PIN2, HIGH);
         }
+
         motorRunning = true;
         motorStartTime = millis();
     }
 
     void garagedoor_update() {
-        if (motorRunning && (millis() - motorStartTime >= 2000)) {
+        // Stop the motor after 1000ms (Instant one-time work)
+        if (motorRunning && (millis() - motorStartTime >= 1000)) {
             stopMotor();
         }
     }
 
-    void garagedoor_command(const String& command) {
-        if (command == lastCommand) {
+    void garagedoor_command(int gdValue) {
+        // First initialization: just store the state, don't run immediately on boot
+        if (lastProcessedGD == -1) {
+            lastProcessedGD = gdValue;
             return;
         }
 
-        lastCommand = command;
-
-        if (command == "1") {
-            runMotor(true);
-        } else if (command == "0") {
-            runMotor(false);
+        // Only act on CHANGE of state (Edge Triggered)
+        if (gdValue != lastProcessedGD) {
+            if (gdValue == 1) {
+                runMotor(1); // Run Forward (Open)
+            } else if (gdValue == 0) {
+                runMotor(0); // Run Reverse (Close/Reverse)
+            }
+            lastProcessedGD = gdValue;
         }
     }
 }

@@ -7,9 +7,14 @@ const char* const WIFI_SSID = "oppo reno 14 5G";
 const char* const WIFI_PASSWORD = "1234567890";
 
 
-const uint8_t LOCAL_IP[] = {10, 205, 248, 101};
-const uint8_t GATEWAY_IP[] = {10, 205, 248, 70};
+// Static IP Configuration
+// IPAddress local_IP(192, 168, 1, 101);
+const uint8_t LOCAL_IP[] = {10,205,248,100};
+// IPAddress gateway(192, 168, 1, 1);
+const uint8_t GATEWAY_IP[] = {10,205,248,70};
+// IPAddress subnet(255, 255, 255, 0);
 const uint8_t SUBNET_MASK[] = {255, 255, 255, 0};
+
 
 const char* const SERVER_URL_PUT = "http://10.205.248.200:5000/esp1";
 const char* const SERVER_URL_GET = "http://10.205.248.200:5000/esp1";

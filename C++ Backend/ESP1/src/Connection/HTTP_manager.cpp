@@ -17,8 +17,8 @@ namespace http {
 
     // Configuration
     static const int MAX_RETRIES = 2;
-    static const int TIMEOUT_MS = 3000;
-    static const int CONNECT_TIMEOUT_MS = 2000;
+    static const int TIMEOUT_MS = 500;
+    static const int CONNECT_TIMEOUT_MS = 500;
 
     // Statistics for monitoring
     static unsigned long successCount = 0;

@@ -21,18 +21,14 @@ namespace wifi {
 
         WiFi.mode(WIFI_STA);
 
-        // ✅ Configure static IP
         if(!WiFi.config(local_IP, gateway, subnet)) {
             Serial.println("WiFi config failed");
         }
 
-        // ✅ Set power and other options for stability
         WiFi.setAutoReconnect(true);
-        WiFi.persistent(false);  // Don't save to flash
+        WiFi.persistent(false); 
 
-        // ✅ Optional: Reduce power for stability (may reduce range)
-        // WiFi.setTxPower(WIFI_POWER_11dBm);  // Uncomment if you have power issues
-
+  
         WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
         unsigned long startAttemptTime = millis();

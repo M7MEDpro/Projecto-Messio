@@ -43,8 +43,8 @@ namespace gm {
     }
 
     void garagedoor_update() {
-        // Stop the motor after 1000ms (Instant one-time work)
-        if (motorRunning && (millis() - motorStartTime >= 1000)) {
+        // Stop the motor after 800ms (Instant one-time work)
+        if (motorRunning && (millis() - motorStartTime >= 800)) {
             stopMotor();
         }
     }
@@ -58,6 +58,9 @@ namespace gm {
 
         // Only act on CHANGE of state (Edge Triggered)
         if (gdValue != lastProcessedGD) {
+            Serial.print("Garage Command: ");
+            Serial.println(gdValue);
+            
             if (gdValue == 1) {
                 runMotor(1); // Run Forward (Open)
             } else if (gdValue == 0) {

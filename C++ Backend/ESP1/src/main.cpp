@@ -30,7 +30,7 @@ void loop() {
     }
 
     // Delay 200ms
-    delay(200);
+    delay(80);
 
     // 4. Get Data (GET)
     std::vector<String> keys = {"g1", "r1", "r2", "r3", "r4", "buzz", "servo"};
@@ -43,7 +43,7 @@ void loop() {
     // We have one explicit 200ms delay. Let's add another one at end or make loop longer.
     // Simulating "Stroke 1 (Send)" -> Delay 200 -> "Stroke 2 (Get)" -> Delay 200/Wait.
     
-    delay(200); 
+    delay(80);
     
     // Heartbeat LED
     digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));

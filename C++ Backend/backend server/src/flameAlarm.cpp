@@ -11,6 +11,6 @@ namespace flameAlarm {
         }else
             utilities::runLater([]() {
                 alarmmanager::flame = 0;
-            }, 5000);
+            }, 1000);
     }
 }

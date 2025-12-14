@@ -36,7 +36,7 @@ void loop() {
     gm::garagedoor_update();
 
     // Offset Start (Slot 2 for GET)
-    delay(200);
+    delay(80);
     gm::garagedoor_update(); // Check motor again
 
     // 3. Get Data (GET) - "esp 2 send get data"
@@ -57,7 +57,7 @@ void loop() {
     // It seems `actuators::updateAll` might be calling `gm::garagedoor_command` internally if it parses "GD".
     // I will stick to what was there: `actuators::updateAll(actuatorData)`.
 
-    delay(200);
+    delay(80);
     gm::garagedoor_update(); // Check motor
 
     // 5. Read Sensors
@@ -68,7 +68,7 @@ void loop() {
         http::send_batch(sensorData);
     }
 
-    delay(200); 
+    delay(80);
     gm::garagedoor_update(); 
 
     // Heartbeat

@@ -1,12 +1,8 @@
 #include "Sensor_manager.h"
 #include "IR_reading_manager.h"
 #include "LDR_reading_manager.h"
-#include "HTTP_manager.h"
 
 namespace sensors {
-
-    unsigned long lastSendTime = 0;
-    const unsigned long SEND_INTERVAL = 500;
 
     void init() {
         LDR::LDR_init();
@@ -16,15 +12,13 @@ namespace sensors {
     std::vector<std::pair<String, String>> readAllSensors() {
         std::vector<std::pair<String, String>> batchData;
 
+        // IR sensors (M0-M4) - now includes periodic updates
         auto irUpdates = IR::checkAllSensors();
         batchData.insert(batchData.end(), irUpdates.begin(), irUpdates.end());
 
-        unsigned long currentTime = millis();
-        if (currentTime - lastSendTime >= SEND_INTERVAL) {
-            batchData.push_back({"LDR0", String(LDR::LDR0_read())});
-            batchData.push_back({"LDR1", String(LDR::LDR1_read())});
-            lastSendTime = currentTime;
-        }
+        // LDR sensors - always send (removed throttling)
+        batchData.push_back({"LDR0", String(LDR::LDR0_read())});
+        batchData.push_back({"LDR1", String(LDR::LDR1_read())});
 
         return batchData;
     }

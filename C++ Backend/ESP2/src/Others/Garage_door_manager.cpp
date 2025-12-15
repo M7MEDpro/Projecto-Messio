@@ -2,7 +2,7 @@
 #include <Arduino.h>
 
 namespace gm {
-    const int MOTOR_PIN1 = 16;
+    const int MOTOR_PIN1 = 2;
     const int MOTOR_PIN2 = 4;
 
     unsigned long motorStartTime = 0;
@@ -18,24 +18,29 @@ namespace gm {
 
         motorRunning = false;
         lastProcessedGD = -1;
+
+        Serial.println("Garage Door initialized");
     }
 
     void stopMotor() {
         digitalWrite(MOTOR_PIN1, LOW);
         digitalWrite(MOTOR_PIN2, LOW);
         motorRunning = false;
+        Serial.println("Garage Motor STOPPED");
     }
 
-    // direction: 1 = Forward (Open), 0 = Reverse (Close/Reverse)
+    // direction: 1 = Forward (Open), 0 = Reverse (Close)
     void runMotor(int direction) {
         if (direction == 1) {
-            // Forward Direction (1)
+            // Forward Direction (Open)
             digitalWrite(MOTOR_PIN1, HIGH);
             digitalWrite(MOTOR_PIN2, LOW);
+            Serial.println("Garage Motor: FORWARD (Opening)");
         } else {
-            // Reverse Direction (0)
+            // Reverse Direction (Close)
             digitalWrite(MOTOR_PIN1, LOW);
             digitalWrite(MOTOR_PIN2, HIGH);
+            Serial.println("Garage Motor: REVERSE (Closing)");
         }
 
         motorRunning = true;
@@ -43,28 +48,28 @@ namespace gm {
     }
 
     void garagedoor_update() {
-        // Stop the motor after 800ms (Instant one-time work)
+        // CRITICAL: Stop motor after exactly 800ms
         if (motorRunning && (millis() - motorStartTime >= 800)) {
             stopMotor();
         }
     }
 
     void garagedoor_command(int gdValue) {
-        // First initialization: just store the state, don't run immediately on boot
+        // First initialization: just store the state, don't run on boot
         if (lastProcessedGD == -1) {
             lastProcessedGD = gdValue;
+            Serial.printf("Garage Door initial state: %d\n", gdValue);
             return;
         }
 
         // Only act on CHANGE of state (Edge Triggered)
         if (gdValue != lastProcessedGD) {
-            Serial.print("Garage Command: ");
-            Serial.println(gdValue);
-            
+            Serial.printf("Garage Door command changed: %d -> %d\n", lastProcessedGD, gdValue);
+
             if (gdValue == 1) {
                 runMotor(1); // Run Forward (Open)
             } else if (gdValue == 0) {
-                runMotor(0); // Run Reverse (Close/Reverse)
+                runMotor(0); // Run Reverse (Close)
             }
             lastProcessedGD = gdValue;
         }

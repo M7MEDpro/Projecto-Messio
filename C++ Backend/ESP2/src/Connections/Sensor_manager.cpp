@@ -12,9 +12,11 @@ namespace sensors {
     std::vector<std::pair<String, String>> readAllSensors() {
         std::vector<std::pair<String, String>> allUpdates;
 
+        // Flame sensors are fast
         auto flameUpdates = flame::flame_read();
         allUpdates.insert(allUpdates.end(), flameUpdates.begin(), flameUpdates.end());
 
+        // Power sensor now non-blocking - may return empty if still reading
         auto powerUpdates = sensor20a::sensor20a_read();
         allUpdates.insert(allUpdates.end(), powerUpdates.begin(), powerUpdates.end());
 

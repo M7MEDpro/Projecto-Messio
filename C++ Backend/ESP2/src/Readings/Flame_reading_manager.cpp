@@ -64,9 +64,7 @@ namespace flame {
 
         process_sensor(F1, "F1", F1_last, F1_lowTime, updates, forceSend);
         process_sensor(F2, "F2", F2_last, F2_lowTime, updates, forceSend);
-        process_sensor(F3, "F3", F3_last, F3_lowTime, updates, forceSend);
         process_sensor(F4, "F4", F4_last, F4_lowTime, updates, forceSend);
-        process_sensor(F5, "F5", F5_last, F5_lowTime, updates, forceSend);
 
         if (forceSend) {
             lastSendTime = currentTime;

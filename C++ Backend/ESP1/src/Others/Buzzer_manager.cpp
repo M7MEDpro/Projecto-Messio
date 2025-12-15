@@ -2,8 +2,7 @@
 #include "Arduino.h"
 #include "HTTP_manager.h"
 
-namespace buzzer {
-    int buzzerPin = 17;
+namespace buzzer { int buzzerPin = 4; // Changed from 17 to4 (G04)
     bool buzz = false;
 
     void Buzzer_init() {
@@ -15,6 +14,4 @@ namespace buzzer {
         buzz = b;
         digitalWrite(buzzerPin, buzz ? HIGH : LOW);
     }
-
-
 }

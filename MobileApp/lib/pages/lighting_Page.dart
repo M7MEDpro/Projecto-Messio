@@ -213,14 +213,14 @@ class _LightingPageState extends State<LightingPage> {
                     value: isPowerSaving ? 30.0 : roomData.brightness.toDouble(),
                     onChanged: isPowerSaving ? null : (value) {
                       setState(() {
-                         // Clamp visual value
+                          
                         if (value > maxBrightness) value = maxBrightness;
                         roomData.brightness = value.toInt();
                       });
                       _debounceSetBrightness(roomName, roomManager, value.toInt());
                     },
                     min: 0.0,
-                    max: 100.0, // Keep scale consistent
+                    max: 100.0,  
                   ),
                 ),
               ),
@@ -254,7 +254,7 @@ class _LightingPageState extends State<LightingPage> {
         ),
         child: ListView(
           children: [
-            // Office
+             
             buildRoomContainer(
               roomName: "OFFICE",
               imagePath: "assets/images/office.png",
@@ -263,7 +263,7 @@ class _LightingPageState extends State<LightingPage> {
               screenHeight: screenHeight,
               screenWidth: screenWidth,
             ),
-            // Bed Room
+             
             buildRoomContainer(
               roomName: "BED ROOM",
               imagePath: "assets/images/bedroom1.png",
@@ -272,7 +272,7 @@ class _LightingPageState extends State<LightingPage> {
               screenHeight: screenHeight,
               screenWidth: screenWidth,
             ),
-            // Living Room
+             
             buildRoomContainer(
               roomName: "LIVING ROOM",
               imagePath: "assets/images/living.png",
@@ -281,7 +281,7 @@ class _LightingPageState extends State<LightingPage> {
               screenHeight: screenHeight,
               screenWidth: screenWidth,
             ),
-            // Garage
+             
             buildRoomContainer(
               roomName: "GARAGE",
               imagePath: "assets/images/garage.png",
@@ -290,7 +290,7 @@ class _LightingPageState extends State<LightingPage> {
               screenHeight: screenHeight,
               screenWidth: screenWidth,
             ),
-            // Yard (no motion sensor)
+             
             buildRoomContainer(
               roomName: "YARD",
               imagePath: "assets/images/yard.png",

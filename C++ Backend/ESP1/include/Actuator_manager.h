@@ -6,7 +6,7 @@
 
 namespace actuators {
     void updateAll(const std::map<String, String>& data);
-    
+
     void init();
 }
 

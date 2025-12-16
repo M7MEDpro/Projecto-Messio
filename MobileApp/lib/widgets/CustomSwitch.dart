@@ -39,12 +39,12 @@ class CustomSwitch extends StatelessWidget {
     double padding = height * 0.1;
     double thumbSize = height - (padding * 2);
 
-    // Increase clickable area by ~12.5% on each side (total ~25% larger area effectively)
+     
     double horizontalPadding = width * 0.125;
     double verticalPadding = height * 0.125;
 
     return Positioned(
-      // Adjust position to compensate for the added padding, so visual element stays in place
+       
       top: top - verticalPadding,
       left: left - horizontalPadding,
       child: GestureDetector(
@@ -52,9 +52,9 @@ class CustomSwitch extends StatelessWidget {
         onTap: () {
           onChanged(!value);
         },
-        behavior: HitTestBehavior.translucent, // Ensure the padding area is clickable
+        behavior: HitTestBehavior.translucent,  
         child: Container(
-          // Add invisible padding to increase hit target
+           
           padding: EdgeInsets.symmetric(
             horizontal: horizontalPadding,
             vertical: verticalPadding,
@@ -106,3 +106,4 @@ class CustomSwitch extends StatelessWidget {
     );
   }
 }
+

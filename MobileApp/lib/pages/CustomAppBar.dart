@@ -50,7 +50,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               SizedBox(height: screenHeight * 0.01),
 
-              // TITLE
+               
               Text(
                 title,
                 style: TextStyle(
@@ -65,7 +65,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
               SizedBox(height: screenHeight * 0.003),
 
-              // SUBTITLE
+               
               Text(
                 subtitle,
                 style: TextStyle(

@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    // Matching Colors from Home Page
+     
     const backgroundColor = Color(0xFFDBE2EF);
     const accentColor = Colors.black;
 
@@ -89,12 +89,12 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               SizedBox(height: screenHeight * 0.1),
 
-              // Home Icon Circle
+               
               Container(
                 width: screenWidth * 0.25,
                 height: screenWidth * 0.25,
                 decoration: const BoxDecoration(
-                  color: accentColor, // Colors.black
+                  color: accentColor,  
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: screenHeight * 0.03),
 
-              // Welcome Text
+               
               Text(
                 'WELCOME HOME',
                 style: TextStyle(
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: screenHeight * 0.05),
 
-              // Username Field
+               
               _buildTextField(
                 controller: _usernameController,
                 hintText: "Username",
@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: screenHeight * 0.02),
 
-              // Key Field
+               
               _buildTextField(
                 controller: _keyController,
                 hintText: "Access Key",
@@ -144,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
 
               SizedBox(height: screenHeight * 0.05),
 
-              // Login Button
+               
               SizedBox(
                 width: double.infinity,
                 height: screenHeight * 0.07,
@@ -229,3 +229,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

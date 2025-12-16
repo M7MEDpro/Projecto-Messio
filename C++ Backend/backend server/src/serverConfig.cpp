@@ -13,3 +13,4 @@ namespace config {
         passkey = config["server"]["passkey"].as<std::string>();
     }
 }
+

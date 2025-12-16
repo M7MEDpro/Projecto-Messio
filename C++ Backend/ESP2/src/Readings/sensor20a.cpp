@@ -6,13 +6,12 @@ namespace sensor20a {
     const int SENSOR_PIN = 33;
     const float SENSITIVITY = 0.100;
 
-    // Non-blocking reading state
+     
     static bool isReading = false;
     static unsigned long readStartTime = 0;
     static int maxValue = 0;
     static int minValue = 4095;
-    static const unsigned long READ_DURATION = 200; // Reduced from 1000ms to 200ms
-
+    static const unsigned long READ_DURATION = 200;
     double voltage = 0;
     double vRMS = 0;
     double AmpsRMS = 0;
@@ -21,18 +20,18 @@ namespace sensor20a {
         pinMode(SENSOR_PIN, INPUT);
     }
 
-    // Non-blocking version - call this repeatedly
+     
     bool updateReading() {
         if (!isReading) {
-            // Start new reading
+             
             isReading = true;
             readStartTime = millis();
             maxValue = 0;
             minValue = 4095;
-            return false; // Not done yet
+            return false;  
         }
 
-        // Continue reading
+         
         int readValue = analogRead(SENSOR_PIN);
         if (readValue > maxValue) {
             maxValue = readValue;
@@ -41,13 +40,13 @@ namespace sensor20a {
             minValue = readValue;
         }
 
-        // Check if we're done
+         
         if (millis() - readStartTime >= READ_DURATION) {
             isReading = false;
-            return true; // Reading complete
+            return true;  
         }
 
-        return false; // Still reading
+        return false;  
     }
 
     float getVPP() {
@@ -58,7 +57,7 @@ namespace sensor20a {
     std::vector<std::pair<String, String>> sensor20a_read() {
         std::vector<std::pair<String, String>> updates;
 
-        // Only return data if we have a complete reading
+         
         if (updateReading()) {
             voltage = getVPP();
             vRMS = voltage / 2.828;

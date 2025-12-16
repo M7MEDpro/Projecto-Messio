@@ -5,6 +5,7 @@ namespace display {
     void start();
     void update();
 
-} 
+}
 
-#endif 
+#endif
+

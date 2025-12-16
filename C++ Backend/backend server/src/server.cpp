@@ -8,7 +8,7 @@
 
 namespace server {
 
-    // Mutex for thread-safe access to shared data
+     
     std::mutex dataMutex;
 
     void registerESP1(httplib::Server& svr) {
@@ -107,46 +107,46 @@ namespace server {
                 auto json = nlohmann::json::parse(req.body);
                 std::lock_guard<std::mutex> lock(dataMutex);
                 for (auto& [key, val] : json.items()) {
-                    // Home Modes
+                     
                     if (key == "homeAway") mobile_app::homeAway = utilities::jsonToNum(val);
                     else if (key == "bedTimeMode") mobile_app::bedTimeMode = utilities::jsonToNum(val);
                     else if (key == "powerSavingMode") mobile_app::powerSavingMode = utilities::jsonToNum(val);
                     else if (key == "EmergencyMode") mobile_app::EmergencyMode = utilities::jsonToNum(val);
 
-                    // Room 1
+                     
                     else if (key == "brightnessRoom1") mobile_app::room1::brightness = utilities::jsonToNum(val);
                     else if (key == "modeRoom1") mobile_app::room1::mode = utilities::jsonToNum(val);
                     else if (key == "ldrRoom1") mobile_app::room1::ldr = utilities::jsonToNum(val);
                     else if (key == "irRoom1") mobile_app::room1::ir = utilities::jsonToNum(val);
                     else if (key == "alarmModeRoom1") mobile_app::room1::alarmMode = utilities::jsonToNum(val);
 
-                    // Room 2
+                     
                     else if (key == "brightnessRoom2") mobile_app::room2::brightness = utilities::jsonToNum(val);
                     else if (key == "modeRoom2") mobile_app::room2::mode = utilities::jsonToNum(val);
                     else if (key == "ldrRoom2") mobile_app::room2::ldr = utilities::jsonToNum(val);
                     else if (key == "irRoom2") mobile_app::room2::ir = utilities::jsonToNum(val);
                     else if (key == "alarmModeRoom2") mobile_app::room2::alarmMode = utilities::jsonToNum(val);
 
-                    // Reception
+                     
                     else if (key == "brightnessReception") mobile_app::reception::brightness = utilities::jsonToNum(val);
                     else if (key == "modeReception") mobile_app::reception::mode = utilities::jsonToNum(val);
                     else if (key == "ldrReception") mobile_app::reception::ldr = utilities::jsonToNum(val);
                     else if (key == "irReception") mobile_app::reception::ir = utilities::jsonToNum(val);
                     else if (key == "alarmModeReception") mobile_app::reception::alarmMode = utilities::jsonToNum(val);
 
-                    // Garage
+                     
                     else if (key == "brightnessGarage") mobile_app::garage::brightness = utilities::jsonToNum(val);
                     else if (key == "modeGarage") mobile_app::garage::mode = utilities::jsonToNum(val);
                     else if (key == "ldrGarage") mobile_app::garage::ldr = utilities::jsonToNum(val);
                     else if (key == "irGarage") mobile_app::garage::ir = utilities::jsonToNum(val);
                     else if (key == "alarmModeGarage") mobile_app::garage::alarmMode = utilities::jsonToNum(val);
 
-                    // Outer LED
+                     
                     else if (key == "brightnessOuterLed") mobile_app::outerLed::brightness = utilities::jsonToNum(val);
                     else if (key == "modeOuterLed") mobile_app::outerLed::mode = utilities::jsonToNum(val);
                     else if (key == "ldrOuterLed") mobile_app::outerLed::ldr = utilities::jsonToNum(val);
 
-                    // Doors
+                     
                     else if (key == "mainDoor") esp1::servo = utilities::jsonToNum(val);
                     else if (key == "servo") esp1::servo = utilities::jsonToNum(val);
                     else if (key == "garageDoor") esp2::mg = utilities::jsonToNum(val);
@@ -184,31 +184,31 @@ namespace server {
             nlohmann::json j;
             {
                 std::lock_guard<std::mutex> lock(dataMutex);
-                // Room 1
+                 
                 j["brightnessRoom1"] = mobile_app::room1::brightness;
                 j["modeRoom1"] = mobile_app::room1::mode;
                 j["ldrRoom1"] = mobile_app::room1::ldr;
                 j["irRoom1"] = mobile_app::room1::ir;
 
-                // Room 2
+                 
                 j["brightnessRoom2"] = mobile_app::room2::brightness;
                 j["modeRoom2"] = mobile_app::room2::mode;
                 j["ldrRoom2"] = mobile_app::room2::ldr;
                 j["irRoom2"] = mobile_app::room2::ir;
 
-                // Reception
+                 
                 j["brightnessReception"] = mobile_app::reception::brightness;
                 j["modeReception"] = mobile_app::reception::mode;
                 j["ldrReception"] = mobile_app::reception::ldr;
                 j["irReception"] = mobile_app::reception::ir;
 
-                // Garage
+                 
                 j["brightnessGarage"] = mobile_app::garage::brightness;
                 j["modeGarage"] = mobile_app::garage::mode;
                 j["ldrGarage"] = mobile_app::garage::ldr;
                 j["irGarage"] = mobile_app::garage::ir;
 
-                // Outer LED
+                 
                 j["brightnessOuterLed"] = mobile_app::outerLed::brightness;
                 j["modeOuterLed"] = mobile_app::outerLed::mode;
                 j["ldrOuterLed"] = mobile_app::outerLed::ldr;

@@ -25,7 +25,7 @@ class YardRoomManager implements RoomManager {
   void setDaylight(bool value) {
     _data.daylight = value;
     if (value) {
-      _data.mode = 2; // Auto mode
+      _data.mode = 2;  
     } else {
       _data.mode = (_data.mode == 1) ? 1 : 0;
     }

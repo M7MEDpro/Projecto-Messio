@@ -36,33 +36,33 @@ namespace esp2 {
 }
 namespace mobile_app {
 
-    // Home modes
+     
     extern int homeAway;
     extern int bedTimeMode;
     extern int powerSavingMode;
     extern int EmergencyMode;
 
-    // Room1
+     
     namespace room1 {
         extern int brightness;
-        extern int mode; // 0 is off 1 is on 2 is auto
+        extern int mode;  
         extern int ldr;
         extern int ir;
         extern int alarmMode;
 
     }
 
-    // Room2
+     
     namespace room2 {
         extern int brightness;
-        extern int mode; // 0 is off 1 is on 2 is auto
+        extern int mode;  
         extern int ldr;
         extern int ir;
         extern int alarmMode;
 
     }
 
-    // Reception
+     
     namespace reception {
         extern int brightness;
         extern int mode;
@@ -72,7 +72,7 @@ namespace mobile_app {
 
     }
 
-    // Garage
+     
     namespace garage {
         extern int brightness;
         extern int mode;
@@ -83,7 +83,7 @@ namespace mobile_app {
 
     }
 
-    // Outer LED
+     
     namespace outerLed {
         extern int brightness;
         extern int mode;
@@ -94,3 +94,4 @@ namespace mobile_app {
 }
 
 #endif
+

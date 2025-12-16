@@ -8,13 +8,12 @@ namespace wifi {
     IPAddress subnet(SUBNET_MASK[0], SUBNET_MASK[1], SUBNET_MASK[2], SUBNET_MASK[3]);
 
     unsigned long lastReconnectAttempt = 0;
-    const unsigned long RECONNECT_INTERVAL = 5000;  // ✅ Reduced from 10s to 5s
-
+    const unsigned long RECONNECT_INTERVAL = 5000;
     int consecutiveFailures = 0;
     const int MAX_FAILURES_BEFORE_RESTART = 5;
 
     void connectWiFi(unsigned long timeout) {
-        // ✅ Complete WiFi reset
+         
         WiFi.disconnect(true);
         WiFi.mode(WIFI_OFF);
         delay(500);
@@ -26,9 +25,9 @@ namespace wifi {
         }
 
         WiFi.setAutoReconnect(true);
-        WiFi.persistent(false); 
+        WiFi.persistent(false);
 
-  
+
         WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
         unsigned long startAttemptTime = millis();
@@ -51,7 +50,7 @@ namespace wifi {
             Serial.println("\n✗ WiFi Connection Failed");
             consecutiveFailures++;
 
-            // ✅ Restart ESP32 if too many failures
+             
             if (consecutiveFailures >= MAX_FAILURES_BEFORE_RESTART) {
                 Serial.println("Too many failures, restarting ESP32...");
                 delay(1000);
@@ -68,14 +67,14 @@ namespace wifi {
 
         unsigned long currentTime = millis();
 
-        // ✅ More aggressive reconnection
+         
         if (currentTime - lastReconnectAttempt >= RECONNECT_INTERVAL) {
             lastReconnectAttempt = currentTime;
 
             Serial.println("\n!!! WiFi Disconnected !!!");
             Serial.printf("Reconnection attempt #%d\n", consecutiveFailures + 1);
 
-            // ✅ Full reconnection with fresh start
+             
             WiFi.disconnect(true);
             delay(100);
             WiFi.mode(WIFI_OFF);
@@ -88,7 +87,7 @@ namespace wifi {
 
             WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
-            // ✅ Wait up to 10 seconds for reconnection
+             
             unsigned long start = millis();
             while (WiFi.status() != WL_CONNECTED && millis() - start < 10000) {
                 delay(500);
@@ -103,7 +102,7 @@ namespace wifi {
                 Serial.println("\n✗ Reconnection failed");
                 consecutiveFailures++;
 
-                // ✅ Restart if too many failures
+                 
                 if (consecutiveFailures >= MAX_FAILURES_BEFORE_RESTART) {
                     Serial.println("Max failures reached, restarting...");
                     delay(1000);
@@ -113,15 +112,15 @@ namespace wifi {
         }
     }
 
-    // ✅ New function to check WiFi quality
+     
     bool isWiFiHealthy() {
         if (WiFi.status() != WL_CONNECTED) {
             return false;
         }
 
         int rssi = WiFi.RSSI();
-        // Good: > -60, Fair: -60 to -70, Poor: < -70
-        return rssi > -75;  // Consider unhealthy if worse than -75 dBm
+         
+        return rssi > -75;   
     }
 
     int getSignalQuality() {

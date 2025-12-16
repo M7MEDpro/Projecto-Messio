@@ -7,19 +7,18 @@ namespace servo {
 
     void init() {
         myServo.attach(servoPin);
-        myServo.write(90); // Default to Closed (90) on set
-
+        myServo.write(90);
     }
 
     void open() {
         if (currentState == 1) return;
-        myServo.write(0); // Open set to 0
+        myServo.write(0);  
         currentState = 1;
     }
 
     void close() {
         if (currentState == 0) return;
-        myServo.write(90); // Close set to 90
+        myServo.write(90);  
         currentState = 0;
     }
 }

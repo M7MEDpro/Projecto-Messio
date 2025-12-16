@@ -4,3 +4,4 @@ abstract class RoomManager {
   void setDaylight(bool value);
   void setMotion(bool value);
 }
+

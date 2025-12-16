@@ -22,14 +22,14 @@ class HomeManager{
   ApiService api = ApiService.instance;
   HomeModesData homeModes = HomeModesData();
 
-  // Initialize all room data
+   
   OfficeRoomData officeData = OfficeRoomData();
   BedroomRoomData bedroomData = BedroomRoomData();
   LivingRoomData livingData = LivingRoomData();
   GarageRoomData garageData = GarageRoomData();
   YardRoomData yardData = YardRoomData();
 
-  // Initialize all room managers
+   
   late OfficeRoomManager officeManager = OfficeRoomManager(officeData);
   late BedroomRoomManager bedroomManager = BedroomRoomManager(bedroomData);
   late LivingRoomManager livingManager = LivingRoomManager(livingData);
@@ -41,19 +41,19 @@ class HomeManager{
   HomeModesData getHomeModes(){
     return homeModes;
   }
-  
+
   setHomeAway(bool value){
     homeModes.homeAway = value;
     String apiValue = (value ? 1 : 0).toString();
     api.put("homeAway", apiValue);
   }
-  
+
   setBedTime(bool value){
     homeModes.bedTime = value;
     String apiValue = (value ? 1 : 0).toString();
     api.put("bedTimeMode", apiValue);
   }
-  
+
   Future<void> setPowerSaving(bool value) async {
     homeModes.powerSaving = value;
     String apiValue = (value ? 1 : 0).toString();
@@ -80,7 +80,7 @@ class HomeManager{
       yardManager.setBrightness(30);
 
     } else {
-      // Restore brightness
+       
       if (_savedBrightness.containsKey('office')) {
         officeManager.setBrightness(_savedBrightness['office']!);
         await Future.delayed(const Duration(milliseconds: 20));
@@ -104,7 +104,7 @@ class HomeManager{
       _savedBrightness.clear();
     }
   }
-  
+
   setEmergency(bool value){
     homeModes.emergency = value;
     String apiValue = (value ? 1 : 0).toString();
@@ -130,3 +130,4 @@ class HomeManager{
     await SyncRooms().syncRooms();
   }
 }
+

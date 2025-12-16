@@ -4,9 +4,8 @@
 
 namespace display {
 
-  // Use the I2C version
-  LiquidCrystal_I2C lcd(0x27, 16, 2); // I2C address, 16x2 LCD
-
+   
+  LiquidCrystal_I2C lcd(0x27, 16, 2);
   const uint8_t ENTRY_COUNT = 15;
 
   const char* names[ENTRY_COUNT] = {
@@ -47,23 +46,21 @@ namespace display {
 
   uint8_t currentIndex = 0;
   unsigned long lastMillis = 0;
-  const unsigned long intervalMs = 2000UL; // 2 sec per entry
-
-  // Declare showCurrent first
+  const unsigned long intervalMs = 2000UL;
+   
   void showCurrent();
 
   void start() {
-    Wire.begin(21, 22); // SDA=21, SCL=22 for ESP32
+    Wire.begin(21, 22);  
     lcd.init();
     lcd.backlight();
     lastMillis = millis();
     showCurrent();
   }
 
-  // Define showCurrent
+   
   void showCurrent() {
-    lcd.clear(); // Clear before showing new content
-
+    lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print(names[currentIndex]);
 
@@ -80,4 +77,4 @@ namespace display {
     }
   }
 
-} // namespace display
+}

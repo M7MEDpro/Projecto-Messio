@@ -6,29 +6,25 @@ namespace flame {
     int F2 = 39;
     int F3 = 34;
     int F4 = 35;
-    int F5 = 32;  // ✅ ADDED F5
-
+    int F5 = 32;
     int F1_last = -1;
     int F2_last = -1;
     int F3_last = -1;
     int F4_last = -1;
-    int F5_last = -1;  // ✅ ADDED F5
-
+    int F5_last = -1;
     unsigned long F1_lowTime = 0;
     unsigned long F2_lowTime = 0;
     unsigned long F3_lowTime = 0;
     unsigned long F4_lowTime = 0;
-    unsigned long F5_lowTime = 0;  // ✅ ADDED F5
-
+    unsigned long F5_lowTime = 0;
     unsigned long lastSendTime = 0;
-    const unsigned long SEND_INTERVAL = 500; // Send all sensors every 500ms
-
+    const unsigned long SEND_INTERVAL = 500;
     void flame_init() {
         pinMode(F1, INPUT);
         pinMode(F2, INPUT);
         pinMode(F3, INPUT);
         pinMode(F4, INPUT);
-        pinMode(F5, INPUT);  // ✅ ADDED F5
+        pinMode(F5, INPUT);   
     }
 
     void process_sensor(int pin, const char* key, int& lastState, unsigned long& lowTime,
@@ -36,14 +32,14 @@ namespace flame {
         unsigned long currentTime = millis();
         int val = digitalRead(pin);
 
-        // Inverted Logic: LOW = Detected ("1"), HIGH = Idle ("0")
-        if (val == LOW) { // Detected
+         
+        if (val == LOW) {  
             if (lastState != LOW || forceSend) {
                 updates.push_back({key, "1"});
                 lastState = LOW;
             }
             lowTime = 0;
-        } else { // Idle
+        } else {  
             if (lowTime == 0) {
                 lowTime = currentTime;
             } else if (currentTime - lowTime >= 2000 && lastState != HIGH) {
@@ -59,7 +55,7 @@ namespace flame {
         std::vector<std::pair<String, String>> updates;
         unsigned long currentTime = millis();
 
-        // Force send all sensors periodically
+         
         bool forceSend = (currentTime - lastSendTime >= SEND_INTERVAL);
 
         process_sensor(F1, "F1", F1_last, F1_lowTime, updates, forceSend);

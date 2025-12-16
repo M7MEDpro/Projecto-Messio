@@ -5,7 +5,7 @@
 
 namespace http {
 
-    // Separate clients for GET and PUT to avoid conflicts
+     
     static HTTPClient putClient;
     static HTTPClient getClient;
     static bool putClientReady = false;
@@ -15,19 +15,19 @@ namespace http {
     static const unsigned long CACHE_DURATION = 500;
     static std::map<String, unsigned long> cacheTime;
 
-    // Configuration
+     
     static const int MAX_RETRIES = 2;
     static const int TIMEOUT_MS = 500;
     static const int CONNECT_TIMEOUT_MS = 500;
 
-    // Statistics for monitoring
+     
     static unsigned long successCount = 0;
     static unsigned long failCount = 0;
     static unsigned long totalRequests = 0;
 
     void initPutClient() {
         if (!putClientReady) {
-            putClient.setReuse(false);  // Disable reuse - create fresh connection
+            putClient.setReuse(false);   
             putClient.setTimeout(TIMEOUT_MS);
             putClient.setConnectTimeout(CONNECT_TIMEOUT_MS);
             putClientReady = true;
@@ -36,7 +36,7 @@ namespace http {
 
     void initGetClient() {
         if (!getClientReady) {
-            getClient.setReuse(false);  // Disable reuse
+            getClient.setReuse(false);   
             getClient.setTimeout(TIMEOUT_MS);
             getClient.setConnectTimeout(CONNECT_TIMEOUT_MS);
             getClientReady = true;
@@ -57,7 +57,7 @@ namespace http {
         totalRequests++;
         initPutClient();
 
-        // Check WiFi before attempting
+         
         if (WiFi.status() != WL_CONNECTED) {
             Serial.println("WiFi not connected, skipping PUT");
             failCount++;
@@ -65,7 +65,7 @@ namespace http {
         }
 
         for (int attempt = 0; attempt < MAX_RETRIES; attempt++) {
-            // Fresh connection each time
+             
             putClient.end();
 
             if (!putClient.begin(SERVER_URL_PUT)) {
@@ -75,8 +75,7 @@ namespace http {
             }
 
             putClient.addHeader("Content-Type", "application/json");
-            putClient.addHeader("Connection", "close");  // Force close after request
-
+            putClient.addHeader("Connection", "close");
             DynamicJsonDocument doc(2048);
             for (const auto& pair : data) {
                 doc[pair.first] = pair.second.toInt();
@@ -86,8 +85,7 @@ namespace http {
             serializeJson(doc, payload);
 
             int code = putClient.PUT(payload);
-            putClient.end();  // Immediately close
-
+            putClient.end();
             if (code == 200) {
                 successCount++;
                 printStats();
@@ -97,7 +95,7 @@ namespace http {
             if (code > 0) {
                 Serial.printf("PUT HTTP error %d (attempt %d)\n", code, attempt + 1);
             } else {
-                // Negative codes are HTTPClient errors
+                 
                 const char* errorMsg = "";
                 switch(code) {
                     case -1: errorMsg = "Connection refused"; break;
@@ -116,12 +114,12 @@ namespace http {
                 Serial.printf("PUT error %d: %s (attempt %d)\n", code, errorMsg, attempt + 1);
             }
 
-            // Don't retry on client errors (400-499)
+             
             if (code >= 400 && code < 500) {
                 break;
             }
 
-            // Small delay before retry
+             
             if (attempt < MAX_RETRIES - 1) {
                 delay(100 * (attempt + 1));
             }
@@ -145,7 +143,7 @@ namespace http {
         totalRequests++;
         initGetClient();
 
-        // Check WiFi before attempting
+         
         if (WiFi.status() != WL_CONNECTED) {
             Serial.println("WiFi not connected, skipping GET");
             failCount++;
@@ -153,7 +151,7 @@ namespace http {
         }
 
         for (int attempt = 0; attempt < MAX_RETRIES; attempt++) {
-            // Fresh connection each time
+             
             getClient.end();
 
             if (!getClient.begin(SERVER_URL_GET)) {
@@ -162,14 +160,12 @@ namespace http {
                 continue;
             }
 
-            getClient.addHeader("Connection", "close");  // Force close
-
+            getClient.addHeader("Connection", "close");
             int code = getClient.GET();
 
             if (code == 200) {
                 String payload = getClient.getString();
-                getClient.end();  // Immediately close
-
+                getClient.end();
                 DynamicJsonDocument doc(2048);
                 DeserializationError err = deserializeJson(doc, payload);
 
@@ -201,13 +197,13 @@ namespace http {
                     Serial.printf("GET error %d: %s (attempt %d)\n", code, errorMsg, attempt + 1);
                 }
 
-                // Don't retry on client errors
+                 
                 if (code >= 400 && code < 500) {
                     break;
                 }
             }
 
-            // Small delay before retry
+             
             if (attempt < MAX_RETRIES - 1) {
                 delay(100 * (attempt + 1));
             }

@@ -11,4 +11,4 @@ namespace config {
     void loadConfig();
 }
 
-#endif // SERVER_CONFIG_H
+#endif

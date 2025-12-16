@@ -11,4 +11,4 @@ namespace alarmmanager {
 
 }
 
-#endif // ALARMMANAGER_H
+#endif

@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // Content Section
+           
           Expanded(
             child: Container(
               width: double.infinity,
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         SizedBox(height: screenHeight * 0.07),
 
-                        // Weather and Energy Container
+                         
                         Container(
                           height: screenHeight * 149 / 866,
                           width: screenWidth * 339 / 398,
@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                                 future: Weather.getCurrentTemp(),
                                 initialData: Weather.lastTemp,
                                 builder: (context, asyncSnapshot) {
-                                  // Determine if we have valid data to show
+                                   
                                   double? displayTemp;
                                   if (asyncSnapshot.hasData && asyncSnapshot.data != 0.0) {
                                     displayTemp = asyncSnapshot.data;
@@ -190,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     );
                                   } else {
-                                     // Fallback
+                                      
                                      return Positioned(
                                       top: screenHeight * 49 / 866,
                                       left: screenWidth * 35 / 398,
@@ -275,7 +275,7 @@ class _HomePageState extends State<HomePage> {
 
                         SizedBox(height: screenHeight * 0.025),
 
-                        // First Row of Switches
+                         
                         Row(
                           children: [
                             SizedBox(width: screenWidth * 28 / 398),
@@ -363,7 +363,7 @@ class _HomePageState extends State<HomePage> {
 
                         SizedBox(height: screenHeight * 0.025),
 
-                        // Second Row of Switches
+                         
                         Row(
                           children: [
                             SizedBox(width: screenWidth * 28 / 398),
@@ -454,7 +454,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
 
-                  // Floating Home Image
+                   
                   Positioned(
                     left: screenWidth * 0.275,
                     top: screenHeight * -0.0575,

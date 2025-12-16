@@ -19,3 +19,4 @@ enum ApiEndpoint {
   final String path;
   const ApiEndpoint(this.path);
 }
+

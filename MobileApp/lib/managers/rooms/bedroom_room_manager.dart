@@ -25,7 +25,7 @@ class BedroomRoomManager implements RoomManager {
     _data.daylight = value;
 
     if (value || _data.motion) {
-      _data.mode = 2; // Auto mode
+      _data.mode = 2;  
     } else {
       _data.mode = (_data.mode == 1) ? 1 : 0;
     }
@@ -40,7 +40,7 @@ class BedroomRoomManager implements RoomManager {
     _data.motion = value;
 
     if (value || _data.daylight) {
-      _data.mode = 2; // Auto mode
+      _data.mode = 2;  
     } else {
       _data.mode = (_data.mode == 1) ? 1 : 0;
     }

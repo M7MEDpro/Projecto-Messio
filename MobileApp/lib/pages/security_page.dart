@@ -29,7 +29,7 @@ class _SecurityPageState extends State<SecurityPage> {
     await _doorsManager.syncDoors();
     if (mounted) {
       setState(() {
-        // Update local state based on synced data
+         
         homeDoorStatus = _doorsManager.data.homeDoor == 1 ? "OPEN" : "CLOSED";
         garageDoorStatus = _doorsManager.data.garageDoor == 1 ? "OPEN" : "CLOSED";
       });
